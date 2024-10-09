@@ -1,10 +1,7 @@
-dist/
+bin/
 out/
+dist/
 node_modules/
-*.log
+.vscode-test/
 .DS_Store
-.vscode
-*.tsbuildinfo
-package-lock.json
-gnopls/gno_functions/.git
-gnopls/gno_functions/.git
+.user-data-dir-test/
