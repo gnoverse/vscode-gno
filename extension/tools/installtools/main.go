@@ -39,7 +39,7 @@ var tools = []struct {
 	{"github.com/cweill/gotests/gotests", "", false, nil},
 	{"github.com/haya14busa/goplay/cmd/goplay", "", false, nil},
 	{"honnef.co/go/tools/cmd/staticcheck", "", false, []finalVersion{{21, "v0.4.7"}}},
-	{"github.com/go-delve/delve/cmd/dlv", "", false, nil},
+	//{"github.com/go-delve/delve/cmd/dlv", "", false, nil},
 }
 
 // pickVersion returns the version to install based on the supported

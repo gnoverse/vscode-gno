@@ -20,8 +20,8 @@ import {
 	trackCodeCoverageRemovalOnFileChange,
 	updateCodeCoverageDecorators
 } from './gnoCover';
-import { GoDebugConfigurationProvider } from './gnoDebugConfiguration';
-import * as GoDebugFactory from './gnoDebugFactory';
+//import { GoDebugConfigurationProvider } from './gnoDebugConfiguration';
+//import * as GoDebugFactory from './gnoDebugFactory';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
 	chooseGoEnvironment,
@@ -145,8 +145,8 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.environment.status', expandGoStatusBar);
 
 	GoRunTestCodeLensProvider.activate(ctx, goCtx);
-	GoDebugConfigurationProvider.activate(ctx, goCtx);
-	GoDebugFactory.activate(ctx, goCtx);
+	//GoDebugConfigurationProvider.activate(ctx, goCtx);
+	//GoDebugFactory.activate(ctx, goCtx);
 
 	goCtx.buildDiagnosticCollection = vscode.languages.createDiagnosticCollection('gno');
 	ctx.subscriptions.push(goCtx.buildDiagnosticCollection);
