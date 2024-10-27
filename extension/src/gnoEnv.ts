@@ -22,7 +22,7 @@ export function toolInstallationEnvironment(): NodeJS.Dict<string> {
 	let toolsGopath = getToolsGopath();
 	if (toolsGopath) {
 		// User has explicitly chosen to use toolsGopath, so ignore GOBIN.
-		env['GNOBIN'] = '';
+		env['GOBIN'] = '';
 	} else {
 		toolsGopath = getCurrentGoPath();
 	}
@@ -40,7 +40,7 @@ export function toolInstallationEnvironment(): NodeJS.Dict<string> {
 		});
 		return {};
 	}
-	env['GNOPATH'] = toolsGopath;
+	env['GOPATH'] = toolsGopath;
 
 	// Explicitly set 'auto' so tools that require
 	// a newer toolchain can be built.
@@ -54,9 +54,9 @@ export function toolInstallationEnvironment(): NodeJS.Dict<string> {
 	// the default setup.
 	delete env['GOOS'];
 	delete env['GOARCH'];
-	delete env['GNOROOT'];
+	delete env['GOROOT'];
 	delete env['GOFLAGS'];
-	delete env['GNOENV'];
+	delete env['GOENV'];
 	delete env['GO111MODULE']; // we require module mode (default) for tools installation.
 
 	return env;
@@ -68,7 +68,7 @@ export function toolExecutionEnvironment(uri?: vscode.Uri, addProcessEnv = true)
 	const env = newEnvironment(uri, addProcessEnv);
 	const gopath = getCurrentGoPath(uri);
 	if (gopath) {
-		env['GNOPATH'] = gopath;
+		env['GOPATH'] = gopath;
 	}
 
 	// Remove json flag (-json or --json=<any>) from GOFLAGS because it will effect to result format of the execution
@@ -110,7 +110,7 @@ export async function setGOROOTEnvVar(configGOROOT: string) {
 	}
 	const goroot = configGOROOT ? resolvePath(substituteEnv(configGOROOT)) : undefined;
 
-	const currentGOROOT = process.env['GNOROOT'];
+	const currentGOROOT = process.env['GOROOT'];
 	if (goroot === currentGOROOT) {
 		return;
 	}
@@ -138,7 +138,7 @@ export async function setGOROOTEnvVar(configGOROOT: string) {
 		`setting GNOROOT = ${goroot} (old value: ${currentGOROOT}) because "gno.gnoroot": "${configGOROOT}"`
 	);
 	if (goroot) {
-		process.env['GNOROOT'] = goroot;
+		process.env['GOROOT'] = goroot;
 	} else {
 		delete process.env.GOROOT;
 	}

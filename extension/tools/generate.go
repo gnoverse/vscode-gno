@@ -32,7 +32,7 @@ import (
 
 var (
 	writeFlag                    = flag.Bool("w", true, "Write new file contents to disk.")
-	updateGoplsSettingsFlag      = flag.Bool("gopls", false, "Update gopls settings in package.json. This is disabled by default because 'jq' tool is needed for generation.")
+	updateGoplsSettingsFlag      = flag.Bool("gnopls", false, "Update gnopls settings in package.json. This is disabled by default because 'jq' tool is needed for generation.")
 	updateLatestToolVersionsFlag = flag.Bool("tools", false, "Update the latest versions of tools in src/src/goToolsInformation.ts. This is disabled by default because the latest versions may change frequently and should not block a release.")
 
 	debugFlag = flag.Bool("debug", false, "If true, enable extra logging and skip deletion of intermediate files.")

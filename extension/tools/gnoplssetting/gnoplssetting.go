@@ -67,15 +67,15 @@ func Generate(inputFile string, skipCleanup bool) ([]byte, error) {
 
 // readGoplsAPI returns the output of `gopls api-json`.
 func readGoplsAPI() (*APIJSON, error) {
-	version, err := exec.Command("gopls", "-v", "version").Output()
+	version, err := exec.Command("gnopls", "-v", "version").Output()
 	if err != nil {
-		return nil, fmt.Errorf("failed to check gopls version: %v", err)
+		return nil, fmt.Errorf("failed to check gnopls version: %v", err)
 	}
-	log.Printf("Reading settings of gopls....\nversion:\n%s\n", version)
+	log.Printf("Reading settings of gnopls....\nversion:\n%s\n", version)
 
-	out, err := exec.Command("gopls", "api-json").Output()
+	out, err := exec.Command("gnopls", "api-json").Output()
 	if err != nil {
-		return nil, fmt.Errorf("failed to run gopls: %v", err)
+		return nil, fmt.Errorf("failed to run gnopls: %v", err)
 	}
 
 	api := &APIJSON{}

@@ -107,7 +107,7 @@ export async function installAllTools(updateExistingToolsOnly = false) {
 
 export const getGoForInstall = _getGoForInstall;
 async function _getGoForInstall(goVersion: GoVersion): Promise<GoVersion | undefined> {
-	let configured = getGnoConfig().get<string>('toolsManagement.gno');
+	let configured = getGnoConfig().get<string>('toolsManagement.go');
 	if (!configured) {
 		configured = goVersion.binaryPath;
 	}
@@ -157,10 +157,10 @@ export async function installTools(
 
 	const goForInstall = await getGoForInstall(goVersion);
 	if (!goForInstall || !goForInstall.isValid()) {
-		vscode.window.showErrorMessage('Failed to find a gno command needed to install tools.');
+		vscode.window.showErrorMessage('Failed to find a go command needed to install tools.');
 		outputChannel.show(); // show error.
 		return missing.map((tool) => {
-			return { tool: tool, reason: 'failed to find gno' };
+			return { tool: tool, reason: 'failed to find go' };
 		});
 	}
 
@@ -192,22 +192,22 @@ export async function installTools(
 		// is new enough (possibly newer than the officially released go version),
 		// and don't set GOTOOLCHAIN.
 		const version = goVersion.format(true);
-		envForTools['GNOTOOLCHAIN'] = `go${version}+auto`;
+		envForTools['GOTOOLCHAIN'] = `go${version}+auto`;
 	}
 
-	const toolsGopath = envForTools['GNOPATH'];
-	let envMsg = `Tools environment: GNOPATH=${toolsGopath}`;
-	if (envForTools['GNOBIN']) {
-		envMsg += `, GNOBIN=${envForTools['GNOBIN']}`;
+	const toolsGopath = envForTools['GOPATH'];
+	let envMsg = `Tools environment: GOPATH=${toolsGopath}`;
+	if (envForTools['GOBIN']) {
+		envMsg += `, GOBIN=${envForTools['GOBIN']}`;
 	}
-	if (envForTools['GNOTOOLCHAIN']) {
-		envMsg += `, GNOTOOLCHAIN=${envForTools['GNOTOOLCHAIN']}`;
+	if (envForTools['GOTOOLCHAIN']) {
+		envMsg += `, GOTOOLCHAIN=${envForTools['GOTOOLCHAIN']}`;
 	}
 	outputChannel.appendLine(envMsg);
 
 	let installingMsg = `Installing ${missing.length} ${missing.length > 1 ? 'tools' : 'tool'} at `;
-	if (envForTools['GNOBIN']) {
-		installingMsg += `the configured GNOBIN: ${envForTools['GNOBIN']}`;
+	if (envForTools['GOBIN']) {
+		installingMsg += `the configured GOBIN: ${envForTools['GOBIN']}`;
 	} else {
 		const p = toolsGopath
 			?.split(path.delimiter)
@@ -277,7 +277,7 @@ async function tmpDirForToolInstallation() {
 export async function installTool(tool: ToolAtVersion): Promise<string | undefined> {
 	const goVersion = await getGoForInstall(await getGoVersion());
 	if (!goVersion) {
-		return 'failed to find "gno" for install';
+		return 'failed to find "go" for install';
 	}
 	const envForTools = toolInstallationEnvironment();
 

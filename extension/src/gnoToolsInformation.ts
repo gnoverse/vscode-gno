@@ -94,30 +94,13 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		description: 'Linter',
 		defaultVersion: 'v1.3.9'
 	},
-	'gopls': {
-		name: 'gopls',
-		importPath: 'golang.org/x/tools/gopls',
-		modulePath: 'golang.org/x/tools/gopls',
-		replacedByGopls: false, // lol
-		isImportant: true,
-		description: 'Language Server from Google',
-		usePrereleaseInPreviewMode: true,
-		minimumGoVersion: semver.coerce('1.19'),
-		latestVersion: semver.parse('v0.16.2'),
-		latestVersionTimestamp: moment('2024-08-29', 'YYYY-MM-DD'),
-		latestPrereleaseVersion: semver.parse('v0.16.2'),
-		latestPrereleaseVersionTimestamp: moment('2024-08-29', 'YYYY-MM-DD')
-	},
-	'dlv': {
-		name: 'dlv',
-		importPath: 'github.com/go-delve/delve/cmd/dlv',
-		modulePath: 'github.com/go-delve/delve',
-		replacedByGopls: false,
-		isImportant: false,
-		description: 'Go debugger (Delve)',
-		latestVersion: semver.parse('v1.8.3'),
-		latestVersionTimestamp: moment('2022-04-26', 'YYYY-MM-DD'),
-		minimumGoVersion: semver.coerce('1.18')
+	'gnopls': {
+       name: 'gnopls',
+       importPath: 'github.com/gnoverse/gnopls',
+       modulePath: 'github.com/gnoverse/gnopls',
+       isImportant: true,
+       description: 'Gno Language Server',
+		minimumGoVersion: semver.coerce('1.19')
 	},
 	'vscgo': {
 		name: 'vscgo',

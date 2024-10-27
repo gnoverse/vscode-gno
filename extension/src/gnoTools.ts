@@ -73,10 +73,6 @@ export function getImportPathWithVersion(
 		if (goVersion.lt('1.19')) return importPath + '@v0.14.2';
 		if (goVersion.lt('1.21')) return importPath + '@v0.15.3';
 	}
-	if (tool.name === 'dlv') {
-		if (goVersion.lt('1.19')) return importPath + '@v1.20.2';
-		if (goVersion.lt('1.21')) return importPath + '@v1.22.1';
-	}
 	if (tool.name === 'staticcheck') {
 		if (goVersion.lt('1.19')) return importPath + '@v0.3.3';
 		if (goVersion.lt('1.21')) return importPath + '@v0.4.7';
@@ -144,13 +140,6 @@ export function getConfiguredTools(goConfig: { [key: string]: any }, goplsConfig
 	// Start with default tools that should always be installed.
 	for (const name of ['gotests', 'gomodifytags', 'impl', 'goplay']) {
 		maybeAddTool(name);
-	}
-
-	// Check if the system supports dlv, i.e. is 64-bit.
-	// There doesn't seem to be a good way to check if the mips and s390
-	// families are 64-bit, so just try to install it and hope for the best.
-	if (process.arch.match(/^(mips|mipsel|ppc64|s390|s390x|x64|arm64)$/)) {
-		maybeAddTool('dlv');
 	}
 
 	// Only add format tools if the language server is disabled or the

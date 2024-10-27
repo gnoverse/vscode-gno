@@ -39,8 +39,8 @@ export class GoVersion {
 	private devVersion?: string;
 
 	constructor(public binaryPath: string, public version: string) {
-		const matchesRelease = /^gno version go(\d\.\d+\S*)\s+/.exec(version);
-		const matchesDevel = /^gno version devel go(\d\.\d+\S*)\s+/.exec(version);
+		const matchesRelease = /^go version go(\d\.\d+\S*)\s+/.exec(version);
+		const matchesDevel = /^go version devel go(\d\.\d+\S*)\s+/.exec(version);
 		if (matchesRelease) {
 			// note: semver.parse does not work with Go version string like go1.14.
 			const sv = semver.coerce(matchesRelease[1]);
@@ -169,7 +169,7 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
 	// When the extension starts, at least 4 concurrent calls race
 	// and end up calling `go version`.
 
-	const goRuntimePath = goBinPath ?? getBinPath('gno');
+	const goRuntimePath = goBinPath ?? getBinPath('go');
 
 	const error = (msg: string) => {
 		outputChannel.appendLine(msg);
@@ -194,7 +194,7 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
 	try {
 		const env = toolExecutionEnvironment();
 		if (GOTOOLCHAIN !== undefined) {
-			env['GNOTOOLCHAIN'] = GOTOOLCHAIN;
+			env['GOTOOLCHAIN'] = GOTOOLCHAIN;
 		}
 		const execFile = util.promisify(cp.execFile);
 		const { stdout, stderr } = await execFile(goRuntimePath, ['version'], { env, cwd });
@@ -221,12 +221,12 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
  * Throws an error if the command fails.
  */
 export async function getGoEnv(cwd?: string): Promise<string> {
-	const goRuntime = getBinPath('gno');
+	const goRuntime = getBinPath('go');
 	const execFile = util.promisify(cp.execFile);
 	const opts = { cwd, env: toolExecutionEnvironment() };
 	const { stdout, stderr } = await execFile(goRuntime, ['env'], opts);
 	if (stderr) {
-		throw new Error(`failed to run 'gno env': ${stderr}`);
+		throw new Error(`failed to run 'go env': ${stderr}`);
 	}
 	return stdout;
 }
@@ -323,8 +323,8 @@ export function getBinPathWithExplanation(
 
 	return getBinPathWithPreferredGopathGorootWithExplanation(
 		tool,
-		tool === 'gno' ? [] : [getToolsGopath(), getCurrentGoPath()],
-		tool === 'gno' ? gorootInSetting : undefined,
+		tool === 'go' ? [] : [getToolsGopath(), getCurrentGoPath()],
+		tool === 'go' ? gorootInSetting : undefined,
 		selectedGoPath ?? (alternateToolPath && resolvePath(substituteEnv(alternateToolPath))),
 		useCache
 	);
@@ -351,7 +351,7 @@ export function getCurrentGoPath(workspaceUri?: vscode.Uri): string {
 	// Infer the GOPATH from the current root or the path of the file opened in current editor
 	// Last resort: Check for the common case where GOPATH itself is opened directly in VS Code
 	let inferredGopath: string | undefined;
-	if (config['inferGnopath'] === true) {
+	if (config['inferGopath'] === true) {
 		inferredGopath = getInferredGopath(currentRoot) || getInferredGopath(currentFilePath);
 		if (!inferredGopath) {
 			try {
@@ -372,19 +372,19 @@ export function getCurrentGoPath(workspaceUri?: vscode.Uri): string {
 				// No op
 			}
 		}
-		if (inferredGopath && process.env['GNOPATH'] && inferredGopath !== process.env['GNOPATH']) {
-			inferredGopath += path.delimiter + process.env['GNOPATH'];
+		if (inferredGopath && process.env['GOPATH'] && inferredGopath !== process.env['GOPATH']) {
+			inferredGopath += path.delimiter + process.env['GOPATH'];
 		}
 	}
 
-	const configGopath = config['gnopath'] ? resolvePath(substituteEnv(config['gnopath']), currentRoot) : '';
-	currentGopath = (inferredGopath ? inferredGopath : configGopath || process.env['GNOPATH']) ?? '';
+	const configGopath = config['gopath'] ? resolvePath(substituteEnv(config['gopath']), currentRoot) : '';
+	currentGopath = (inferredGopath ? inferredGopath : configGopath || process.env['GOPATH']) ?? '';
 	return currentGopath;
 }
 
 export function getModuleCache(): string | undefined {
-	if (process.env['GNOMODCACHE']) {
-		return process.env['GNOMODCACHE'];
+	if (process.env['GOMODCACHE']) {
+		return process.env['GOMODCACHE'];
 	}
 	if (currentGopath) {
 		return path.join(currentGopath.split(path.delimiter)[0], 'pkg', 'mod');
@@ -514,7 +514,7 @@ export function runTool(
 	if (toolName) {
 		cmd = getBinPath(toolName);
 	} else {
-		const goRuntimePath = getBinPath('gno');
+		const goRuntimePath = getBinPath('go');
 		if (!goRuntimePath) {
 			return Promise.reject(new Error('Cannot find "go" binary. Update PATH or GOROOT appropriately'));
 		}
@@ -536,7 +536,7 @@ export function runTool(
 				if (err && (<any>err).code === 'ENOENT') {
 					// Since the tool is run on save which can be frequent
 					// we avoid sending explicit notification if tool is missing
-					console.log(`Cannot find ${toolName ? toolName : 'gno'}`);
+					console.log(`Cannot find ${toolName ? toolName : 'go'}`);
 					return resolve([]);
 				}
 				if (err && stderr && !useStdErr) {

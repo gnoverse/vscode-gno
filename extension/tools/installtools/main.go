@@ -35,7 +35,7 @@ var tools = []struct {
 	versions []finalVersion
 }{
 	// TODO: auto-generate based on allTools.ts.in.
-	{"golang.org/x/tools/gopls", "", true, nil},
+	{"github.com/gnoverse/gnopls@latest", "", true, nil},
 	{"github.com/cweill/gotests/gotests", "", false, nil},
 	{"github.com/haya14busa/goplay/cmd/goplay", "", false, nil},
 	{"honnef.co/go/tools/cmd/staticcheck", "", false, []finalVersion{{21, "v0.4.7"}}},
