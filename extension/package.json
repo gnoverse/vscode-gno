@@ -512,6 +512,11 @@
         "description": "Reset keys in global state to undefined."
       },
       {
+        "command": "gno.maketx.addpkg",
+        "title": "Gno Add Package To Chain",
+        "description": "Add a package to the Gno blockchain"
+      },
+      {
         "command": "gno.explorer.refresh",
         "title": "Gno Explorer: Refresh",
         "description": "Refresh the Go explorer. Only available as a menu item in the explorer.",
@@ -554,6 +559,39 @@
           "default": true,
           "description": "Specifies whether to show the Welcome experience on first install"
         },
+        "gno.makeTx": {
+          "type": "object",
+          "properties": {
+              "broadcast": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "If true, broadcasts transaction to chain"
+              },
+              "gasFee": {
+                  "type": "string",
+                  "default": "1000000ugnot",
+                  "description": "Gas fee for transaction"
+              },
+              "gasWanted": {
+                  "type": "string",
+                  "default": "2000000",
+                  "description": "Gas wanted for transaction"
+              }
+          },
+          "additionalProperties": false,
+          "default": {
+              "broadcast": true,
+              "gasFee": "1000000ugnot",
+              "gasWanted": "4000000"
+          },
+          "description": "Configuration for Gno blockchain transactions",
+          "scope": "resource"
+      },
+      "gno.editorContextMenuCommands.addPackage": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, adds command to add package to the Gno blockchain to the editor context menu"
+      },
         "gno.buildOnSave": {
           "type": "string",
           "enum": [
@@ -1957,6 +1995,11 @@
         {
           "when": "editorTextFocus && config.go.editorContextMenuCommands.toggleTestFile && resourceLangId == gno",
           "command": "gno.toggle.test.file",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.addPackage && resourceLangId == gno",
+          "command": "gno.maketx.addpkg",
           "group": "Gno group 1"
         },
         {

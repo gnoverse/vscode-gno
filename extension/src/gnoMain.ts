@@ -73,6 +73,7 @@ import * as commands from './commands';
 import { toggleVulncheckCommandFactory } from './gnoVulncheck';
 import { GoTaskProvider } from './gnoTaskProvider';
 import { setTelemetryEnvVars, telemetryReporter } from './gnoTelemetry';
+import { addPackage } from './gnoAddPkg';
 
 const goCtx: GoExtensionContext = {};
 
@@ -172,7 +173,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.benchmark.file', commands.testCurrentFile());
 	registerCommand('gno.test.workspace', commands.testWorkspace);
 	registerCommand('gno.test.previous', commands.testPrevious);
-
 	registerCommand('gno.test.coverage', toggleCoverageCurrentPackage);
 	registerCommand('gno.test.showOutput', () => showTestOutput);
 	registerCommand('gno.test.cancel', () => cancelRunningTests);
@@ -180,6 +180,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.add.package.workspace', addImportToWorkspace);
 	registerCommand('gno.tools.install', commands.installTools);
 	registerCommand('gno.browse.packages', browsePackages);
+	registerCommand('gno.maketx.addpkg', addPackage());
 
 	if (isVscodeTestingAPIAvailable && cfg.get<boolean>('testExplorer.enable')) {
 		GoTestExplorer.setup(ctx, goCtx);
