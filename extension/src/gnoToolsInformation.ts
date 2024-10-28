@@ -95,11 +95,11 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		defaultVersion: 'v1.3.9'
 	},
 	'gnopls': {
-       name: 'gnopls',
-       importPath: 'github.com/gnoverse/gnopls',
-       modulePath: 'github.com/gnoverse/gnopls',
-       isImportant: true,
-       description: 'Gno Language Server',
+		name: 'gnopls',
+		importPath: 'github.com/gnoverse/gnopls',
+		modulePath: 'github.com/gnoverse/gnopls',
+		isImportant: true,
+		description: 'Gno Language Server',
 		minimumGoVersion: semver.coerce('1.19')
 	},
 	'vscgo': {

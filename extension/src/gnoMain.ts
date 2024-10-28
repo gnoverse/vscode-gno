@@ -165,17 +165,13 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.impl.cursor', commands.implCursor);
 	registerCommand('gno.test.cursor', commands.testAtCursor('test'));
 	registerCommand('gno.test.cursorOrPrevious', commands.testAtCursorOrPrevious('test'));
-	registerCommand('gno.subtest.cursor', commands.subTestAtCursor('test'));
 	registerCommand('gno.debug.cursor', commands.testAtCursor('debug'));
-	registerCommand('gno.debug.subtest.cursor', commands.subTestAtCursor('debug'));
-	registerCommand('gno.benchmark.cursor', commands.testAtCursor('benchmark'));
-	registerCommand('gno.test.package', commands.testCurrentPackage(false));
-	registerCommand('gno.benchmark.package', commands.testCurrentPackage(true));
-	registerCommand('gno.test.file', commands.testCurrentFile(false));
-	registerCommand('gno.benchmark.file', commands.testCurrentFile(true));
+	registerCommand('gno.test.package', commands.testCurrentPackage());
+	registerCommand('gno.benchmark.package', commands.testCurrentPackage());
+	registerCommand('gno.test.file', commands.testCurrentFile());
+	registerCommand('gno.benchmark.file', commands.testCurrentFile());
 	registerCommand('gno.test.workspace', commands.testWorkspace);
 	registerCommand('gno.test.previous', commands.testPrevious);
-	registerCommand('gno.debug.previous', commands.debugPrevious);
 
 	registerCommand('gno.test.coverage', toggleCoverageCurrentPackage);
 	registerCommand('gno.test.showOutput', () => showTestOutput);

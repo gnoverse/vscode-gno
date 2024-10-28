@@ -21,11 +21,10 @@ import vscode = require('vscode');
 import { outputChannel } from '../gnoStatus';
 import { isModSupported } from '../gnoModules';
 import { getGnoConfig } from '../config';
-import { getTestFlags, getTestFunctionsAndTestSuite, goTest, GoTestOutput } from '../testUtils';
+import { getTestFlags, goTest, GoTestOutput } from '../testUtils';
 import { GoTestResolver } from './resolve';
 import { dispose, forEachAsync, GoTest, Workspace } from './utils';
 import { GoTestProfiler, ProfilingOptions } from './profile';
-import { debugTestAtCursor } from '../gnoTest';
 import { GoExtensionContext } from '../context';
 import path = require('path');
 import { escapeRegExp } from '../subTestUtils';
@@ -161,11 +160,11 @@ export class GoTestRunner {
 		await doc.save();
 
 		const goConfig = getGnoConfig(test.uri);
-		const { testFunctions, suiteToTest } = await getTestFunctionsAndTestSuite(
+		/*const { testFunctions, suiteToTest } = await getTestFunctionsAndTestSuite(
 			kind === 'benchmark',
 			this.goCtx,
 			doc
-		);
+		);*/
 
 		// TODO Can we get output from the debug session, in order to check for
 		// run/pass/fail events?
@@ -193,14 +192,14 @@ export class GoTestRunner {
 		});
 
 		const run = this.ctrl.createTestRun(request, `Debug ${name}`);
-		if (!testFunctions) return;
-		const started = await debugTestAtCursor(doc, escapeSubTestName(name), testFunctions, suiteToTest, goConfig, id);
+		//if (!testFunctions) return;
+		//const started = await debugTestAtCursor(doc, escapeSubTestName(name), testFunctions, suiteToTest, goConfig, id);
 
-		if (!started) {
+		/*if (!started) {
 			subs.forEach((s) => s.dispose());
 			run.end();
 			return;
-		}
+		}*/
 
 		const session = await sessionPromise;
 		if (!session) {
@@ -468,10 +467,10 @@ export class GoTestRunner {
 			...rest,
 			outputChannel,
 			dir: pkg.uri?.fsPath ?? '',
-			functions: Object.keys(functions)?.map((v) => escapeSubTestName(v)),
-			goTestOutputConsumer: rest.isBenchmark
-				? (e) => this.consumeGoBenchmarkEvent(run, functions, complete, e)
-				: (e) => this.consumeGoTestEvent(run, functions, record, complete, concat, e)
+			functions: Object.keys(functions)?.map((v) => escapeSubTestName(v))
+			//goTestOutputConsumer: rest.isBenchmark
+			//	? (e) => this.consumeGoBenchmarkEvent(run, functions, complete, e)
+			//	: (e) => this.consumeGoTestEvent(run, functions, record, complete, concat, e)
 		});
 		if (success) {
 			if (rest.isBenchmark) {

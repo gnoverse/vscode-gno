@@ -12,7 +12,7 @@ import { CancellationToken, CodeLens, TextDocument } from 'vscode';
 import { getGnoConfig } from './config';
 import { GoBaseCodeLensProvider } from './gnoBaseCodelens';
 import { GoDocumentSymbolProvider } from './gnoDocumentSymbols';
-import { getBenchmarkFunctions, getTestFunctions } from './testUtils';
+import { getTestFunctions } from './testUtils';
 import { GoExtensionContext } from './context';
 import { GO_MODE } from './gnoMode';
 
@@ -36,8 +36,6 @@ export class GoRunTestCodeLensProvider extends GoBaseCodeLensProvider {
 	constructor(private readonly goCtx: GoExtensionContext) {
 		super();
 	}
-
-	private readonly benchmarkRegex = /^Benchmark.+/;
 
 	public async provideCodeLenses(document: TextDocument, token: CancellationToken): Promise<CodeLens[]> {
 		if (!this.enabled) {
@@ -78,18 +76,7 @@ export class GoRunTestCodeLensProvider extends GoBaseCodeLensProvider {
 				command: 'gno.test.file'
 			})
 		];
-		if (pkg.children.some((sym) => sym.kind === vscode.SymbolKind.Function && this.benchmarkRegex.test(sym.name))) {
-			packageCodeLens.push(
-				new CodeLens(range, {
-					title: 'run package benchmarks',
-					command: 'gno.benchmark.package'
-				}),
-				new CodeLens(range, {
-					title: 'run file benchmarks',
-					command: 'gno.benchmark.file'
-				})
-			);
-		}
+
 		return packageCodeLens;
 	}
 
@@ -149,32 +136,7 @@ export class GoRunTestCodeLensProvider extends GoBaseCodeLensProvider {
 			return codelens;
 		};
 
-		const benchmarkPromise = async (): Promise<CodeLens[]> => {
-			const benchmarkFunctions = await getBenchmarkFunctions(this.goCtx, document, token);
-			if (!benchmarkFunctions) {
-				return [];
-			}
-			const codelens: CodeLens[] = [];
-			for (const f of benchmarkFunctions) {
-				codelens.push(
-					new CodeLens(f.range, {
-						title: 'run benchmark',
-						command: 'gno.benchmark.cursor',
-						arguments: [{ functionName: f.name }]
-					})
-				);
-				codelens.push(
-					new CodeLens(f.range, {
-						title: 'debug benchmark',
-						command: 'gno.debug.cursor',
-						arguments: [{ functionName: f.name }]
-					})
-				);
-			}
-			return codelens;
-		};
-
-		const codelenses = await Promise.all([testPromise(), benchmarkPromise()]);
+		const codelenses = await Promise.all([testPromise()]);
 		return ([] as CodeLens[]).concat(...codelenses);
 	}
 }

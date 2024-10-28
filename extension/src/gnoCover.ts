@@ -518,14 +518,14 @@ export const toggleCoverageCurrentPackage: CommandFactory = () => async () => {
 	const cwd = path.dirname(editor.document.uri.fsPath);
 
 	const testFlags = getTestFlags(goConfig);
-	const isMod = await isModSupported(editor.document.uri);
+	//const isMod = await isModSupported(editor.document.uri);
 	const testConfig: TestConfig = {
 		goConfig,
 		dir: cwd,
 		flags: testFlags,
-		background: true,
-		isMod,
-		applyCodeCoverage: true
+		background: true
+		//isMod,
+		//applyCodeCoverage: true
 	};
 
 	return goTest(testConfig).then((success) => {

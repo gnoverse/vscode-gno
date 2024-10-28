@@ -74,8 +74,8 @@ export function check(
 		goConfig,
 		dir: cwd,
 		flags: getTestFlags(goConfig),
-		background: true,
-		applyCodeCoverage: !!goConfig['coverOnSave']
+		background: true
+		//applyCodeCoverage: !!goConfig['coverOnSave']
 	};
 
 	const runTest = () => {
@@ -84,7 +84,7 @@ export function check(
 		}
 
 		testPromise = isModSupported(fileUri).then((isMod) => {
-			testConfig.isMod = isMod;
+			//testConfig.isMod = isMod;
 			return goTest(testConfig);
 		});
 		return testPromise;
