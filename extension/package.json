@@ -246,19 +246,9 @@
         "description": "Runs a sub test at the cursor."
       },
       {
-        "command": "gno.debug.subtest.cursor",
-        "title": "Gno: Debug Subtest At Cursor",
-        "description": "Debug a sub test at the cursor."
-      },
-      {
         "command": "gno.benchmark.cursor",
         "title": "Gno: Benchmark Function At Cursor",
         "description": "Runs a benchmark at the cursor."
-      },
-      {
-        "command": "gno.debug.cursor",
-        "title": "Gno: Debug Test At Cursor",
-        "description": "Debug test at the cursor."
       },
       {
         "command": "gno.test.file",
@@ -325,11 +315,6 @@
         "command": "gno.test.previous",
         "title": "Gno: Test Previous",
         "description": "Re-runs the last executed test."
-      },
-      {
-        "command": "gno.debug.previous",
-        "title": "Gno: Debug Previous",
-        "description": "Re-runs the last debugged test run through a codelens or \"Go: Debug Test at Cursor\" command."
       },
       {
         "command": "gno.test.coverage",
@@ -1212,20 +1197,10 @@
               "default": true,
               "description": "If true, adds command to import a package to the editor context menu"
             },
-            "testCoverage": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to run test coverage to the editor context menu"
-            },
             "playground": {
               "type": "boolean",
               "default": true,
               "description": "If true, adds command to upload the current file or selection to the Go Playground"
-            },
-            "debugTestAtCursor": {
-              "type": "boolean",
-              "default": false,
-              "description": "If true, adds command to debug the test under the cursor to the editor context menu"
             },
             "benchmarkAtCursor": {
               "type": "boolean",
@@ -1248,7 +1223,6 @@
             "addImport": true,
             "testCoverage": true,
             "playground": true,
-            "debugTestAtCursor": true,
             "benchmarkAtCursor": false
           },
           "description": "Experimental Feature: Enable/Disable entries from the context menu in the editor.",
@@ -2021,11 +1995,6 @@
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.benchmarkAtCursor && resourceLangId == gno",
           "command": "gno.benchmark.cursor",
           "group": "Go group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.debugTestAtCursor && resourceLangId == gno",
-          "command": "gno.debug.cursor",
-          "group": "Gno group 1"
         },
         {
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.testFile && resourceLangId == gno",

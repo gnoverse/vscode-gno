@@ -166,7 +166,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.impl.cursor', commands.implCursor);
 	registerCommand('gno.test.cursor', commands.testAtCursor('test'));
 	registerCommand('gno.test.cursorOrPrevious', commands.testAtCursorOrPrevious('test'));
-	registerCommand('gno.debug.cursor', commands.testAtCursor('debug'));
 	registerCommand('gno.test.package', commands.testCurrentPackage());
 	registerCommand('gno.benchmark.package', commands.testCurrentPackage());
 	registerCommand('gno.test.file', commands.testCurrentFile());
@@ -209,7 +208,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.workspace.resetState', resetWorkspaceState);
 	registerCommand('gno.global.resetState', resetGlobalState);
 	registerCommand('gno.toggle.gc_details', commands.toggleGCDetails);
-	//registerCommand('go.apply.coverprofile', commands.applyCoverprofile);
 
 	// Go Environment switching commands
 	registerCommand('gno.environment.choose', chooseGoEnvironment);
