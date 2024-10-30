@@ -19,7 +19,9 @@ import { GoExtensionContext } from './context';
 import { CommandFactory } from './commands';
 import { LanguageClient, State } from 'vscode-languageclient/node';
 
-export const outputChannel = vscode.window.createOutputChannel('Go', { log: true });
+export const outputChannel = vscode.window.createOutputChannel('Go', {
+	log: true
+});
 
 const STATUS_BAR_ITEM_NAME = 'Go Diagnostics';
 export const diagnosticsStatusBarItem = vscode.window.createStatusBarItem(
@@ -68,7 +70,10 @@ export const expandGoStatusBar: CommandFactory = (ctx, goCtx) => async () => {
 
 	const { languageServerIsRunning, serverOutputChannel } = goCtx;
 	const options = [
-		{ label: 'Locate Configured Gno Tools', description: 'display gno env' },
+		{
+			label: 'Locate Configured Gno Tools',
+			description: 'display gno env'
+		},
 		{ label: 'Choose Gno Environment' }
 	];
 
@@ -78,7 +83,10 @@ export const expandGoStatusBar: CommandFactory = (ctx, goCtx) => async () => {
 	const goplsIsRunning = languageServerIsRunning && cfg && cfg.serverName === 'gnopls';
 	if (goplsIsRunning) {
 		const goplsVersion = cfg.version;
-		options.push({ label: `${languageServerIcon} Open 'gnopls' trace`, description: `${goplsVersion?.version}` });
+		options.push({
+			label: `${languageServerIcon} Open 'gnopls' trace`,
+			description: `${goplsVersion?.version}`
+		});
 	}
 	// In case gopls still need to be installed, cfg.serverName will be empty.
 	if (!goplsIsRunning && goConfig.get('useLanguageServer') === true && cfg?.serverName === '') {

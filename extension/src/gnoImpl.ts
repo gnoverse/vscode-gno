@@ -53,7 +53,10 @@ function runGoImpl(args: string[], insertPos: vscode.Position, editor: vscode.Te
 	const p = cp.execFile(
 		goimpl,
 		args,
-		{ env: toolExecutionEnvironment(), cwd: dirname(editor.document.fileName) },
+		{
+			env: toolExecutionEnvironment(),
+			cwd: dirname(editor.document.fileName)
+		},
 		(err, stdout, stderr) => {
 			if (err && (<any>err).code === 'ENOENT') {
 				promptForMissingTool('impl');

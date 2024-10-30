@@ -257,7 +257,9 @@ function joinPath(uri: vscode.Uri, ...pathFragment: string[]): vscode.Uri {
 	if (!uri.path) {
 		throw new Error('[UriError]: cannot call joinPaths on URI without path');
 	}
-	return uri.with({ path: vscode.Uri.file(path.join(uri.fsPath, ...pathFragment)).path });
+	return uri.with({
+		path: vscode.Uri.file(path.join(uri.fsPath, ...pathFragment)).path
+	});
 }
 
 function showGoWelcomePage() {

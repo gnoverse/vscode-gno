@@ -46,9 +46,10 @@ async function _testAtCursor(
 	}
 
 	const testFunctions = await getTestFunctions(goCtx, editor.document);
-	const testFunctionName = args && args.functionName
-		? args.functionName
-		: testFunctions?.filter((func) => func.range.contains(editor.selection.start)).map((el) => el.name)[0];
+	const testFunctionName =
+		args && args.functionName
+			? args.functionName
+			: testFunctions?.filter((func) => func.range.contains(editor.selection.start)).map((el) => el.name)[0];
 
 	if (!testFunctionName) {
 		throw new NotFoundError('No test function found at cursor.');
@@ -199,7 +200,8 @@ export function testCurrentFile(getConfig = getGnoConfig): CommandFactory {
 			return false;
 		}
 
-		return editor.document.save()
+		return editor.document
+			.save()
 			.then(() => {
 				return getTestFunctions(goCtx, editor.document).then((testFunctions) => {
 					const testConfig: TestConfig = {

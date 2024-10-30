@@ -100,7 +100,10 @@ export function check(
 		runningToolsPromises.push(
 			isModSupported(fileUri)
 				.then((isMod) => goBuild(fileUri, isMod, goConfig, goConfig['buildOnSave'] === 'workspace'))
-				.then((errors) => ({ diagnosticCollection: buildDiagnosticCollection, errors }))
+				.then((errors) => ({
+					diagnosticCollection: buildDiagnosticCollection,
+					errors
+				}))
 		);
 	}
 

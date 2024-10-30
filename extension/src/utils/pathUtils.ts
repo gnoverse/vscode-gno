@@ -79,7 +79,10 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 	const pathFromGoBin = getBinPathFromEnvVar(binname, process.env['GNOBIN'], false);
 	if (pathFromGoBin) {
 		binPathCache[toolName] = pathFromGoBin;
-		return { binPath: pathFromGoBin, why: binname === toolName ? 'gnobin' : 'alternateTool' };
+		return {
+			binPath: pathFromGoBin,
+			why: binname === toolName ? 'gnobin' : 'alternateTool'
+		};
 	}
 
 	for (const preferred of preferredGopaths) {
@@ -88,7 +91,10 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 			const pathFrompreferredGoPath = getBinPathFromEnvVar(binname, preferred, true);
 			if (pathFrompreferredGoPath) {
 				binPathCache[toolName] = pathFrompreferredGoPath;
-				return { binPath: pathFrompreferredGoPath, why: found('gnopath') };
+				return {
+					binPath: pathFrompreferredGoPath,
+					why: found('gnopath')
+				};
 			}
 		}
 	}

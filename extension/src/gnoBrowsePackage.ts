@@ -80,17 +80,21 @@ function showPackageFiles(pkg: string, showAllPkgsIfPkgNotFound: boolean, workDi
 				const xtestfiles = matches[4] ? matches[4].split(' ') : [];
 				files = files.concat(testfiles);
 				files = files.concat(xtestfiles);
-				vscode.window.showQuickPick(files, { placeHolder: `Below are Gno files from ${pkg}` }).then((file) => {
-					// if user abandoned list, file will be null and path.join will error out.
-					// therefore return.
-					if (!file) {
-						return;
-					}
+				vscode.window
+					.showQuickPick(files, {
+						placeHolder: `Below are Gno files from ${pkg}`
+					})
+					.then((file) => {
+						// if user abandoned list, file will be null and path.join will error out.
+						// therefore return.
+						if (!file) {
+							return;
+						}
 
-					vscode.workspace.openTextDocument(path.join(dir, file)).then((document) => {
-						vscode.window.showTextDocument(document);
+						vscode.workspace.openTextDocument(path.join(dir, file)).then((document) => {
+							vscode.window.showTextDocument(document);
+						});
 					});
-				});
 			}
 		}
 	);

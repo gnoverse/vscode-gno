@@ -74,9 +74,24 @@ export class GoTaskProvider implements vscode.TaskProvider {
 				command: 'build',
 				args: ['${fileDirname}']
 			}),
-			buildGoTask(folder, { type: TASK_TYPE, label: 'test package', command: 'test', args: ['${fileDirname}'] }),
-			buildGoTask(folder, { type: TASK_TYPE, label: 'build workspace', command: 'build', args: ['./...'] }),
-			buildGoTask(folder, { type: TASK_TYPE, label: 'test workspace', command: 'test', args: ['./...'] })
+			buildGoTask(folder, {
+				type: TASK_TYPE,
+				label: 'test package',
+				command: 'test',
+				args: ['${fileDirname}']
+			}),
+			buildGoTask(folder, {
+				type: TASK_TYPE,
+				label: 'build workspace',
+				command: 'build',
+				args: ['./...']
+			}),
+			buildGoTask(folder, {
+				type: TASK_TYPE,
+				label: 'test workspace',
+				command: 'test',
+				args: ['./...']
+			})
 		];
 	}
 

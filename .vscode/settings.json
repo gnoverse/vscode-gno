@@ -16,4 +16,8 @@
 	"[yaml]": {
 		"editor.autoIndent": "advanced"
 	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit"
+	},
+  	"editor.formatOnSave": false,
 }

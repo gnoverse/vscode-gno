@@ -66,7 +66,10 @@ async function goListPkgs(workDir?: string): Promise<Map<string, PackageInfo>> {
 	const env = toolExecutionEnvironment();
 	const execFile = promisify(cp.execFile);
 	try {
-		const { stdout, stderr } = await execFile(goBin, args, { env, cwd: workDir });
+		const { stdout, stderr } = await execFile(goBin, args, {
+			env,
+			cwd: workDir
+		});
 		if (stderr) {
 			throw stderr;
 		}

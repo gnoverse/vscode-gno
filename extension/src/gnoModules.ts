@@ -103,7 +103,10 @@ export async function getCurrentPackage(cwd: string): Promise<string> {
 		return '';
 	}
 	return new Promise<string>((resolve) => {
-		const childProcess = cp.spawn(goRuntimePath, ['list'], { cwd, env: toolExecutionEnvironment() });
+		const childProcess = cp.spawn(goRuntimePath, ['list'], {
+			cwd,
+			env: toolExecutionEnvironment()
+		});
 		const chunks: any[] = [];
 		childProcess.stdout.on('data', (stdout) => {
 			chunks.push(stdout);
@@ -143,7 +146,10 @@ export const goModInit: CommandFactory = () => async () => {
 		const env = toolExecutionEnvironment();
 		const cwd = getWorkspaceFolderPath() ?? '';
 		outputChannel.appendLine(`Running "${goRuntimePath} mod init ${moduleName}"`);
-		await execFile(goRuntimePath, ['mod', 'init', moduleName], { env, cwd });
+		await execFile(goRuntimePath, ['mod', 'init', moduleName], {
+			env,
+			cwd
+		});
 		outputChannel.appendLine('Module successfully initialized. You are ready to Go :)');
 		vscode.commands.executeCommand('vscode.open', vscode.Uri.file(path.join(cwd, 'gno.mod')));
 	} catch (e) {

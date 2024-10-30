@@ -113,11 +113,16 @@ export class GoExplorerProvider implements vscode.TreeDataProvider<vscode.TreeIt
 					label,
 					description
 				}));
-			pick = await vscode.window.showQuickPick(items, { title: 'Gno: Edit Workspace Env' });
+			pick = await vscode.window.showQuickPick(items, {
+				title: 'Gno: Edit Workspace Env'
+			});
 		}
 		if (!pick) return;
 		const { label, description } = pick;
-		const value = await vscode.window.showInputBox({ title: label, value: description });
+		const value = await vscode.window.showInputBox({
+			title: label,
+			value: description
+		});
 		if (label && typeof value !== 'undefined') {
 			await GoEnv.edit({ [label]: value });
 		}
@@ -220,7 +225,10 @@ class GoEnv {
 	 */
 	static async edit(vars: Record<string, string>) {
 		const config = getGnoConfig();
-		await config.update('toolsEnvVars', { ...config['toolsEnvVars'], ...vars });
+		await config.update('toolsEnvVars', {
+			...config['toolsEnvVars'],
+			...vars
+		});
 	}
 
 	/**

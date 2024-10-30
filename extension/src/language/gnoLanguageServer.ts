@@ -501,7 +501,10 @@ export async function buildLanguageClient(
 								const out = pendingVulncheckProgressToken.get(token);
 								pendingVulncheckProgressToken.delete(token);
 								// success. In case of failure, it will be 'failed'
-								onDidChangeVulncheckResultEmitter.fire({ URI: out.URI, message: params.message });
+								onDidChangeVulncheckResultEmitter.fire({
+									URI: out.URI,
+									message: params.message
+								});
 							}
 					}
 					next(token, params);
@@ -1198,7 +1201,10 @@ export const getLocalGoplsVersion = async (cfg?: LanguageServerConfig) => {
 
 	const execFile = util.promisify(cp.execFile);
 	try {
-		const { stdout } = await execFile(cfg.path, ['version', '-json'], { env, cwd });
+		const { stdout } = await execFile(cfg.path, ['version', '-json'], {
+			env,
+			cwd
+		});
 
 		const v = <GoplsVersionOutput>JSON.parse(stdout);
 		if (v?.Main.Version) {
@@ -1486,7 +1492,10 @@ export const showServerOutputChannel: CommandFactory = (ctx, goCtx) => () => {
 			}
 			found = doc;
 			// .log, as some decoration is better than none
-			vscode.workspace.openTextDocument({ language: 'log', content: contents });
+			vscode.workspace.openTextDocument({
+				language: 'log',
+				content: contents
+			});
 		}
 	}
 	if (found === undefined) {
@@ -1608,10 +1617,9 @@ async function goplsFetchVulncheckResult(goCtx: GoExtensionContext, uri: string)
 		command: GOPLS_FETCH_VULNCHECK_RESULT,
 		arguments: [{ URI: uri }]
 	};
-	const res: { [modFile: string]: VulncheckReport } = await languageClient?.sendRequest(
-		ExecuteCommandRequest.type,
-		params
-	);
+	const res: {
+		[modFile: string]: VulncheckReport;
+	} = await languageClient?.sendRequest(ExecuteCommandRequest.type, params);
 
 	// res may include multiple results, but we only need one for the given uri.
 	// Gopls uses normalized URI (https://cs.opensource.google/go/x/tools/+/refs/tags/gopls/v0.14.2:gopls/internal/span/uri.go;l=78)
@@ -1658,7 +1666,11 @@ async function getGoplsStats(binpath?: string) {
 	const execFile = util.promisify(cp.execFile);
 	try {
 		const timeout = 60 * 1000; // 60sec;
-		const { stdout } = await execFile(binpath, ['stats', '-anon'], { env, cwd, timeout });
+		const { stdout } = await execFile(binpath, ['stats', '-anon'], {
+			env,
+			cwd,
+			timeout
+		});
 		return stdout;
 	} catch (e) {
 		const duration = new Date().getTime() - start.getTime();

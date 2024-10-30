@@ -72,7 +72,10 @@ export const getConfiguredGoTools: CommandFactory = () => {
 			buf.push(`failed to get tools info: ${e}`);
 		}
 
-		let folders = vscode.workspace.workspaceFolders?.map<{ name: string; path?: string }>((folder) => {
+		let folders = vscode.workspace.workspaceFolders?.map<{
+			name: string;
+			path?: string;
+		}>((folder) => {
 			return { name: folder.name, path: folder.uri.fsPath };
 		});
 		if (!folders) {

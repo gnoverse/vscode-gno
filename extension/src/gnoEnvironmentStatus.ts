@@ -52,15 +52,24 @@ const CHOOSE_FROM_FILE_BROWSER = '$(folder) Choose from file browser';
 function canChooseGoEnvironment() {
 	// if there is no workspace, show GOROOT with message
 	if (!vscode.workspace.name) {
-		return { ok: false, reason: 'Switching Gno version is not yet supported in single-file mode.' };
+		return {
+			ok: false,
+			reason: 'Switching Gno version is not yet supported in single-file mode.'
+		};
 	}
 
 	if (getGnoConfig().get('gnoroot')) {
-		return { ok: false, reason: 'Switching Gno version when "go.goroot" is set is unsupported.' };
+		return {
+			ok: false,
+			reason: 'Switching Gno version when "go.goroot" is set is unsupported.'
+		};
 	}
 
 	if (process.env['GNOROOT']) {
-		return { ok: false, reason: 'Switching Gno version when process.env["GOROOT"] is set is unsupported.' };
+		return {
+			ok: false,
+			reason: 'Switching Gno version when process.env["GOROOT"] is set is unsupported.'
+		};
 	}
 
 	return { ok: true };

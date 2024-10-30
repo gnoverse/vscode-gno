@@ -114,7 +114,12 @@ export function byteOffsetAt(document: vscode.TextDocument, position: vscode.Pos
 }
 
 export interface Prelude {
-	imports: Array<{ kind: string; start: number; end: number; pkgs: string[] }>;
+	imports: Array<{
+		kind: string;
+		start: number;
+		end: number;
+		pkgs: string[];
+	}>;
 	pkg: { start: number; end: number; name: string } | null;
 }
 
@@ -197,7 +202,10 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
 			env['GOTOOLCHAIN'] = GOTOOLCHAIN;
 		}
 		const execFile = util.promisify(cp.execFile);
-		const { stdout, stderr } = await execFile(goRuntimePath, ['version'], { env, cwd });
+		const { stdout, stderr } = await execFile(goRuntimePath, ['version'], {
+			env,
+			cwd
+		});
 		if (stderr) {
 			error(`failed to run "${goRuntimePath} version": stdout: ${stdout}, stderr: ${stderr}`);
 		}

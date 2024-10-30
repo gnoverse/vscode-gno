@@ -145,11 +145,7 @@ export async function getTestFunctions(
 
 	const children = symbols[0].children;
 
-	return children.filter(
-		(sym) =>
-			sym.kind === vscode.SymbolKind.Function &&
-			testFuncRegex.test(sym.name)
-	);
+	return children.filter((sym) => sym.kind === vscode.SymbolKind.Function && testFuncRegex.test(sym.name));
 }
 
 /**
@@ -247,7 +243,10 @@ export async function goTest(testconfig: TestConfig): Promise<boolean> {
 	try {
 		testResult = await new Promise<boolean>(async (resolve, reject) => {
 			const testEnvVars = getTestEnvVars(testconfig.goConfig);
-			const tp = cp.spawn(goRuntimePath, args, { env: testEnvVars, cwd: testconfig.dir });
+			const tp = cp.spawn(goRuntimePath, args, {
+				env: testEnvVars,
+				cwd: testconfig.dir
+			});
 			const outBuf = new LineBuffer();
 			const errBuf = new LineBuffer();
 

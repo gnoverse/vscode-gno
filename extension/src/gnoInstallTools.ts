@@ -173,7 +173,10 @@ export async function installTools(
 				'to configure the Go version used for tools installation. See https://github.com/golang/vscode-go/issues/2898.'
 		);
 		return missing.map((tool) => {
-			return { tool: tool, reason: `failed to find go (requires go${minVersion} or newer)` };
+			return {
+				tool: tool,
+				reason: `failed to find go (requires go${minVersion} or newer)`
+			};
 		});
 	}
 
@@ -588,7 +591,10 @@ export async function maybeInstallImportantTools(
 					})
 					.filter((tool) => !alternateTools[tool.name]);
 			}
-			await installTools(missing, goVersion, { toolsManager: tm, skipRestartGopls: true });
+			await installTools(missing, goVersion, {
+				toolsManager: tm,
+				skipRestartGopls: true
+			});
 			// installTools will update ImportantToolsStatus.
 		} else {
 			// no essential tools to be installed.
@@ -786,7 +792,9 @@ export async function shouldUpdateTool(tool: Tool, toolPath: string): Promise<bo
 		return false; // failed to inspect the tool version.
 	}
 
-	const localVersion = semver.parse(moduleVersion, { includePrerelease: true });
+	const localVersion = semver.parse(moduleVersion, {
+		includePrerelease: true
+	});
 	if (!localVersion) {
 		// local version can't be determined. e.g. (devel)
 		return false;

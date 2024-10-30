@@ -368,14 +368,21 @@ export class GoTestRunner {
 				if (!r) success = false;
 			} else {
 				for (const name in tests) {
-					const r = await this.runGoTest({ ...config, functions: { [name]: tests[name] } });
+					const r = await this.runGoTest({
+						...config,
+						functions: { [name]: tests[name] }
+					});
 					if (!r) success = false;
 				}
 			}
 
 			// Run benchmarks
 			if (!options.kind) {
-				const r = await this.runGoTest({ ...config, isBenchmark: true, functions: benchmarks });
+				const r = await this.runGoTest({
+					...config,
+					isBenchmark: true,
+					functions: benchmarks
+				});
 				if (!r) success = false;
 			} else {
 				for (const name in benchmarks) {
