@@ -1,0 +1,29 @@
+import moment = require('moment');
+import semver = require('semver');
+import { Tool } from './goTools';
+
+export const allToolsInformation: { [key: string]: Tool } = {
+	'gofumpt': {
+		name: 'gofumpt',
+		importPath: 'mvdan.cc/gofumpt',
+		modulePath: 'mvdan.cc/gofumpt',
+		replacedByGopls: true,
+		isImportant: false,
+		description: 'Formatter',
+		defaultVersion: 'v0.7.0'
+	},
+	'gnopls': {
+		name: 'gnopls',
+		importPath: 'github.com/gnoverse/gnopls@latest',
+		modulePath: 'github.com/gnoverse/gnopls@latest',
+		replacedByGopls: false, // lol
+		isImportant: true,
+		description: 'Language Server from Google',
+		usePrereleaseInPreviewMode: true,
+		minimumGoVersion: semver.coerce('1.19'),
+		latestVersion: semver.parse('%s'),
+		latestVersionTimestamp: moment('%s', 'YYYY-MM-DD'),
+		latestPrereleaseVersion: semver.parse('%s'),
+		latestPrereleaseVersionTimestamp: moment('%s', 'YYYY-MM-DD')
+	}
+};

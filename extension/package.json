@@ -1,0 +1,2158 @@
+{
+  "name": "gno",
+  "displayName": "Gno",
+  "version": "0.1.0-dev",
+  "publisher": "gnolang",
+  "description": "Rich Gno language support for Visual Studio Code",
+  "author": {
+    "name": "kazai777"
+  },
+  "icon": "media/gno-logo-dark.png",
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Linters",
+    "Debuggers",
+    "Formatters",
+    "Testing"
+  ],
+  "galleryBanner": {
+    "color": "#F2F2F2",
+    "theme": "light"
+  },
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gnolang/vscode-gno"
+  },
+  "bugs": {
+    "url": "https://github.com/gnolang/vscode-gno/issues"
+  },
+  "keywords": [
+    "multi-root ready",
+    "gnolang",
+    "gnopls"
+  ],
+  "scripts": {
+    "clean": "rm -rf ./dist/* && rm -rf ./out/* && rm -rf ./bin/* && rm *.vsix",
+    "package": "cp ../README.md ./README.md && npx vsce package --baseContentUrl https://github.com/golang/vscode-go/raw/HEAD --baseImagesUrl https://github.com/golang/vscode-go/raw/HEAD",
+    "vscode:prepublish": "npm run compile",
+    "bundle": "esbuild src/gnoMain.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node",
+    "bundle-dev": "npm run bundle -- --sourcemap",
+    "bundle-watch": "npm run bundle -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "compile": "npm run bundle",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run test-compile && node ./out/test/runTest.js",
+    "lint": "gts lint src test",
+    "lint-fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
+    "unit-test": "npm run test-compile && node ./node_modules/mocha/bin/_mocha -u tdd --timeout 5000 --colors ./out/test/unit",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
+  },
+  "extensionDependencies": [],
+  "dependencies": {
+    "diff": "4.0.2",
+    "glob": "7.1.7",
+    "json-rpc2": "2.0.0",
+    "moment": "2.29.4",
+    "node-fetch": "2.7.0",
+    "semver": "7.5.4",
+    "tree-kill": "file:third_party/tree-kill",
+    "vscode-debugadapter": "1.45.0",
+    "vscode-debugprotocol": "1.45.0",
+    "vscode-languageclient": "8.1.0",
+    "vscode-languageserver-protocol": "3.17.3",
+    "vscode-uri": "3.0.3"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "0.4.33",
+    "@types/fs-extra": "8.1.1",
+    "@types/glob": "7.1.3",
+    "@types/mocha": "7.0.2",
+    "@types/node": "13.13.46",
+    "@types/node-fetch": "2.6.9",
+    "@types/semver": "7.3.4",
+    "@types/sinon": "9.0.11",
+    "@types/vscode": "1.75.0",
+    "@vscode/debugadapter-testsupport": "1.58.0",
+    "@vscode/test-electron": "2.3.8",
+    "@vscode/vsce": "2.23.0",
+    "adm-zip": "0.4.16",
+    "esbuild": "0.17.10",
+    "fs-extra": "9.1.0",
+    "get-port": "5.1.1",
+    "gts": "4.0.0",
+    "js-green-licenses": "4.0.0",
+    "mocha": "9.2.2",
+    "prettier": "2.2.1",
+    "sinon": "9.2.4",
+    "typescript": "4.6.4",
+    "yarn": "1.22.22"
+  },
+  "engines": {
+    "vscode": "^1.75.0",
+    "node": ">=16.14.2"
+  },
+  "activationEvents": [
+    "onLanguage:gno",
+    "onLanguage:gno.sum",
+    "onLanguage:gnotmpl",
+    "onDebugInitialConfigurations",
+    "onDebugResolve:gno",
+    "onWebviewPanel:welcomeGno"
+  ],
+  "main": "./dist/gnoMain.js",
+  "capabilities": {
+    "virtualWorkspaces": false,
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "restrictedConfigurations": [
+        "gno.alternateTools",
+        "gno.gnopath",
+        "gno.gnoroot",
+        "gno.inferGnopath",
+        "gno.toolsGnopath",
+        "gno.toolsEnvVars",
+        "gno.toolsManagement.go"
+      ]
+    }
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "gno",
+        "extensions": [
+          ".gno"
+        ],
+        "aliases": [
+          "Gno"
+        ],
+        "icon": {
+          "dark": "media/gno-icon-dark.png",
+          "light": "media/gno-icon-light.png"
+        }
+      },
+      {
+        "id": "gno.mod",
+        "filenames": [
+          "gno.mod"
+        ],
+        "aliases": [
+          "Gno Module File"
+        ],
+        "icon": {
+        "dark": "media/gno-icon-dark.png",
+        "light": "media/gno-icon-light.png"
+      },
+        "configuration": "./languages/gno.mod.language-configuration.json"
+      },
+      
+      {
+        "id": "gno.work",
+        "filenames": [
+          "gno.work"
+        ],
+        "aliases": [
+          "Gno Work File"
+        ],
+        "configuration": "./languages/gno.mod.language-configuration.json"
+      },
+      {
+        "id": "gno.sum",
+        "filenames": [
+          "gno.sum"
+        ],
+        "aliases": [
+          "Gno Checksum File"
+        ]
+      },
+      {
+        "id": "gotmpl",
+        "extensions": [
+          ".tmpl",
+          ".gotmpl"
+        ],
+        "aliases": [
+          "Go Template File"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "gno.mod",
+        "scopeName": "gno.mod",
+        "path": "./syntaxes/gno.mod.tmGrammar.json"
+      },
+      {
+        "language": "gno.work",
+        "scopeName": "gno.mod",
+        "path": "./syntaxes/gno.mod.tmGrammar.json"
+      },
+      {
+        "language": "gno",
+        "scopeName": "source.gno",
+        "path": "./syntaxes/gno.tmLanguage.json"
+      },
+      {
+        "language": "gno.sum",
+        "scopeName": "gno.sum",
+        "path": "./syntaxes/gno.sum.tmGrammar.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "gno",
+        "path": "./snippets/gno.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[go]": {
+        "editor.insertSpaces": false,
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "gno.gnopath",
+        "title": "Gno: Current GNOPATH",
+        "description": "See the currently set GNOPATH."
+      },
+      {
+        "command": "gno.gnoroot",
+        "title": "Gno: Current GNOROOT",
+        "description": "See the currently set GNOROOT."
+      },
+      {
+        "command": "gno.locate.tools",
+        "title": "Gno: Locate Configured Gno Tools",
+        "description": "List all the Gno tools being used by this extension along with their locations."
+      },
+      {
+        "command": "gno.test.cursor",
+        "title": "Gno: Test Function At Cursor",
+        "description": "Runs a unit test at the cursor."
+      },
+      {
+        "command": "gno.test.cursorOrPrevious",
+        "title": "Gno: Test Function At Cursor or Test Previous",
+        "description": "Runs a unit test at the cursor if one is found, otherwise re-runs the last executed test."
+      },
+      {
+        "command": "gno.subtest.cursor",
+        "title": "Gno: Subtest At Cursor",
+        "description": "Runs a sub test at the cursor."
+      },
+      {
+        "command": "gno.benchmark.cursor",
+        "title": "Gno: Benchmark Function At Cursor",
+        "description": "Runs a benchmark at the cursor."
+      },
+      {
+        "command": "gno.test.file",
+        "title": "Gno: Test File",
+        "description": "Runs all unit tests in the current file."
+      },
+      {
+        "command": "gno.test.package",
+        "title": "Gno: Test Package",
+        "description": "Runs all unit tests in the package of the current file."
+      },
+      {
+        "command": "gno.debug.toggleHideSystemGoroutines",
+        "title": "Gno: Toggle Hide System Goroutines",
+        "description": "Toggles hiding the system goroutines from the active debug session call stack view."
+      },
+      {
+        "command": "gno.test.refresh",
+        "title": "Gno Test: Refresh",
+        "description": "Refresh a test in the test explorer. Only available as a context menu option in the test explorer.",
+        "category": "Test",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "gno.test.showProfiles",
+        "title": "Gno Test: Show Last Profile",
+        "description": "Show last captured profile",
+        "category": "Test"
+      },
+      {
+        "command": "gno.test.captureProfile",
+        "title": "Gno Test: Profile",
+        "description": "Run a test and capture a profile",
+        "category": "Test"
+      },
+      {
+        "command": "gno.test.deleteProfile",
+        "title": "Gno Test: Delete Profile",
+        "shortTitle": "Delete",
+        "description": "Delete selected profile",
+        "category": "Test"
+      },
+      {
+        "command": "gno.test.showProfileFile",
+        "title": "Gno: Show pprof file",
+        "description": "Internal use. Open a pprof profile file."
+      },
+      {
+        "command": "gno.benchmark.package",
+        "title": "Gno: Benchmark Package",
+        "description": "Runs all benchmarks in the package of the current file."
+      },
+      {
+        "command": "gno.benchmark.file",
+        "title": "Gno: Benchmark File",
+        "description": "Runs all benchmarks in the current file."
+      },
+      {
+        "command": "gno.test.workspace",
+        "title": "Gno: Test All Packages In Workspace",
+        "description": "Runs all unit tests from all packages in the current workspace."
+      },
+      {
+        "command": "gno.test.previous",
+        "title": "Gno: Test Previous",
+        "description": "Re-runs the last executed test."
+      },
+      {
+        "command": "gno.test.coverage",
+        "title": "Gno: Toggle Test Coverage In Current Package",
+        "description": "Displays test coverage in the current package."
+      },
+      {
+        "command": "gno.test.generate.package",
+        "title": "Gno: Generate Unit Tests For Package",
+        "description": "Generates unit tests for the current package"
+      },
+      {
+        "command": "gno.test.generate.file",
+        "title": "Gno: Generate Unit Tests For File",
+        "description": "Generates unit tests for the current file"
+      },
+      {
+        "command": "gno.test.generate.function",
+        "title": "Gno: Generate Unit Tests For Function",
+        "description": "Generates unit tests for the selected function in the current file"
+      },
+      {
+        "command": "gno.impl.cursor",
+        "title": "Gno: Generate Interface Stubs",
+        "description": "Generates method stub for implementing the provided interface and inserts at the cursor."
+      },
+      {
+        "command": "gno.extractServerChannel",
+        "title": "Gno: Extract Language Server Logs To Editor",
+        "description": "Extract logs in the `gopls (server)` output channel to the editor."
+      },
+      {
+        "command": "gno.welcome",
+        "title": "Gno: Welcome",
+        "description": "Open the welcome page for the Go extension."
+      },
+      {
+        "command": "gno.toggle.gc_details",
+        "title": "Gno: Toggle gc details",
+        "description": "Toggle the display of compiler optimization choices"
+      },
+      {
+        "command": "gno.import.add",
+        "title": "Gno: Add Import",
+        "description": "Add an import declaration"
+      },
+      {
+        "command": "gno.add.package.workspace",
+        "title": "Gno: Add Package to Workspace",
+        "description": "Add a package from the imports list to the workspace."
+      },
+      {
+        "command": "gno.tools.install",
+        "title": "Gno: Install/Update Tools",
+        "description": "install/update the required go packages"
+      },
+      {
+        "command": "gno.toggle.test.file",
+        "title": "Gno: Toggle Test File",
+        "description": "Toggles between file in current active editor and the corresponding test file."
+      },
+      {
+        "command": "gno.vulncheck.toggle",
+        "title": "Gno: Toggle Vulncheck",
+        "description": "Toggle the display of vulnerability analysis in dependencies."
+      },
+      {
+        "command": "gno.languageserver.maintain",
+        "title": "Gno: Start language server's maintainer interface",
+        "description": "Start the Go language server's maintainer interface (a web server)."
+      },
+      {
+        "command": "gno.add.tags",
+        "title": "Gno: Add Tags To Struct Fields",
+        "description": "Add tags configured in go.addTags setting to selected struct using gomodifytags"
+      },
+      {
+        "command": "gno.remove.tags",
+        "title": "Gno: Remove Tags From Struct Fields",
+        "description": "Remove tags configured in go.removeTags setting from selected struct using gomodifytags"
+      },
+      {
+        "command": "gno.show.commands",
+        "title": "Gno: Show All Commands...",
+        "description": "Shows all commands from the Go extension in the quick pick"
+      },
+      {
+        "command": "gno.browse.packages",
+        "title": "Gno: Browse Packages",
+        "description": "Browse packages and Go files inside the packages."
+      },
+      {
+        "command": "gno.get.package",
+        "title": "Gno: Get Package",
+        "description": "Run `go get -v` on the package on the current line."
+      },
+      {
+        "command": "gno.playground",
+        "title": "Gno: Run on Go Playground",
+        "description": "Upload the current selection or file to the Go Playground"
+      },
+      {
+        "command": "gno.lint.package",
+        "title": "Gno: Lint Current Package",
+        "description": "Run linter in the package of the current file."
+      },
+      {
+        "command": "gno.lint.workspace",
+        "title": "Gno: Lint Workspace",
+        "description": "Run linter in the current workspace."
+      },
+      {
+        "command": "gno.vet.package",
+        "title": "Gno: Vet Current Package",
+        "description": "Run go vet in the package of the current file."
+      },
+      {
+        "command": "gno.vet.workspace",
+        "title": "Gno: Vet Workspace",
+        "description": "Run go vet in the current workspace."
+      },
+      {
+        "command": "gno.build.package",
+        "title": "Gno: Build Current Package",
+        "description": "Build the package of the current file."
+      },
+      {
+        "command": "gno.build.workspace",
+        "title": "Gno: Build Workspace",
+        "description": "Build the current workspace."
+      },
+      {
+        "command": "gno.install.package",
+        "title": "Gno: Install Current Package",
+        "description": "Install the current package."
+      },
+      {
+        "command": "gno.run.modinit",
+        "title": "Gno: Initialize go.mod",
+        "description": "Run `go mod init` in the workspace folder."
+      },
+      {
+        "command": "gno.test.cancel",
+        "title": "Gno: Cancel Running Tests",
+        "description": "Cancels running tests."
+      },
+      {
+        "command": "gno.apply.coverprofile",
+        "title": "Gno: Apply Cover Profile",
+        "description": "Applies existing cover profile."
+      },
+      {
+        "command": "gno.languageserver.restart",
+        "title": "Gno: Restart Language Server",
+        "description": "Restart the running instance of the language server"
+      },
+      {
+        "command": "gno.environment.choose",
+        "title": "Gno: Choose Go Environment",
+        "description": "Choose a different Go version or binary for this project. (WIP)"
+      },
+      {
+        "command": "gno.survey.showConfig",
+        "title": "Gno: Show Survey Configuration",
+        "description": "Show the current Go survey configuration"
+      },
+      {
+        "command": "gno.survey.resetConfig",
+        "title": "Gno: Reset Survey Configuration",
+        "description": "Reset the current Go survey configuration history"
+      },
+      {
+        "command": "gno.workspace.resetState",
+        "title": "Gno: Reset Workspace State",
+        "description": "Reset keys in workspace state to undefined."
+      },
+      {
+        "command": "gno.global.resetState",
+        "title": "Gno: Reset Global State",
+        "description": "Reset keys in global state to undefined."
+      },
+      {
+        "command": "gno.maketx.addpkg",
+        "title": "Gno Add Package To Chain",
+        "description": "Add a package to the Gno blockchain"
+      },
+      {
+        "command": "gno.explorer.refresh",
+        "title": "Gno Explorer: Refresh",
+        "description": "Refresh the Go explorer. Only available as a menu item in the explorer.",
+        "category": "Explorer",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "gno.explorer.open",
+        "title": "Gno Explorer: Open File",
+        "description": "Open a file from the Go explorer. Only available as a menu item in the explorer.",
+        "category": "Explorer",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "gno.workspace.editEnv",
+        "title": "Gno: Edit Workspace Env",
+        "description": "Edit the Go Env for the active workspace.",
+        "icon": "$(settings-edit)",
+        "enablement": "workspaceFolderCount > 0"
+      },
+      {
+        "command": "gno.workspace.resetEnv",
+        "title": "Gno: Reset Workspace Env",
+        "description": "Reset the Go Env for the active workspace.",
+        "icon": "$(settings-remove)",
+        "enablement": "workspaceFolderCount > 0"
+      }
+    ],
+    "breakpoints": [
+      {
+        "language": "gno"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Gno",
+      "properties": {
+        "gno.showWelcome": {
+          "type": "boolean",
+          "default": true,
+          "description": "Specifies whether to show the Welcome experience on first install"
+        },
+        "gno.makeTx": {
+          "type": "object",
+          "properties": {
+              "broadcast": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "If true, broadcasts transaction to chain"
+              },
+              "gasFee": {
+                  "type": "string",
+                  "default": "1000000ugnot",
+                  "description": "Gas fee for transaction"
+              },
+              "gasWanted": {
+                  "type": "string",
+                  "default": "2000000",
+                  "description": "Gas wanted for transaction"
+              }
+          },
+          "additionalProperties": false,
+          "default": {
+              "broadcast": true,
+              "gasFee": "1000000ugnot",
+              "gasWanted": "4000000"
+          },
+          "description": "Configuration for Gno blockchain transactions",
+          "scope": "resource"
+      },
+      "gno.editorContextMenuCommands.addPackage": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, adds command to add package to the Gno blockchain to the editor context menu"
+      },
+        "gno.buildOnSave": {
+          "type": "string",
+          "enum": [
+            "package",
+            "workspace",
+            "off"
+          ],
+          "default": "package",
+          "description": "Compiles code on file save using 'go build' or 'go test -c'. Not applicable when using the language server.",
+          "scope": "resource",
+          "markdownDeprecationMessage": "Enable the Gno language server (`#gno.useLanguageServer#`) to diagnose compile errors."
+        },
+        "gno.buildFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to `go build`/`go test` used during build-on-save or running tests. (e.g. [\"-ldflags='-s'\"]) This is propagated to the language server if `gopls.build.buildFlags` is not specified.",
+          "scope": "resource"
+        },
+        "gno.buildTags": {
+          "type": "string",
+          "default": "",
+          "description": "The Go build tags to use for all commands, that support a `-tags '...'` argument. When running tests, go.testTags will be used instead if it was set. This is propagated to the language server if `gopls.build.buildFlags` is not specified.",
+          "scope": "resource"
+        },
+        "gno.testTags": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "The Go build tags to use for when running tests. If null, then buildTags will be used.",
+          "scope": "resource"
+        },
+        "gno.disableConcurrentTests": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, tests will not run concurrently. When a new test run is started, the previous will be cancelled.",
+          "scope": "resource"
+        },
+        "gno.installDependenciesWhenBuilding": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, then `-i` flag will be passed to `go build` everytime the code is compiled. Since Go 1.10, setting this may be unnecessary unless you are in GOPATH mode and do not use the language server.",
+          "scope": "resource"
+        },
+        "gno.lintOnSave": {
+          "type": "string",
+          "enum": [
+            "file",
+            "package",
+            "workspace",
+            "off"
+          ],
+          "enumDescriptions": [
+            "lint the current file on file saving",
+            "lint the current package on file saving",
+            "lint all the packages in the current workspace root folder on file saving",
+            "do not run lint automatically"
+          ],
+          "default": "package",
+          "description": "Lints code on file save using the configured Lint tool. Options are 'file', 'package', 'workspace' or 'off'.",
+          "scope": "resource"
+        },
+        "gno.lintTool": {
+          "type": "string",
+          "default": "staticcheck",
+          "description": "Specifies Lint tool name.",
+          "scope": "resource",
+          "enum": [
+            "staticcheck",
+            "golint",
+            "golangci-lint",
+            "revive"
+          ]
+        },
+        "gno.lintFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to pass to Lint tool (e.g. [\"-min_confidence=.8\"])",
+          "scope": "resource"
+        },
+        "gno.vetOnSave": {
+          "type": "string",
+          "enum": [
+            "package",
+            "workspace",
+            "off"
+          ],
+          "enumDescriptions": [
+            "vet the current package on file saving",
+            "vet all the packages in the current workspace root folder on file saving",
+            "do not run vet automatically"
+          ],
+          "default": "package",
+          "description": "Vets code on file save using 'go tool vet'. Not applicable when using the language server's diagnostics.",
+          "scope": "resource"
+        },
+        "gno.vetFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to pass to `go tool vet` (e.g. [\"-all\", \"-shadow\"]). Not applicable when using the language server's diagnostics.",
+          "scope": "resource"
+        },
+        "gno.formatTool": {
+          "type": "string",
+          "default": "default",
+          "markdownDescription": "When the language server is enabled and one of `default`/`gofmt`/`goimports`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.",
+          "scope": "resource",
+          "enum": [
+            "default",
+            "gofmt",
+            "goimports",
+            "goformat",
+            "gofumpt",
+            "custom"
+          ],
+          "markdownEnumDescriptions": [
+            "If the language server is enabled, format via the language server, which already supports gofmt, goimports, goreturns, and gofumpt. Otherwise, goimports.",
+            "Formats the file according to the standard Go style. (not applicable when the language server is enabled)",
+            "Organizes imports and formats the file with gofmt. (not applicable when the language server is enabled)",
+            "Configurable gofmt, see https://github.com/mbenkmann/goformat.",
+            "Stricter version of gofmt, see https://github.com/mvdan/gofumpt. . Use `#gopls.format.gofumpt#` instead)",
+            "Formats using the custom tool specified as `customFormatter` in the `#go.alternateTools#` setting. The tool should take the input as STDIN and output the formatted code as STDOUT."
+          ]
+        },
+        "gno.formatFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to pass to format tool (e.g. [\"-s\"]). Not applicable when using the language server.",
+          "scope": "resource"
+        },
+        "gno.inferGopath": {
+          "type": "boolean",
+          "default": false,
+          "description": "Infer GOPATH from the workspace root. This is ignored when using Go Modules.",
+          "scope": "resource"
+        },
+        "gno.gopath": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Specify GOPATH here to override the one that is set as environment variable. The inferred GOPATH from workspace root overrides this, if go.inferGopath is set to true.",
+          "scope": "machine-overridable"
+        },
+        "gno.toolsGopath": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Location to install the Go tools that the extension depends on if you don't want them in your GOPATH.",
+          "scope": "machine-overridable"
+        },
+        "gno.goroot": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null,
+          "description": "Specifies the GOROOT to use when no environment variable is set.",
+          "scope": "machine-overridable"
+        },
+        "gno.testOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Run 'go test' on save for current package. It is not advised to set this to `true` when you have Auto Save enabled.",
+          "scope": "resource"
+        },
+        "gno.coverOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, runs 'go test -coverprofile' on save and shows test coverage.",
+          "scope": "resource"
+        },
+        "gno.coverOnTestPackage": {
+          "type": "boolean",
+          "default": true,
+          "description": "If true, shows test coverage when Go: Test Package command is run."
+        },
+        "gno.coverOnSingleTest": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, shows test coverage when Go: Test Function at cursor command is run."
+        },
+        "gno.coverOnSingleTestFile": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, shows test coverage when Go: Test Single File command is run."
+        },
+        "gno.coverMode": {
+          "type": "string",
+          "enum": [
+            "default",
+            "set",
+            "count",
+            "atomic"
+          ],
+          "default": "default",
+          "description": "When generating code coverage, the value for -covermode. 'default' is the default value chosen by the 'go test' command.",
+          "scope": "resource"
+        },
+        "gno.coverShowCounts": {
+          "type": "boolean",
+          "default": false,
+          "description": "When generating code coverage, should counts be shown as --374--",
+          "scope": "resource"
+        },
+        "gno.coverageOptions": {
+          "type": "string",
+          "enum": [
+            "showCoveredCodeOnly",
+            "showUncoveredCodeOnly",
+            "showBothCoveredAndUncoveredCode"
+          ],
+          "default": "showBothCoveredAndUncoveredCode",
+          "description": "Use these options to control whether only covered or only uncovered code or both should be highlighted after running test coverage",
+          "scope": "resource"
+        },
+        "gno.coverageDecorator": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "highlight",
+                "gutter"
+              ]
+            },
+            "coveredHighlightColor": {
+              "type": "string",
+              "description": "Color in the rgba format to use to highlight covered code."
+            },
+            "uncoveredHighlightColor": {
+              "type": "string",
+              "description": "Color in the rgba format to use to highlight uncovered code."
+            },
+            "coveredBorderColor": {
+              "type": "string",
+              "description": "Color to use for the border of covered code."
+            },
+            "uncoveredBorderColor": {
+              "type": "string",
+              "description": "Color to use for the border of uncovered code."
+            },
+            "coveredGutterStyle": {
+              "type": "string",
+              "enum": [
+                "blockblue",
+                "blockred",
+                "blockgreen",
+                "blockyellow",
+                "slashred",
+                "slashgreen",
+                "slashblue",
+                "slashyellow",
+                "verticalred",
+                "verticalgreen",
+                "verticalblue",
+                "verticalyellow"
+              ],
+              "description": "Gutter style to indicate covered code."
+            },
+            "uncoveredGutterStyle": {
+              "type": "string",
+              "enum": [
+                "blockblue",
+                "blockred",
+                "blockgreen",
+                "blockyellow",
+                "slashred",
+                "slashgreen",
+                "slashblue",
+                "slashyellow",
+                "verticalred",
+                "verticalgreen",
+                "verticalblue",
+                "verticalyellow"
+              ],
+              "description": "Gutter style to indicate covered code."
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "type": "highlight",
+            "coveredHighlightColor": "rgba(64,128,128,0.5)",
+            "uncoveredHighlightColor": "rgba(128,64,64,0.25)",
+            "coveredBorderColor": "rgba(64,128,128,0.5)",
+            "uncoveredBorderColor": "rgba(128,64,64,0.25)",
+            "coveredGutterStyle": "blockblue",
+            "uncoveredGutterStyle": "slashyellow"
+          },
+          "description": "This option lets you choose the way to display code coverage. Choose either to highlight the complete line or to show a decorator in the gutter. You can customize the colors and borders for the former and the style for the latter.",
+          "scope": "resource"
+        },
+        "gno.testTimeout": {
+          "type": "string",
+          "default": "30s",
+          "description": "Specifies the timeout for go test in ParseDuration format.",
+          "scope": "resource"
+        },
+        "gno.testEnvVars": {
+          "type": "object",
+          "default": {},
+          "description": "Environment variables that will be passed to the process that runs the Go tests",
+          "scope": "resource"
+        },
+        "gno.testEnvFile": {
+          "type": "string",
+          "default": null,
+          "description": "Absolute path to a file containing environment variables definitions. File contents should be of the form key=value.",
+          "scope": "resource"
+        },
+        "gno.testFlags": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "default": null,
+          "description": "Flags to pass to `go test`. If null, then buildFlags will be used. This is not propagated to the language server.",
+          "scope": "resource"
+        },
+        "gno.testExplorer.enable": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "Enable the Go test explorer"
+        },
+        "gno.testExplorer.packageDisplayMode": {
+          "type": "string",
+          "enum": [
+            "flat",
+            "nested"
+          ],
+          "default": "flat",
+          "description": "Present packages in the test explorer flat or nested.",
+          "scope": "resource"
+        },
+        "gno.testExplorer.alwaysRunBenchmarks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Run benchmarks when running all tests in a file or folder.",
+          "scope": "resource"
+        },
+        "gno.testExplorer.concatenateMessages": {
+          "type": "boolean",
+          "default": true,
+          "description": "Concatenate all test log messages for a given location into a single message.",
+          "scope": "resource"
+        },
+        "gno.testExplorer.showDynamicSubtestsInEditor": {
+          "type": "boolean",
+          "default": false,
+          "description": "Set the source location of dynamically discovered subtests to the location of the containing function. As a result, dynamically discovered subtests will be added to the gutter test widget of the containing function.",
+          "scope": "resource"
+        },
+        "gno.testExplorer.showOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open the test output terminal when a test run is started.",
+          "scope": "window"
+        },
+        "gno.generateTestsFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional command line flags to pass to `gotests` for generating tests.",
+          "scope": "resource"
+        },
+        "gno.useLanguageServer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable intellisense, code navigation, refactoring, formatting & diagnostics for Go. The features are powered by the Go language server \"gopls\"."
+        },
+        "gno.languageServerFlags": {
+          "type": "array",
+          "default": [],
+          "description": "Flags like -rpc.trace and -logfile to be used while running the language server."
+        },
+        "gno.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication between VS Code and the Go language server."
+        },
+        "gno.logging.level": {
+          "type": "string",
+          "deprecationMessage": "This setting is deprecated. Use 'Developer: Set Log Level...' command to control logging level instead.",
+          "scope": "machine-overridable"
+        },
+        "gno.toolsManagement.go": {
+          "type": "string",
+          "default": "",
+          "description": "The path to the `go` binary used to install the Go tools. If it's empty, the same `go` binary chosen for the project will be used for tool installation.",
+          "scope": "machine-overridable"
+        },
+        "gno.toolsManagement.checkForUpdates": {
+          "type": "string",
+          "default": "proxy",
+          "enum": [
+            "proxy",
+            "local",
+            "off"
+          ],
+          "enumDescriptions": [
+            "keeps notified of new releases by checking the Go module proxy (GOPROXY)",
+            "checks only the minimum tools versions required by the extension",
+            "completely disables version check (not recommended)"
+          ],
+          "markdownDescription": "Specify whether to prompt about new versions of Go and the Go tools (currently, only `gopls`) the extension depends on"
+        },
+        "gno.toolsManagement.autoUpdate": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically update the tools used by the extension, without prompting the user.",
+          "scope": "resource"
+        },
+        "gno.enableCodeLens": {
+          "type": "object",
+          "properties": {
+            "runtest": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, enables code lens for running and debugging tests"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "runtest": true
+          },
+          "description": "Feature level setting to enable/disable code lens for references and run/debug tests",
+          "scope": "resource"
+        },
+        "gno.addTags": {
+          "type": "object",
+          "properties": {
+            "promptForTags": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, Go: Add Tags command will prompt the user to provide tags, options, transform values instead of using the configured values"
+            },
+            "tags": {
+              "type": "string",
+              "default": "json",
+              "description": "Comma separated tags to be used by Go: Add Tags command"
+            },
+            "options": {
+              "type": "string",
+              "default": "json=omitempty",
+              "description": "Comma separated tag=options pairs to be used by Go: Add Tags command"
+            },
+            "transform": {
+              "type": "string",
+              "enum": [
+                "snakecase",
+                "camelcase",
+                "lispcase",
+                "pascalcase",
+                "keep"
+              ],
+              "default": "snakecase",
+              "description": "Transformation rule used by Go: Add Tags command to add tags"
+            },
+            "template": {
+              "type": "string",
+              "default": "",
+              "description": "Custom format used by Go: Add Tags command for the tag value to be applied"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "tags": "json",
+            "options": "json=omitempty",
+            "promptForTags": false,
+            "transform": "snakecase",
+            "template": ""
+          },
+          "description": "Tags and options configured here will be used by the Add Tags command to add tags to struct fields. If promptForTags is true, then user will be prompted for tags and options. By default, json tags are added.",
+          "scope": "resource"
+        },
+        "gno.removeTags": {
+          "type": "object",
+          "properties": {
+            "promptForTags": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, Go: Remove Tags command will prompt the user to provide tags and options instead of using the configured values"
+            },
+            "tags": {
+              "type": "string",
+              "default": "json",
+              "description": "Comma separated tags to be used by Go: Remove Tags command"
+            },
+            "options": {
+              "type": "string",
+              "default": "json=omitempty",
+              "description": "Comma separated tag=options pairs to be used by Go: Remove Tags command"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "tags": "",
+            "options": "",
+            "promptForTags": false
+          },
+          "description": "Tags and options configured here will be used by the Remove Tags command to remove tags to struct fields. If promptForTags is true, then user will be prompted for tags and options. By default, all tags and options will be removed.",
+          "scope": "resource"
+        },
+        "gno.playground": {
+          "type": "object",
+          "properties": {
+            "openbrowser": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether to open the created Go Playground in the default browser"
+            },
+            "share": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether to make the created Go Playground shareable"
+            },
+            "run": {
+              "type": "boolean",
+              "default": true,
+              "description": "Whether to run the created Go Playground after creation"
+            }
+          },
+          "description": "The flags configured here will be passed through to command `goplay`",
+          "additionalProperties": false,
+          "default": {
+            "openbrowser": true,
+            "share": true,
+            "run": true
+          }
+        },
+        "gno.survey.prompt": {
+          "type": "boolean",
+          "default": true,
+          "description": "Prompt for surveys, including the gopls survey and the Go developer survey."
+        },
+        "gno.editorContextMenuCommands": {
+          "type": "object",
+          "properties": {
+            "toggleTestFile": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to toggle between a Go file and its test file to the editor context menu"
+            },
+            "addTags": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to add configured tags from struct fields to the editor context menu"
+            },
+            "removeTags": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to remove configured tags from struct fields to the editor context menu"
+            },
+            "fillStruct": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to fill struct literal with default values to the editor context menu"
+            },
+            "testAtCursor": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, adds command to run the test under the cursor to the editor context menu"
+            },
+            "testFile": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to run all tests in the current file to the editor context menu"
+            },
+            "testPackage": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to run all tests in the current package to the editor context menu"
+            },
+            "generateTestForFunction": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to generate unit tests for function under the cursor to the editor context menu"
+            },
+            "generateTestForFile": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to generate unit tests for current file to the editor context menu"
+            },
+            "generateTestForPackage": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to generate unit tests for current package to the editor context menu"
+            },
+            "addImport": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to import a package to the editor context menu"
+            },
+            "playground": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, adds command to upload the current file or selection to the Go Playground"
+            },
+            "benchmarkAtCursor": {
+              "type": "boolean",
+              "default": false,
+              "description": "If true, adds command to benchmark the test under the cursor to the editor context menu"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "toggleTestFile": true,
+            "addTags": true,
+            "removeTags": false,
+            "fillStruct": false,
+            "testAtCursor": true,
+            "testFile": false,
+            "testPackage": false,
+            "generateTestForFunction": true,
+            "generateTestForFile": false,
+            "generateTestForPackage": false,
+            "addImport": true,
+            "testCoverage": true,
+            "playground": true,
+            "benchmarkAtCursor": false
+          },
+          "description": "Experimental Feature: Enable/Disable entries from the context menu in the editor.",
+          "scope": "resource"
+        },
+        "gno.alternateTools": {
+          "type": "object",
+          "default": {},
+          "description": "Alternate tools or alternate paths for the same tools used by the Go extension. Provide either absolute path or the name of the binary in GOPATH/bin, GOROOT/bin or PATH. Useful when you want to use wrapper script for the Go tools.",
+          "scope": "resource",
+          "properties": {
+            "gno": {
+              "type": "string",
+              "default": "gno",
+              "description": "Alternate tool to use instead of the go binary or alternate path to use for the go binary."
+            },
+            "gnopls": {
+              "type": "string",
+              "default": "gnopls",
+              "description": "Alternate tool to use instead of the gnopls binary or alternate path to use for the gnopls binary."
+            },
+            "customFormatter": {
+              "type": "string",
+              "default": "",
+              "markdownDescription": "Custom formatter to use instead of the language server. This should be used with the `custom` option in `#go.formatTool#`."
+            }
+          },
+          "additionalProperties": true
+        },
+        "gno.tasks.provideDefault": {
+          "default": true,
+          "description": "enable the default go build/test task provider.",
+          "scope": "window",
+          "type": "boolean"
+        },
+        "gno.terminal.activateEnvironment": {
+          "default": true,
+          "description": "Apply the Go & PATH environment variables used by the extension to all integrated terminals.",
+          "scope": "resource",
+          "type": "boolean"
+        },
+        "gnopls": {
+          "type": "object",
+          "markdownDescription": "Configure the default Go language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/golang/tools/blob/master/gopls/doc/settings.md) for all available settings.",
+          "scope": "resource",
+          "properties": {
+            "build.allowImplicitNetworkAccess": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) allowImplicitNetworkAccess disables GOPROXY=off, allowing implicit module\ndownloads rather than requiring user action. This option will eventually\nbe removed.\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "build.buildFlags": {
+              "type": "array",
+              "markdownDescription": "buildFlags is the set of flags passed on to the build system when invoked.\nIt is applied to queries like `go list`, which is used when discovering files.\nThe most common use is to set `-tags`.\n\nIf unspecified, values of `go.buildFlags, go.buildTags` will be propagated.\n",
+              "default": [],
+              "scope": "resource"
+            },
+            "build.directoryFilters": {
+              "type": "array",
+              "markdownDescription": "directoryFilters can be used to exclude unwanted directories from the\nworkspace. By default, all directories are included. Filters are an\noperator, `+` to include and `-` to exclude, followed by a path prefix\nrelative to the workspace folder. They are evaluated in order, and\nthe last filter that applies to a path controls whether it is included.\nThe path prefix can be empty, so an initial `-` excludes everything.\n\nDirectoryFilters also supports the `**` operator to match 0 or more directories.\n\nExamples:\n\nExclude node_modules at current depth: `-node_modules`\n\nExclude node_modules at any depth: `-**/node_modules`\n\nInclude only project_a: `-` (exclude everything), `+project_a`\n\nInclude only project_a, but not node_modules inside it: `-`, `+project_a`, `-project_a/node_modules`\n",
+              "default": [
+                "-**/node_modules"
+              ],
+              "scope": "resource"
+            },
+            "build.env": {
+              "type": "object",
+              "markdownDescription": "env adds environment variables to external commands run by `gopls`, most notably `go list`.\n",
+              "scope": "resource"
+            },
+            "build.expandWorkspaceToModule": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) expandWorkspaceToModule determines which packages are considered\n\"workspace packages\" when the workspace is using modules.\n\nWorkspace packages affect the scope of workspace-wide operations. Notably,\ngopls diagnoses all packages considered to be part of the workspace after\nevery keystroke, so by setting \"ExpandWorkspaceToModule\" to false, and\nopening a nested workspace directory, you can reduce the amount of work\ngopls has to do to keep your workspace up to date.\n",
+              "default": true,
+              "scope": "resource"
+            },
+            "build.memoryMode": {
+              "type": "string",
+              "markdownDescription": "(Experimental) obsolete, no effect\n",
+              "default": "",
+              "scope": "resource"
+            },
+            "build.standaloneTags": {
+              "type": "array",
+              "markdownDescription": "standaloneTags specifies a set of build constraints that identify\nindividual Go source files that make up the entire main package of an\nexecutable.\n\nA common example of standalone main files is the convention of using the\ndirective `//go:build ignore` to denote files that are not intended to be\nincluded in any package, for example because they are invoked directly by\nthe developer using `go run`.\n\nGopls considers a file to be a standalone main file if and only if it has\npackage name \"main\" and has a build directive of the exact form\n\"//go:build tag\" or \"// +build tag\", where tag is among the list of tags\nconfigured by this setting. Notably, if the build constraint is more\ncomplicated than a simple tag (such as the composite constraint\n`//go:build tag && go1.18`), the file is not considered to be a standalone\nmain file.\n\nThis setting is only supported when gopls is built with Go 1.16 or later.\n",
+              "default": [
+                "ignore"
+              ],
+              "scope": "resource"
+            },
+            "build.templateExtensions": {
+              "type": "array",
+              "markdownDescription": "templateExtensions gives the extensions of file names that are treateed\nas template files. (The extension\nis the part of the file name after the final dot.)\n",
+              "default": [],
+              "scope": "resource"
+            },
+            "formatting.gofumpt": {
+              "type": "boolean",
+              "markdownDescription": "gofumpt indicates if we should run gofumpt formatting.\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "formatting.local": {
+              "type": "string",
+              "markdownDescription": "local is the equivalent of the `goimports -local` flag, which puts\nimports beginning with this string after third-party packages. It should\nbe the prefix of the import path whose imports should be grouped\nseparately.\n",
+              "default": "",
+              "scope": "resource"
+            },
+            "ui.codelenses": {
+              "type": "object",
+              "markdownDescription": "codelenses overrides the enabled/disabled state of each of gopls'\nsources of [Code Lenses](codelenses.md).\n\nExample Usage:\n\n```json5\n\"gopls\": {\n...\n  \"codelenses\": {\n    \"generate\": false,  // Don't show the `go generate` lens.\n    \"gc_details\": true  // Show a code lens toggling the display of gc's choices.\n  }\n...\n}\n```\n",
+              "scope": "resource",
+              "properties": {
+                "gc_details": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"gc_details\"`: Toggle display of Go compiler optimization decisions\n\nThis codelens source causes the `package` declaration of\neach file to be annotated with a command to toggle the\nstate of the per-session variable that controls whether\noptimization decisions from the Go compiler (formerly known\nas \"gc\") should be displayed as diagnostics.\n\nOptimization decisions include:\n- whether a variable escapes, and how escape is inferred;\n- whether a nil-pointer check is implied or eliminated;\n- whether a function can be inlined.\n\nTODO(adonovan): this source is off by default because the\nannotation is annoying and because VS Code has a separate\n\"Toggle gc details\" command. Replace it with a Code Action\n(\"Source action...\").\n",
+                  "default": false
+                },
+                "generate": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"generate\"`: Run `go generate`\n\nThis codelens source annotates any `//go:generate` comments\nwith commands to run `go generate` in this directory, on\nall directories recursively beneath this one.\n\nSee [Generating code](https://go.dev/blog/generate) for\nmore details.\n",
+                  "default": true
+                },
+                "regenerate_cgo": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"regenerate_cgo\"`: Re-generate cgo declarations\n\nThis codelens source annotates an `import \"C\"` declaration\nwith a command to re-run the [cgo\ncommand](https://pkg.go.dev/cmd/cgo) to regenerate the\ncorresponding Go declarations.\n\nUse this after editing the C code in comments attached to\nthe import, or in C header files included by it.\n",
+                  "default": true
+                },
+                "run_govulncheck": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"run_govulncheck\"`: Run govulncheck\n\nThis codelens source annotates the `module` directive in a\ngo.mod file with a command to run Govulncheck.\n\n[Govulncheck](https://go.dev/blog/vuln) is a static\nanalysis tool that computes the set of functions reachable\nwithin your application, including dependencies;\nqueries a database of known security vulnerabilities; and\nreports any potential problems it finds.\n",
+                  "default": false
+                },
+                "test": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"test\"`: Run tests and benchmarks\n\nThis codelens source annotates each `Test` and `Benchmark`\nfunction in a `*_test.go` file with a command to run it.\n\nThis source is off by default because VS Code has\na client-side custom UI for testing, and because progress\nnotifications are not a great UX for streamed test output.\nSee:\n- golang/go#67400 for a discussion of this feature.\n- https://github.com/joaotavora/eglot/discussions/1402\n  for an alternative approach.\n",
+                  "default": false
+                },
+                "tidy": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"tidy\"`: Tidy go.mod file\n\nThis codelens source annotates the `module` directive in a\ngo.mod file with a command to run [`go mod\ntidy`](https://go.dev/ref/mod#go-mod-tidy), which ensures\nthat the go.mod file matches the source code in the module.\n",
+                  "default": true
+                },
+                "upgrade_dependency": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"upgrade_dependency\"`: Update dependencies\n\nThis codelens source annotates the `module` directive in a\ngo.mod file with commands to:\n\n- check for available upgrades,\n- upgrade direct dependencies, and\n- upgrade all dependencies transitively.\n",
+                  "default": true
+                },
+                "vendor": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"vendor\"`: Update vendor directory\n\nThis codelens source annotates the `module` directive in a\ngo.mod file with a command to run [`go mod\nvendor`](https://go.dev/ref/mod#go-mod-vendor), which\ncreates or updates the directory named `vendor` in the\nmodule root so that it contains an up-to-date copy of all\nnecessary package dependencies.\n",
+                  "default": true
+                }
+              }
+            },
+            "ui.completion.completeFunctionCalls": {
+              "type": "boolean",
+              "markdownDescription": "completeFunctionCalls enables function call completion.\n\nWhen completing a statement, or when a function return type matches the\nexpected of the expression being completed, completion may suggest call\nexpressions (i.e. may include parentheses).\n",
+              "default": true,
+              "scope": "resource"
+            },
+            "ui.completion.completionBudget": {
+              "type": "string",
+              "markdownDescription": "(For Debugging) completionBudget is the soft latency goal for completion requests. Most\nrequests finish in a couple milliseconds, but in some cases deep\ncompletions can take much longer. As we use up our budget we\ndynamically reduce the search scope to ensure we return timely\nresults. Zero means unlimited.\n",
+              "default": "100ms",
+              "scope": "resource"
+            },
+            "ui.completion.experimentalPostfixCompletions": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) experimentalPostfixCompletions enables artificial method snippets\nsuch as \"someSlice.sort!\".\n",
+              "default": true,
+              "scope": "resource"
+            },
+            "ui.completion.matcher": {
+              "type": "string",
+              "markdownDescription": "(Advanced) matcher sets the algorithm that is used when calculating completion\ncandidates.\n",
+              "enum": [
+                "CaseInsensitive",
+                "CaseSensitive",
+                "Fuzzy"
+              ],
+              "markdownEnumDescriptions": [
+                "",
+                "",
+                ""
+              ],
+              "default": "Fuzzy",
+              "scope": "resource"
+            },
+            "ui.completion.usePlaceholders": {
+              "type": "boolean",
+              "markdownDescription": "placeholders enables placeholders for function parameters or struct\nfields in completion responses.\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "ui.diagnostic.analyses": {
+              "type": "object",
+              "markdownDescription": "analyses specify analyses that the user would like to enable or disable.\nA map of the names of analysis passes that should be enabled/disabled.\nA full list of analyzers that gopls uses can be found in\n[analyzers.md](https://github.com/golang/tools/blob/master/gopls/doc/analyzers.md).\n\nExample Usage:\n\n```json5\n...\n\"analyses\": {\n  \"unreachable\": false, // Disable the unreachable analyzer.\n  \"unusedvariable\": true  // Enable the unusedvariable analyzer.\n}\n...\n```\n",
+              "scope": "resource",
+              "properties": {
+                "appends": {
+                  "type": "boolean",
+                  "markdownDescription": "check for missing values after append\n\nThis checker reports calls to append that pass\nno values to be appended to the slice.\n\n\ts := []string{\"a\", \"b\", \"c\"}\n\t_ = append(s)\n\nSuch calls are always no-ops and often indicate an\nunderlying mistake.",
+                  "default": true
+                },
+                "asmdecl": {
+                  "type": "boolean",
+                  "markdownDescription": "report mismatches between assembly files and Go declarations",
+                  "default": true
+                },
+                "assign": {
+                  "type": "boolean",
+                  "markdownDescription": "check for useless assignments\n\nThis checker reports assignments of the form x = x or a[i] = a[i].\nThese are almost always useless, and even when they aren't they are\nusually a mistake.",
+                  "default": true
+                },
+                "atomic": {
+                  "type": "boolean",
+                  "markdownDescription": "check for common mistakes using the sync/atomic package\n\nThe atomic checker looks for assignment statements of the form:\n\n\tx = atomic.AddUint64(&x, 1)\n\nwhich are not atomic.",
+                  "default": true
+                },
+                "atomicalign": {
+                  "type": "boolean",
+                  "markdownDescription": "check for non-64-bits-aligned arguments to sync/atomic functions",
+                  "default": true
+                },
+                "bools": {
+                  "type": "boolean",
+                  "markdownDescription": "check for common mistakes involving boolean operators",
+                  "default": true
+                },
+                "buildtag": {
+                  "type": "boolean",
+                  "markdownDescription": "check //go:build and // +build directives",
+                  "default": true
+                },
+                "cgocall": {
+                  "type": "boolean",
+                  "markdownDescription": "detect some violations of the cgo pointer passing rules\n\nCheck for invalid cgo pointer passing.\nThis looks for code that uses cgo to call C code passing values\nwhose types are almost always invalid according to the cgo pointer\nsharing rules.\nSpecifically, it warns about attempts to pass a Go chan, map, func,\nor slice to C, either directly, or via a pointer, array, or struct.",
+                  "default": true
+                },
+                "composites": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unkeyed composite literals\n\nThis analyzer reports a diagnostic for composite literals of struct\ntypes imported from another package that do not use the field-keyed\nsyntax. Such literals are fragile because the addition of a new field\n(even if unexported) to the struct will cause compilation to fail.\n\nAs an example,\n\n\terr = &net.DNSConfigError{err}\n\nshould be replaced by:\n\n\terr = &net.DNSConfigError{Err: err}\n",
+                  "default": true
+                },
+                "copylocks": {
+                  "type": "boolean",
+                  "markdownDescription": "check for locks erroneously passed by value\n\nInadvertently copying a value containing a lock, such as sync.Mutex or\nsync.WaitGroup, may cause both copies to malfunction. Generally such\nvalues should be referred to through a pointer.",
+                  "default": true
+                },
+                "deepequalerrors": {
+                  "type": "boolean",
+                  "markdownDescription": "check for calls of reflect.DeepEqual on error values\n\nThe deepequalerrors checker looks for calls of the form:\n\n    reflect.DeepEqual(err1, err2)\n\nwhere err1 and err2 are errors. Using reflect.DeepEqual to compare\nerrors is discouraged.",
+                  "default": true
+                },
+                "defers": {
+                  "type": "boolean",
+                  "markdownDescription": "report common mistakes in defer statements\n\nThe defers analyzer reports a diagnostic when a defer statement would\nresult in a non-deferred call to time.Since, as experience has shown\nthat this is nearly always a mistake.\n\nFor example:\n\n\tstart := time.Now()\n\t...\n\tdefer recordLatency(time.Since(start)) // error: call to time.Since is not deferred\n\nThe correct code is:\n\n\tdefer func() { recordLatency(time.Since(start)) }()",
+                  "default": true
+                },
+                "deprecated": {
+                  "type": "boolean",
+                  "markdownDescription": "check for use of deprecated identifiers\n\nThe deprecated analyzer looks for deprecated symbols and package\nimports.\n\nSee https://go.dev/wiki/Deprecated to learn about Go's convention\nfor documenting and signaling deprecated identifiers.",
+                  "default": true
+                },
+                "directive": {
+                  "type": "boolean",
+                  "markdownDescription": "check Go toolchain directives such as //go:debug\n\nThis analyzer checks for problems with known Go toolchain directives\nin all Go source files in a package directory, even those excluded by\n//go:build constraints, and all non-Go source files too.\n\nFor //go:debug (see https://go.dev/doc/godebug), the analyzer checks\nthat the directives are placed only in Go source files, only above the\npackage comment, and only in package main or *_test.go files.\n\nSupport for other known directives may be added in the future.\n\nThis analyzer does not check //go:build, which is handled by the\nbuildtag analyzer.\n",
+                  "default": true
+                },
+                "embed": {
+                  "type": "boolean",
+                  "markdownDescription": "check //go:embed directive usage\n\nThis analyzer checks that the embed package is imported if //go:embed\ndirectives are present, providing a suggested fix to add the import if\nit is missing.\n\nThis analyzer also checks that //go:embed directives precede the\ndeclaration of a single variable.",
+                  "default": true
+                },
+                "errorsas": {
+                  "type": "boolean",
+                  "markdownDescription": "report passing non-pointer or non-error values to errors.As\n\nThe errorsas analysis reports calls to errors.As where the type\nof the second argument is not a pointer to a type implementing error.",
+                  "default": true
+                },
+                "fieldalignment": {
+                  "type": "boolean",
+                  "markdownDescription": "find structs that would use less memory if their fields were sorted\n\nThis analyzer find structs that can be rearranged to use less memory, and provides\na suggested edit with the most compact order.\n\nNote that there are two different diagnostics reported. One checks struct size,\nand the other reports \"pointer bytes\" used. Pointer bytes is how many bytes of the\nobject that the garbage collector has to potentially scan for pointers, for example:\n\n\tstruct { uint32; string }\n\nhave 16 pointer bytes because the garbage collector has to scan up through the string's\ninner pointer.\n\n\tstruct { string; *uint32 }\n\nhas 24 pointer bytes because it has to scan further through the *uint32.\n\n\tstruct { string; uint32 }\n\nhas 8 because it can stop immediately after the string pointer.\n\nBe aware that the most compact order is not always the most efficient.\nIn rare cases it may cause two variables each updated by its own goroutine\nto occupy the same CPU cache line, inducing a form of memory contention\nknown as \"false sharing\" that slows down both goroutines.\n",
+                  "default": false
+                },
+                "fillreturns": {
+                  "type": "boolean",
+                  "markdownDescription": "suggest fixes for errors due to an incorrect number of return values\n\nThis checker provides suggested fixes for type errors of the\ntype \"wrong number of return values (want %d, got %d)\". For example:\n\n\tfunc m() (int, string, *bool, error) {\n\t\treturn\n\t}\n\nwill turn into\n\n\tfunc m() (int, string, *bool, error) {\n\t\treturn 0, \"\", nil, nil\n\t}\n\nThis functionality is similar to https://github.com/sqs/goreturns.",
+                  "default": true
+                },
+                "framepointer": {
+                  "type": "boolean",
+                  "markdownDescription": "report assembly that clobbers the frame pointer before saving it",
+                  "default": true
+                },
+                "httpresponse": {
+                  "type": "boolean",
+                  "markdownDescription": "check for mistakes using HTTP responses\n\nA common mistake when using the net/http package is to defer a function\ncall to close the http.Response Body before checking the error that\ndetermines whether the response is valid:\n\n\tresp, err := http.Head(url)\n\tdefer resp.Body.Close()\n\tif err != nil {\n\t\tlog.Fatal(err)\n\t}\n\t// (defer statement belongs here)\n\nThis checker helps uncover latent nil dereference bugs by reporting a\ndiagnostic for such mistakes.",
+                  "default": true
+                },
+                "ifaceassert": {
+                  "type": "boolean",
+                  "markdownDescription": "detect impossible interface-to-interface type assertions\n\nThis checker flags type assertions v.(T) and corresponding type-switch cases\nin which the static type V of v is an interface that cannot possibly implement\nthe target interface T. This occurs when V and T contain methods with the same\nname but different signatures. Example:\n\n\tvar v interface {\n\t\tRead()\n\t}\n\t_ = v.(io.Reader)\n\nThe Read method in v has a different signature than the Read method in\nio.Reader, so this assertion cannot succeed.",
+                  "default": true
+                },
+                "infertypeargs": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unnecessary type arguments in call expressions\n\nExplicit type arguments may be omitted from call expressions if they can be\ninferred from function arguments, or from other type arguments:\n\n\tfunc f[T any](T) {}\n\t\n\tfunc _() {\n\t\tf[string](\"foo\") // string could be inferred\n\t}\n",
+                  "default": true
+                },
+                "loopclosure": {
+                  "type": "boolean",
+                  "markdownDescription": "check references to loop variables from within nested functions\n\nThis analyzer reports places where a function literal references the\niteration variable of an enclosing loop, and the loop calls the function\nin such a way (e.g. with go or defer) that it may outlive the loop\niteration and possibly observe the wrong value of the variable.\n\nNote: An iteration variable can only outlive a loop iteration in Go versions <=1.21.\nIn Go 1.22 and later, the loop variable lifetimes changed to create a new\niteration variable per loop iteration. (See go.dev/issue/60078.)\n\nIn this example, all the deferred functions run after the loop has\ncompleted, so all observe the final value of v [<go1.22].\n\n\tfor _, v := range list {\n\t    defer func() {\n\t        use(v) // incorrect\n\t    }()\n\t}\n\nOne fix is to create a new variable for each iteration of the loop:\n\n\tfor _, v := range list {\n\t    v := v // new var per iteration\n\t    defer func() {\n\t        use(v) // ok\n\t    }()\n\t}\n\nAfter Go version 1.22, the previous two for loops are equivalent\nand both are correct.\n\nThe next example uses a go statement and has a similar problem [<go1.22].\nIn addition, it has a data race because the loop updates v\nconcurrent with the goroutines accessing it.\n\n\tfor _, v := range elem {\n\t    go func() {\n\t        use(v)  // incorrect, and a data race\n\t    }()\n\t}\n\nA fix is the same as before. The checker also reports problems\nin goroutines started by golang.org/x/sync/errgroup.Group.\nA hard-to-spot variant of this form is common in parallel tests:\n\n\tfunc Test(t *testing.T) {\n\t    for _, test := range tests {\n\t        t.Run(test.name, func(t *testing.T) {\n\t            t.Parallel()\n\t            use(test) // incorrect, and a data race\n\t        })\n\t    }\n\t}\n\nThe t.Parallel() call causes the rest of the function to execute\nconcurrent with the loop [<go1.22].\n\nThe analyzer reports references only in the last statement,\nas it is not deep enough to understand the effects of subsequent\nstatements that might render the reference benign.\n(\"Last statement\" is defined recursively in compound\nstatements such as if, switch, and select.)\n\nSee: https://golang.org/doc/go_faq.html#closures_and_goroutines",
+                  "default": true
+                },
+                "lostcancel": {
+                  "type": "boolean",
+                  "markdownDescription": "check cancel func returned by context.WithCancel is called\n\nThe cancellation function returned by context.WithCancel, WithTimeout,\nand WithDeadline must be called or the new context will remain live\nuntil its parent context is cancelled.\n(The background context is never cancelled.)",
+                  "default": true
+                },
+                "nilfunc": {
+                  "type": "boolean",
+                  "markdownDescription": "check for useless comparisons between functions and nil\n\nA useless comparison is one like f == nil as opposed to f() == nil.",
+                  "default": true
+                },
+                "nilness": {
+                  "type": "boolean",
+                  "markdownDescription": "check for redundant or impossible nil comparisons\n\nThe nilness checker inspects the control-flow graph of each function in\na package and reports nil pointer dereferences, degenerate nil\npointers, and panics with nil values. A degenerate comparison is of the form\nx==nil or x!=nil where x is statically known to be nil or non-nil. These are\noften a mistake, especially in control flow related to errors. Panics with nil\nvalues are checked because they are not detectable by\n\n\tif r := recover(); r != nil {\n\nThis check reports conditions such as:\n\n\tif f == nil { // impossible condition (f is a function)\n\t}\n\nand:\n\n\tp := &v\n\t...\n\tif p != nil { // tautological condition\n\t}\n\nand:\n\n\tif p == nil {\n\t\tprint(*p) // nil dereference\n\t}\n\nand:\n\n\tif p == nil {\n\t\tpanic(p)\n\t}\n\nSometimes the control flow may be quite complex, making bugs hard\nto spot. In the example below, the err.Error expression is\nguaranteed to panic because, after the first return, err must be\nnil. The intervening loop is just a distraction.\n\n\t...\n\terr := g.Wait()\n\tif err != nil {\n\t\treturn err\n\t}\n\tpartialSuccess := false\n\tfor _, err := range errs {\n\t\tif err == nil {\n\t\t\tpartialSuccess = true\n\t\t\tbreak\n\t\t}\n\t}\n\tif partialSuccess {\n\t\treportStatus(StatusMessage{\n\t\t\tCode:   code.ERROR,\n\t\t\tDetail: err.Error(), // \"nil dereference in dynamic method call\"\n\t\t})\n\t\treturn nil\n\t}\n\n...",
+                  "default": true
+                },
+                "nonewvars": {
+                  "type": "boolean",
+                  "markdownDescription": "suggested fixes for \"no new vars on left side of :=\"\n\nThis checker provides suggested fixes for type errors of the\ntype \"no new vars on left side of :=\". For example:\n\n\tz := 1\n\tz := 2\n\nwill turn into\n\n\tz := 1\n\tz = 2",
+                  "default": true
+                },
+                "noresultvalues": {
+                  "type": "boolean",
+                  "markdownDescription": "suggested fixes for unexpected return values\n\nThis checker provides suggested fixes for type errors of the\ntype \"no result values expected\" or \"too many return values\".\nFor example:\n\n\tfunc z() { return nil }\n\nwill turn into\n\n\tfunc z() { return }",
+                  "default": true
+                },
+                "printf": {
+                  "type": "boolean",
+                  "markdownDescription": "check consistency of Printf format strings and arguments\n\nThe check applies to calls of the formatting functions such as\n[fmt.Printf] and [fmt.Sprintf], as well as any detected wrappers of\nthose functions such as [log.Printf]. It reports a variety of\nmistakes such as syntax errors in the format string and mismatches\n(of number and type) between the verbs and their arguments.\n\nSee the documentation of the fmt package for the complete set of\nformat operators and their operand types.",
+                  "default": true
+                },
+                "shadow": {
+                  "type": "boolean",
+                  "markdownDescription": "check for possible unintended shadowing of variables\n\nThis analyzer check for shadowed variables.\nA shadowed variable is a variable declared in an inner scope\nwith the same name and type as a variable in an outer scope,\nand where the outer variable is mentioned after the inner one\nis declared.\n\n(This definition can be refined; the module generates too many\nfalse positives and is not yet enabled by default.)\n\nFor example:\n\n\tfunc BadRead(f *os.File, buf []byte) error {\n\t\tvar err error\n\t\tfor {\n\t\t\tn, err := f.Read(buf) // shadows the function variable 'err'\n\t\t\tif err != nil {\n\t\t\t\tbreak // causes return of wrong value\n\t\t\t}\n\t\t\tfoo(buf)\n\t\t}\n\t\treturn err\n\t}",
+                  "default": false
+                },
+                "shift": {
+                  "type": "boolean",
+                  "markdownDescription": "check for shifts that equal or exceed the width of the integer",
+                  "default": true
+                },
+                "sigchanyzer": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unbuffered channel of os.Signal\n\nThis checker reports call expression of the form\n\n\tsignal.Notify(c <-chan os.Signal, sig ...os.Signal),\n\nwhere c is an unbuffered channel, which can be at risk of missing the signal.",
+                  "default": true
+                },
+                "simplifycompositelit": {
+                  "type": "boolean",
+                  "markdownDescription": "check for composite literal simplifications\n\nAn array, slice, or map composite literal of the form:\n\n\t[]T{T{}, T{}}\n\nwill be simplified to:\n\n\t[]T{{}, {}}\n\nThis is one of the simplifications that \"gofmt -s\" applies.",
+                  "default": true
+                },
+                "simplifyrange": {
+                  "type": "boolean",
+                  "markdownDescription": "check for range statement simplifications\n\nA range of the form:\n\n\tfor x, _ = range v {...}\n\nwill be simplified to:\n\n\tfor x = range v {...}\n\nA range of the form:\n\n\tfor _ = range v {...}\n\nwill be simplified to:\n\n\tfor range v {...}\n\nThis is one of the simplifications that \"gofmt -s\" applies.",
+                  "default": true
+                },
+                "simplifyslice": {
+                  "type": "boolean",
+                  "markdownDescription": "check for slice simplifications\n\nA slice expression of the form:\n\n\ts[a:len(s)]\n\nwill be simplified to:\n\n\ts[a:]\n\nThis is one of the simplifications that \"gofmt -s\" applies.",
+                  "default": true
+                },
+                "slog": {
+                  "type": "boolean",
+                  "markdownDescription": "check for invalid structured logging calls\n\nThe slog checker looks for calls to functions from the log/slog\npackage that take alternating key-value pairs. It reports calls\nwhere an argument in a key position is neither a string nor a\nslog.Attr, and where a final key is missing its value.\nFor example,it would report\n\n\tslog.Warn(\"message\", 11, \"k\") // slog.Warn arg \"11\" should be a string or a slog.Attr\n\nand\n\n\tslog.Info(\"message\", \"k1\", v1, \"k2\") // call to slog.Info missing a final value",
+                  "default": true
+                },
+                "sortslice": {
+                  "type": "boolean",
+                  "markdownDescription": "check the argument type of sort.Slice\n\nsort.Slice requires an argument of a slice type. Check that\nthe interface{} value passed to sort.Slice is actually a slice.",
+                  "default": true
+                },
+                "stdmethods": {
+                  "type": "boolean",
+                  "markdownDescription": "check signature of methods of well-known interfaces\n\nSometimes a type may be intended to satisfy an interface but may fail to\ndo so because of a mistake in its method signature.\nFor example, the result of this WriteTo method should be (int64, error),\nnot error, to satisfy io.WriterTo:\n\n\ttype myWriterTo struct{...}\n\tfunc (myWriterTo) WriteTo(w io.Writer) error { ... }\n\nThis check ensures that each method whose name matches one of several\nwell-known interface methods from the standard library has the correct\nsignature for that interface.\n\nChecked method names include:\n\n\tFormat GobEncode GobDecode MarshalJSON MarshalXML\n\tPeek ReadByte ReadFrom ReadRune Scan Seek\n\tUnmarshalJSON UnreadByte UnreadRune WriteByte\n\tWriteTo",
+                  "default": true
+                },
+                "stdversion": {
+                  "type": "boolean",
+                  "markdownDescription": "report uses of too-new standard library symbols\n\nThe stdversion analyzer reports references to symbols in the standard\nlibrary that were introduced by a Go release higher than the one in\nforce in the referring file. (Recall that the file's Go version is\ndefined by the 'go' directive its module's go.mod file, or by a\n\"//go:build go1.X\" build tag at the top of the file.)\n\nThe analyzer does not report a diagnostic for a reference to a \"too\nnew\" field or method of a type that is itself \"too new\", as this may\nhave false positives, for example if fields or methods are accessed\nthrough a type alias that is guarded by a Go version constraint.\n",
+                  "default": true
+                },
+                "stringintconv": {
+                  "type": "boolean",
+                  "markdownDescription": "check for string(int) conversions\n\nThis checker flags conversions of the form string(x) where x is an integer\n(but not byte or rune) type. Such conversions are discouraged because they\nreturn the UTF-8 representation of the Unicode code point x, and not a decimal\nstring representation of x as one might expect. Furthermore, if x denotes an\ninvalid code point, the conversion cannot be statically rejected.\n\nFor conversions that intend on using the code point, consider replacing them\nwith string(rune(x)). Otherwise, strconv.Itoa and its equivalents return the\nstring representation of the value in the desired base.",
+                  "default": true
+                },
+                "structtag": {
+                  "type": "boolean",
+                  "markdownDescription": "check that struct field tags conform to reflect.StructTag.Get\n\nAlso report certain struct tags (json, xml) used with unexported fields.",
+                  "default": true
+                },
+                "stubmethods": {
+                  "type": "boolean",
+                  "markdownDescription": "detect missing methods and fix with stub implementations\n\nThis analyzer detects type-checking errors due to missing methods\nin assignments from concrete types to interface types, and offers\na suggested fix that will create a set of stub methods so that\nthe concrete type satisfies the interface.\n\nFor example, this function will not compile because the value\nNegativeErr{} does not implement the \"error\" interface:\n\n\tfunc sqrt(x float64) (float64, error) {\n\t\tif x < 0 {\n\t\t\treturn 0, NegativeErr{} // error: missing method\n\t\t}\n\t\t...\n\t}\n\n\ttype NegativeErr struct{}\n\nThis analyzer will suggest a fix to declare this method:\n\n\t// Error implements error.Error.\n\tfunc (NegativeErr) Error() string {\n\t\tpanic(\"unimplemented\")\n\t}\n\n(At least, it appears to behave that way, but technically it\ndoesn't use the SuggestedFix mechanism and the stub is created by\nlogic in gopls's golang.stub function.)",
+                  "default": true
+                },
+                "testinggoroutine": {
+                  "type": "boolean",
+                  "markdownDescription": "report calls to (*testing.T).Fatal from goroutines started by a test\n\nFunctions that abruptly terminate a test, such as the Fatal, Fatalf, FailNow, and\nSkip{,f,Now} methods of *testing.T, must be called from the test goroutine itself.\nThis checker detects calls to these functions that occur within a goroutine\nstarted by the test. For example:\n\n\tfunc TestFoo(t *testing.T) {\n\t    go func() {\n\t        t.Fatal(\"oops\") // error: (*T).Fatal called from non-test goroutine\n\t    }()\n\t}",
+                  "default": true
+                },
+                "tests": {
+                  "type": "boolean",
+                  "markdownDescription": "check for common mistaken usages of tests and examples\n\nThe tests checker walks Test, Benchmark, Fuzzing and Example functions checking\nmalformed names, wrong signatures and examples documenting non-existent\nidentifiers.\n\nPlease see the documentation for package testing in golang.org/pkg/testing\nfor the conventions that are enforced for Tests, Benchmarks, and Examples.",
+                  "default": true
+                },
+                "timeformat": {
+                  "type": "boolean",
+                  "markdownDescription": "check for calls of (time.Time).Format or time.Parse with 2006-02-01\n\nThe timeformat checker looks for time formats with the 2006-02-01 (yyyy-dd-mm)\nformat. Internationally, \"yyyy-dd-mm\" does not occur in common calendar date\nstandards, and so it is more likely that 2006-01-02 (yyyy-mm-dd) was intended.",
+                  "default": true
+                },
+                "undeclaredname": {
+                  "type": "boolean",
+                  "markdownDescription": "suggested fixes for \"undeclared name: <>\"\n\nThis checker provides suggested fixes for type errors of the\ntype \"undeclared name: <>\". It will either insert a new statement,\nsuch as:\n\n\t<> :=\n\nor a new function declaration, such as:\n\n\tfunc <>(inferred parameters) {\n\t\tpanic(\"implement me!\")\n\t}",
+                  "default": true
+                },
+                "unmarshal": {
+                  "type": "boolean",
+                  "markdownDescription": "report passing non-pointer or non-interface values to unmarshal\n\nThe unmarshal analysis reports calls to functions such as json.Unmarshal\nin which the argument type is not a pointer or an interface.",
+                  "default": true
+                },
+                "unreachable": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unreachable code\n\nThe unreachable analyzer finds statements that execution can never reach\nbecause they are preceded by an return statement, a call to panic, an\ninfinite loop, or similar constructs.",
+                  "default": true
+                },
+                "unsafeptr": {
+                  "type": "boolean",
+                  "markdownDescription": "check for invalid conversions of uintptr to unsafe.Pointer\n\nThe unsafeptr analyzer reports likely incorrect uses of unsafe.Pointer\nto convert integers to pointers. A conversion from uintptr to\nunsafe.Pointer is invalid if it implies that there is a uintptr-typed\nword in memory that holds a pointer value, because that word will be\ninvisible to stack copying and to the garbage collector.",
+                  "default": true
+                },
+                "unusedparams": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unused parameters of functions\n\nThe unusedparams analyzer checks functions to see if there are\nany parameters that are not being used.\n\nTo ensure soundness, it ignores:\n  - \"address-taken\" functions, that is, functions that are used as\n    a value rather than being called directly; their signatures may\n    be required to conform to a func type.\n  - exported functions or methods, since they may be address-taken\n    in another package.\n  - unexported methods whose name matches an interface method\n    declared in the same package, since the method's signature\n    may be required to conform to the interface type.\n  - functions with empty bodies, or containing just a call to panic.\n  - parameters that are unnamed, or named \"_\", the blank identifier.\n\nThe analyzer suggests a fix of replacing the parameter name by \"_\",\nbut in such cases a deeper fix can be obtained by invoking the\n\"Refactor: remove unused parameter\" code action, which will\neliminate the parameter entirely, along with all corresponding\narguments at call sites, while taking care to preserve any side\neffects in the argument expressions; see\nhttps://github.com/golang/tools/releases/tag/gopls%2Fv0.14.",
+                  "default": true
+                },
+                "unusedresult": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unused results of calls to some functions\n\nSome functions like fmt.Errorf return a result and have no side\neffects, so it is always a mistake to discard the result. Other\nfunctions may return an error that must not be ignored, or a cleanup\noperation that must be called. This analyzer reports calls to\nfunctions like these when the result of the call is ignored.\n\nThe set of functions may be controlled using flags.",
+                  "default": true
+                },
+                "unusedvariable": {
+                  "type": "boolean",
+                  "markdownDescription": "check for unused variables and suggest fixes",
+                  "default": false
+                },
+                "unusedwrite": {
+                  "type": "boolean",
+                  "markdownDescription": "checks for unused writes\n\nThe analyzer reports instances of writes to struct fields and\narrays that are never read. Specifically, when a struct object\nor an array is copied, its elements are copied implicitly by\nthe compiler, and any element write to this copy does nothing\nwith the original object.\n\nFor example:\n\n\ttype T struct { x int }\n\n\tfunc f(input []T) {\n\t\tfor i, v := range input {  // v is a copy\n\t\t\tv.x = i  // unused write to field x\n\t\t}\n\t}\n\nAnother example is about non-pointer receiver:\n\n\ttype T struct { x int }\n\n\tfunc (t T) f() {  // t is a copy\n\t\tt.x = i  // unused write to field x\n\t}",
+                  "default": true
+                },
+                "useany": {
+                  "type": "boolean",
+                  "markdownDescription": "check for constraints that could be simplified to \"any\"",
+                  "default": false
+                }
+              }
+            },
+            "ui.diagnostic.analysisProgressReporting": {
+              "type": "boolean",
+              "markdownDescription": "analysisProgressReporting controls whether gopls sends progress\nnotifications when construction of its index of analysis facts is taking a\nlong time. Cancelling these notifications will cancel the indexing task,\nthough it will restart after the next change in the workspace.\n\nWhen a package is opened for the first time and heavyweight analyses such as\nstaticcheck are enabled, it can take a while to construct the index of\nanalysis facts for all its dependencies. The index is cached in the\nfilesystem, so subsequent analysis should be faster.\n",
+              "default": true,
+              "scope": "resource"
+            },
+            "ui.diagnostic.annotations": {
+              "type": "object",
+              "markdownDescription": "(Experimental) annotations specifies the various kinds of optimization diagnostics\nthat should be reported by the gc_details command.\n",
+              "scope": "resource",
+              "properties": {
+                "bounds": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"bounds\"` controls bounds checking diagnostics.\n",
+                  "default": true
+                },
+                "escape": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"escape\"` controls diagnostics about escape choices.\n",
+                  "default": true
+                },
+                "inline": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"inline\"` controls diagnostics about inlining choices.\n",
+                  "default": true
+                },
+                "nil": {
+                  "type": "boolean",
+                  "markdownDescription": "`\"nil\"` controls nil checks.\n",
+                  "default": true
+                }
+              }
+            },
+            "ui.diagnostic.diagnosticsDelay": {
+              "type": "string",
+              "markdownDescription": "(Advanced) diagnosticsDelay controls the amount of time that gopls waits\nafter the most recent file modification before computing deep diagnostics.\nSimple diagnostics (parsing and type-checking) are always run immediately\non recently modified packages.\n\nThis option must be set to a valid duration string, for example `\"250ms\"`.\n",
+              "default": "1s",
+              "scope": "resource"
+            },
+            "ui.diagnostic.diagnosticsTrigger": {
+              "type": "string",
+              "markdownDescription": "(Experimental) diagnosticsTrigger controls when to run diagnostics.\n",
+              "enum": [
+                "Edit",
+                "Save"
+              ],
+              "markdownEnumDescriptions": [
+                "`\"Edit\"`: Trigger diagnostics on file edit and save. (default)\n",
+                "`\"Save\"`: Trigger diagnostics only on file save. Events like initial workspace load\nor configuration change will still trigger diagnostics.\n"
+              ],
+              "default": "Edit",
+              "scope": "resource"
+            },
+            "ui.diagnostic.staticcheck": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) staticcheck enables additional analyses from staticcheck.io.\nThese analyses are documented on\n[Staticcheck's website](https://staticcheck.io/docs/checks/).\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "ui.documentation.hoverKind": {
+              "type": "string",
+              "markdownDescription": "hoverKind controls the information that appears in the hover text.\nSingleLine and Structured are intended for use only by authors of editor plugins.\n",
+              "enum": [
+                "FullDocumentation",
+                "NoDocumentation",
+                "SingleLine",
+                "Structured",
+                "SynopsisDocumentation"
+              ],
+              "markdownEnumDescriptions": [
+                "",
+                "",
+                "",
+                "`\"Structured\"` is an experimental setting that returns a structured hover format.\nThis format separates the signature from the documentation, so that the client\ncan do more manipulation of these fields.\n\nThis should only be used by clients that support this behavior.\n",
+                ""
+              ],
+              "default": "FullDocumentation",
+              "scope": "resource"
+            },
+            "ui.documentation.linkTarget": {
+              "type": "string",
+              "markdownDescription": "linkTarget controls where documentation links go.\nIt might be one of:\n\n* `\"godoc.org\"`\n* `\"pkg.go.dev\"`\n\nIf company chooses to use its own `godoc.org`, its address can be used as well.\n\nModules matching the GOPRIVATE environment variable will not have\ndocumentation links in hover.\n",
+              "default": "pkg.go.dev",
+              "scope": "resource"
+            },
+            "ui.documentation.linksInHover": {
+              "type": "boolean",
+              "markdownDescription": "linksInHover controls the presence of documentation links\nin hover markdown.\n\nIts legal values are:\n- `false`, for no links;\n- `true`, for links to the `linkTarget` domain; or\n- `\"gopls\"`, for links to gopls' internal documentation viewer.\n",
+              "default": true,
+              "scope": "resource"
+            },
+            "ui.navigation.importShortcut": {
+              "type": "string",
+              "markdownDescription": "importShortcut specifies whether import statements should link to\ndocumentation or go to definitions.\n",
+              "enum": [
+                "Both",
+                "Definition",
+                "Link"
+              ],
+              "markdownEnumDescriptions": [
+                "",
+                "",
+                ""
+              ],
+              "default": "Both",
+              "scope": "resource"
+            },
+            "ui.navigation.symbolMatcher": {
+              "type": "string",
+              "markdownDescription": "(Advanced) symbolMatcher sets the algorithm that is used when finding workspace symbols.\n",
+              "enum": [
+                "CaseInsensitive",
+                "CaseSensitive",
+                "FastFuzzy",
+                "Fuzzy"
+              ],
+              "markdownEnumDescriptions": [
+                "",
+                "",
+                "",
+                ""
+              ],
+              "default": "FastFuzzy",
+              "scope": "resource"
+            },
+            "ui.navigation.symbolScope": {
+              "type": "string",
+              "markdownDescription": "symbolScope controls which packages are searched for workspace/symbol\nrequests. When the scope is \"workspace\", gopls searches only workspace\npackages. When the scope is \"all\", gopls searches all loaded packages,\nincluding dependencies and the standard library.\n",
+              "enum": [
+                "all",
+                "workspace"
+              ],
+              "markdownEnumDescriptions": [
+                "`\"all\"` matches symbols in any loaded package, including\ndependencies.\n",
+                "`\"workspace\"` matches symbols in workspace packages only.\n"
+              ],
+              "default": "all",
+              "scope": "resource"
+            },
+            "ui.navigation.symbolStyle": {
+              "type": "string",
+              "markdownDescription": "(Advanced) symbolStyle controls how symbols are qualified in symbol responses.\n\nExample Usage:\n\n```json5\n\"gopls\": {\n...\n  \"symbolStyle\": \"Dynamic\",\n...\n}\n```\n",
+              "enum": [
+                "Dynamic",
+                "Full",
+                "Package"
+              ],
+              "markdownEnumDescriptions": [
+                "`\"Dynamic\"` uses whichever qualifier results in the highest scoring\nmatch for the given symbol query. Here a \"qualifier\" is any \"/\" or \".\"\ndelimited suffix of the fully qualified symbol. i.e. \"to/pkg.Foo.Field\" or\njust \"Foo.Field\".\n",
+                "`\"Full\"` is fully qualified symbols, i.e.\n\"path/to/pkg.Foo.Field\".\n",
+                "`\"Package\"` is package qualified symbols i.e.\n\"pkg.Foo.Field\".\n"
+              ],
+              "default": "Dynamic",
+              "scope": "resource"
+            },
+            "ui.noSemanticNumber": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) noSemanticNumber  turns off the sending of the semantic token 'number'\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "ui.noSemanticString": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) noSemanticString turns off the sending of the semantic token 'string'\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "ui.semanticTokens": {
+              "type": "boolean",
+              "markdownDescription": "(Experimental) semanticTokens controls whether the LSP server will send\nsemantic tokens to the client.\n",
+              "default": false,
+              "scope": "resource"
+            },
+            "verboseOutput": {
+              "type": "boolean",
+              "markdownDescription": "(For Debugging) verboseOutput enables additional debug logging.\n",
+              "default": false,
+              "scope": "resource"
+            }
+          }
+        },
+        "gno.diagnostic.vulncheck": {
+          "type": "string",
+          "markdownDescription": "(Experimental) vulncheck enables vulnerability scanning.\n",
+          "enum": [
+            "Imports",
+            "Off"
+          ],
+          "markdownEnumDescriptions": [
+            "`\"Imports\"`: In Imports mode, `gopls` will report vulnerabilities that affect packages\ndirectly and indirectly used by the analyzed main module.\n",
+            "`\"Off\"`: Disable vulnerability analysis.\n"
+          ],
+          "default": "Off",
+          "scope": "resource"
+        },
+        "gno.inlayHints.assignVariableTypes": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for variable types in assign statements:\n```go\n\ti/* int*/, j/* int*/ := 0, len(r)-1\n```",
+          "default": false
+        },
+        "gno.inlayHints.compositeLiteralFields": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for composite literal field names:\n```go\n\t{/*in: */\"Hello, world\", /*want: */\"dlrow ,olleH\"}\n```",
+          "default": false
+        },
+        "gno.inlayHints.compositeLiteralTypes": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for composite literal types:\n```go\n\tfor _, c := range []struct {\n\t\tin, want string\n\t}{\n\t\t/*struct{ in string; want string }*/{\"Hello, world\", \"dlrow ,olleH\"},\n\t}\n```",
+          "default": false
+        },
+        "gno.inlayHints.constantValues": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for constant values:\n```go\n\tconst (\n\t\tKindNone   Kind = iota/* = 0*/\n\t\tKindPrint/*  = 1*/\n\t\tKindPrintf/* = 2*/\n\t\tKindErrorf/* = 3*/\n\t)\n```",
+          "default": false
+        },
+        "gno.inlayHints.functionTypeParameters": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for implicit type parameters on generic functions:\n```go\n\tmyFoo/*[int, string]*/(1, \"hello\")\n```",
+          "default": false
+        },
+        "gno.inlayHints.parameterNames": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for parameter names:\n```go\n\tparseInt(/* str: */ \"123\", /* radix: */ 8)\n```",
+          "default": false
+        },
+        "gno.inlayHints.rangeVariableTypes": {
+          "type": "boolean",
+          "markdownDescription": "Enable/disable inlay hints for variable types in range statements:\n```go\n\tfor k/* int*/, v/* string*/ := range []string{} {\n\t\tfmt.Println(k, v)\n\t}\n```",
+          "default": false
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "gno.test.refresh",
+          "when": "false"
+        },
+        {
+          "command": "gno.test.showProfiles",
+          "when": "false"
+        },
+        {
+          "command": "gno.test.captureProfile",
+          "when": "false"
+        },
+        {
+          "command": "gno.test.deleteProfile",
+          "when": "false"
+        },
+        {
+          "command": "gno.test.showProfileFile",
+          "when": "false"
+        },
+        {
+          "command": "gno.explorer.refresh",
+          "when": "false"
+        },
+        {
+          "command": "gno.explorer.open",
+          "when": "false"
+        }
+      ],
+      "debug/callstack/context": [
+        {
+          "command": "gno.debug.toggleHideSystemGoroutines",
+          "when": "debugType == 'gno' && callStackItemType == 'stackFrame' || (callStackItemType == 'thread' && callStackItemStopped)"
+        }
+      ],
+      "editor/context": [
+        {
+          "when": "editorTextFocus && config.go.editorContextMenuCommands.toggleTestFile && resourceLangId == gno",
+          "command": "gno.toggle.test.file",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.addPackage && resourceLangId == gno",
+          "command": "gno.maketx.addpkg",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.addTags && resourceLangId == gno",
+          "command": "gno.add.tags",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.removeTags && resourceLangId == gno",
+          "command": "gno.remove.tags",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testAtCursor && resourceLangId == gno",
+          "command": "gno.test.cursor",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.benchmarkAtCursor && resourceLangId == gno",
+          "command": "gno.benchmark.cursor",
+          "group": "Go group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testFile && resourceLangId == gno",
+          "command": "gno.test.file",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testPackage && resourceLangId == gno",
+          "command": "gno.test.package",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForFunction && resourceLangId == gno",
+          "command": "gno.test.generate.function",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForFile && resourceLangId == gno",
+          "command": "gno.test.generate.file",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForPackage && resourceLangId == gno",
+          "command": "gno.test.generate.package",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.addImport && resourceLangId == gno",
+          "command": "gno.import.add",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testCoverage && resourceLangId == gno",
+          "command": "gno.test.coverage",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && config.gno.editorContextMenuCommands.playground && resourceLangId == gno",
+          "command": "gno.playground",
+          "group": "Gno group 1"
+        },
+        {
+          "when": "editorTextFocus && resourceLangId == gno",
+          "command": "gno.show.commands",
+          "group": "Gno group 2"
+        }
+      ],
+      "testing/item/context": [
+        {
+          "command": "gno.test.refresh",
+          "when": "testId in gno.tests",
+          "group": "inline"
+        },
+        {
+          "command": "gno.test.showProfiles",
+          "when": "testId in gno.profiledTests",
+          "group": "profile"
+        },
+        {
+          "command": "gno.test.captureProfile",
+          "when": "testId in gno.tests && testId =~ /\\?(test|benchmark)/",
+          "group": "profile"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "gno.explorer.refresh",
+          "when": "view == gno.explorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "gno.test.deleteProfile",
+          "when": "viewItem == gno:test:file"
+        },
+        {
+          "command": "gno.explorer.open",
+          "when": "viewItem == gno:explorer:envfile",
+          "group": "inline"
+        },
+        {
+          "command": "gno.workspace.editEnv",
+          "when": "viewItem =~ /(gno:explorer:envtree|gno:explorer:envitem)/ && workspaceFolderCount > 0",
+          "group": "inline"
+        },
+        {
+          "command": "gno.workspace.resetEnv",
+          "when": "viewItem =~ /gno:explorer:env/ && workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "gno.explorer",
+          "name": "gno",
+          "icon": "media/gno-logo-dark.png",
+          "when": "gno.showExplorer"
+        }
+      ],
+      "test": [
+        {
+          "id": "gno.test.profile",
+          "name": "Profiles",
+          "contextualTitle": "Gno",
+          "icon": "$(graph)",
+          "when": "gno.hasProfiles"
+        }
+      ]
+    },
+    "taskDefinitions": [
+      {
+        "type": "gno",
+        "required": [
+          "command"
+        ],
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "the name of gno task"
+          },
+          "command": {
+            "type": "string",
+            "description": "gno command to run",
+            "enum": [
+              "build",
+              "test"
+            ],
+            "enumDescriptions": [
+              "gno build",
+              "gno test"
+            ],
+            "default": "build"
+          },
+          "args": {
+            "type": "array",
+            "description": "additional arguments to pass to the go command (including the build target)",
+            "items": {
+              "type": "string"
+            }
+          },
+          "options": {
+            "type": "object",
+            "description": "additional command options",
+            "properties": {
+              "cwd": {
+                "type": "string",
+                "description": "the current working directory of the executed program or script. If omitted Code's current workspace root is used."
+              },
+              "env": {
+                "type": "object",
+                "markdownDescription": "Environment variables in the format of \"name\": \"value\"."
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
