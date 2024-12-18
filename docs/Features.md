@@ -31,7 +31,7 @@ This document describes the features supported by this extension.
 
 The default syntax highlighting for gno files is implemented in Visual Studio Code using TextMate grammar, not by this extension.
 
-<div style="text-align: center;"><img src="images/gotmpl.gif" alt="Enable Gno template language support by changing the language ID" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/Highliting.png" alt="" style="width: 75%"> </div>
 
 ## Formatting
 
@@ -39,13 +39,17 @@ Format code and organize imports, either manually or on save.
 
 The extension formats `gno` code, organizes imports, and removes unused imports by default. For different behavior.
 - **Organizing imports**
-When organizing imports, the imported packages are grouped in the default `gnoimports` style. 
+When organizing imports, the imported packages are grouped in the default `gnoimports` style.
+
+<div style="text-align: center;"><img src="images/formated.gif" alt="" style="width: 75%"> </div>
 
 ## IntelliSense   
 
 - **Code completion**: Suggestions appear as you type.
 - **Signature help**: Displays function parameters as you type.
 - **Quick info**: Shows documentation when hovering over symbols.
+
+<div style="text-align: center;"><img src="images/Intellisense.gif" alt="" style="width: 75%"> </div>
 
 ## Transpile
 
@@ -64,9 +68,12 @@ Runs all unit tests in a specified Gno package to verify the functionality of th
 ### Test File
 
 Executes all tests within a specific `gno` test 
+
 #### Test Function 
 
 Test a specific function
+
+<div style="text-align: center;"><img src="images/Test-function.gif" alt="" style="width: 75%"> </div>
 
 #### Test At Cursor 
 
@@ -88,7 +95,7 @@ Find or go to the references of a symbol.
 
 Find the concrete types that implement a given interface.
 
-<div style="text-align: center;"><img src="images/" alt="Go to implementations for Server" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/find-implementation.gif" alt="Go to implementations for Server" style="width: 75%"> </div>
 
 
 
@@ -98,25 +105,23 @@ Find the concrete types that implement a given interface.
 
 Jump to or peek a symbol's declaration.
 
-<div style="text-align: center;"><img src="images/gnotodefinition.gif" alt="Go to definition using the context menu" style="width: 75%"> </div>
 
 ## Call Hierarchy
 
 Show all calls from or to a function.
 
-<div style="text-align: center;"><img src="images/callhierarchy.gif" alt="Show call hierarchy and investigate callers of a function" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/Call-Hierarchy.gif" alt="Show call hierarchy and investigate callers of a function" style="width: 75%"> </div>
 
 ## Toggle Between Code And Tests
 
 Quickly toggle between a file and its corresponding test file by using the [`Gno: Toggle Test File`](commands.md#go-toggle-test-file) command.
 
-<div style="text-align: center;"><img src="images/toggletestfile.gif" alt="Toggle between reverse.go and reverse_test.go" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/Toggle-Between-Code-And-Tests.gif" alt="Toggle between reverse.go and reverse_test.go" style="width: 75%"> </div>
 
 ## Add Import
 
 The extension organizes imports automatically and can add missing imports if the package is present in your module cache already. 
 
-<div style="text-align: center;"><img src="images/addimport.gif" alt="Add byte import to Go file" style="width: 75%"> </div>
 
 
 ### [Rename symbol](https://code.visualstudio.com/docs/editor/refactoring#_rename-symbol)
@@ -127,12 +132,12 @@ Rename all occurrences of a symbol in your workspace.
 
 This feature is not available if you are using  **without** [`gnopls`](https://github.com/gnoverse/gnopls), the Go language server.
 
-<div style="text-align: center;"><img src="images/rename.gif" alt="Rename an exported variable in gno" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/Rename-Symbol.gif" alt="Rename an exported variable in gno" style="width: 75%"> </div>
 
 
 ## Refactor
 
 Select the area for refactoring (e.g. variable, function body, etc). Click on the Code Action light bulb icon
 that appears in the selected area, or select "Refactoring..." or "Rename Symbol" from the VS Code Context menu.
-<div style="text-align: center;"><img src="images/extract-variable.gif" alt="Extract to variable followed by a rename" style="width: 75%"> </div>
+<div style="text-align: center;"><img src="images/refactor.gif" alt="" style="width: 75%"> </div>
 
