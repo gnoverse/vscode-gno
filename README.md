@@ -1,3 +1,4 @@
+
 # Gno for Visual Studio Code
 
 The VS Code Gno extension provides rich language support for the [Gno Programming Language](https://github.com/gnolang/gno)
@@ -18,10 +19,16 @@ Whether you are new to Gno or an experienced Gno developer, we hope this extensi
     git clone https://github.com/gnoverse/vscode-gno
     cd vscode-gno/extension
     npm ci
+    cd ..
     code .
     ```
 3. To run the extension, open the Run view (Ctrl+Shift+D or ⌘+⇧+D), select Launch Extension, and click the Play button (F5).
-This will open a new VS Code window with the title [Extension Development Host]. You can then open a folder that contains Gno code and try.
+<div style="text-align: center;"><img src="docs/images/run-extension.png" alt="How to launch"  style="width: 75%"> </div>
+
+This will open a new VS Code window with the title [Extension Development Host].You can then open a folder that contains Gno code and try.
+
+<div style="text-align: center;"><img src="docs/images/reload-extension.png" alt="reload-extension"  style="width: 75%"> </div>
+
 4. The extension depends on gno, gnopls [the Gno language server](https://github.com/gnoverse/gnopls). If gnopls is missing, the extension will try to install it.
 
 You are ready to Gno :-)    🎉🎉🎉
@@ -55,3 +62,15 @@ Table showing the new features of this plugin compared with the old version.
 | Auto Install Missing Tools | ❌ |✅|
 | Lint | ❌ |⏳|
 
+
+
+## Issues and Feedback
+
+If you encounter any issues or have suggestions for improvements:
+
+- Open an issue on the [GitHub repository](https://github.com/gnoverse/vscode-gno).
+- Join the [gnolang](https://github.com/gnolang) community for discussions.
+
+# License 
+
+[MIT](https://github.com/golang/vscode-go/blob/master/LICENSE)
