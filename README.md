@@ -73,4 +73,4 @@ If you encounter any issues or have suggestions for improvements:
 
 # License 
 
-[MIT](https://github.com/gnoverse/vscode-gno/LICENCE)
+[MIT](https://github.com/gnoverse/vscode-gno/blob/main/LICENSE)
