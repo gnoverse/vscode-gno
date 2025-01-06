@@ -14,17 +14,10 @@ import vscode = require('vscode');
 import fs = require('fs');
 
 import { toolExecutionEnvironment } from './gnoEnv';
-import { getCurrentPackage } from './gnoModules';
 import { GoDocumentSymbolProvider } from './gnoDocumentSymbols';
-import { getNonVendorPackages } from './gnoPackages';
-import { getBinPath, getCurrentGoPath, getTempFilePath, LineBuffer, resolvePath } from './util';
+import { getBinPath, LineBuffer, resolvePath } from './util';
 import { parseEnvFile } from './utils/envUtils';
-import {
-	getEnvPath,
-	expandFilePathInOutput,
-	getCurrentGoRoot,
-	getCurrentGoWorkspaceFromGOPATH
-} from './utils/pathUtils';
+import { getEnvPath } from './utils/pathUtils';
 import { killProcessTree } from './utils/processUtils';
 import { GoExtensionContext } from './context';
 
@@ -46,12 +39,6 @@ const runningTestProcesses: cp.ChildProcess[] = [];
 // & go unicode package's uppercase detection. But hopefully
 // these will be replaced by gopls's codelens computation soon.
 const testFuncRegex = /^Test$|^Test\P{Ll}.*/u;
-//const testFuncRegex = /^Test$|^Test\P{Ll}.*|^Example$|^Example\P{Ll}.*/u;
-//const testMethodRegex = /^\(([^)]+)\)\.(Test|Test\P{Ll}.*)$/u;
-//const benchmarkRegex = /^Benchmark$|^Benchmark\P{Ll}.*/u;
-//const fuzzFuncRegx = /^Fuzz$|^Fuzz\P{Ll}.*/u;
-//const testMainRegex = /TestMain\(.*\*testing.M\)/;
-//const runTestSuiteRegex = /^\s*suite\.Run\(\w+,\s*(?:&?(?<type1>\w+)\{|new\((?<type2>\w+)\))/mu;
 
 /**
  * Input to goTest.

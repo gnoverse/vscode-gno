@@ -9,7 +9,6 @@
 'use strict';
 
 import { extensionInfo, getGnoConfig } from './config';
-import { browsePackages } from './gnoBrowsePackage';
 import { notifyIfGeneratedFile, removeTestStatus } from './gnoCheck';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
@@ -17,7 +16,6 @@ import {
 	offerToInstallLatestGoVersion,
 	setEnvironmentVariableCollection
 } from './gnoEnvironmentStatus';
-import * as goGenerateTests from './gnoGenerateTests';
 import { addImport, addImportToWorkspace } from './gnoImport';
 import { installCurrentPackage } from './gnoInstall';
 import {
@@ -31,7 +29,6 @@ import { RestartReason, showServerOutputChannel, watchLanguageServerConfiguratio
 import { lintCode } from './gnoLint';
 import { GO_MODE } from './gnoMode';
 import { GO111MODULE, goModInit } from './gnoModules';
-import { playgroundCommand } from './gnoPlayground';
 import { GoRunTestCodeLensProvider } from './gnoRunTestCodelens';
 import { disposeGoStatusBar, expandGoStatusBar, outputChannel, updateGoStatusBar } from './gnoStatus';
 import {
@@ -152,7 +149,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.import.add', addImport);
 	registerCommand('gno.add.package.workspace', addImportToWorkspace);
 	registerCommand('gno.tools.install', commands.installTools);
-	registerCommand('gno.browse.packages', browsePackages);
 	registerCommand('gno.maketx.addpkg', addPackage());
 
 	if (isVscodeTestingAPIAvailable && cfg.get<boolean>('testExplorer.enable')) {
@@ -161,13 +157,8 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 
 	GoExplorerProvider.setup(ctx);
 
-	registerCommand('gno.test.generate.package', goGenerateTests.generateTestCurrentPackage);
-	registerCommand('gno.test.generate.file', goGenerateTests.generateTestCurrentFile);
-	registerCommand('gno.test.generate.function', goGenerateTests.generateTestCurrentFunction);
-	registerCommand('gno.toggle.test.file', goGenerateTests.toggleTestFile);
 	registerCommand('gno.debug.startSession', commands.startDebugSession);
 	registerCommand('gno.show.commands', commands.showCommands);
-	registerCommand('gno.playground', playgroundCommand);
 	registerCommand('gno.lint.package', lintCode('package'));
 	registerCommand('gno.lint.workspace', lintCode('workspace'));
 	registerCommand('gno.lint.file', lintCode('file'));
