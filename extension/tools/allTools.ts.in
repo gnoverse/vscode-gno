@@ -1,6 +1,6 @@
 import moment = require('moment');
 import semver = require('semver');
-import { Tool } from './goTools';
+import { Tool } from './gnoTools';
 
 export const allToolsInformation: { [key: string]: Tool } = {
 	'gofumpt': {
@@ -18,9 +18,8 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		modulePath: 'github.com/gnoverse/gnopls@latest',
 		replacedByGopls: false, // lol
 		isImportant: true,
-		description: 'Language Server from Google',
+		description: 'Language Server from gnolang',
 		usePrereleaseInPreviewMode: true,
-		minimumGoVersion: semver.coerce('1.19'),
 		latestVersion: semver.parse('%s'),
 		latestVersionTimestamp: moment('%s', 'YYYY-MM-DD'),
 		latestPrereleaseVersion: semver.parse('%s'),
