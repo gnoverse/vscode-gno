@@ -10,7 +10,7 @@ import { extensionId } from './const';
 
 /** getGnoConfig is declared as an exported const rather than a function, so it can be stubbbed in testing. */
 export const getGnoConfig = (uri?: vscode.Uri) => {
-	return getConfig('go', uri);
+	return getConfig('gno', uri);
 };
 
 /** getGnoplsConfig returns the user's gopls configuration. */

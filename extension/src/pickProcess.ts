@@ -104,7 +104,7 @@ async function getGoProcesses(): Promise<AttachItem[]> {
 	const goRuntimePath = getBinPath('gno');
 	if (!goRuntimePath) {
 		vscode.window.showErrorMessage(
-			`Failed to run "go version" as the "go" binary cannot be found in either GOROOT(${getCurrentGoRoot()}) or PATH(${getEnvPath()})`
+			`Failed to run "gno version" as the "gno" binary cannot be found in either GNOROOT(${getCurrentGoRoot()}) or PATH(${getEnvPath()})`
 		);
 		return processes;
 	}
@@ -133,7 +133,7 @@ async function getGoProcesses(): Promise<AttachItem[]> {
 
 export function parseGoVersionOutput(stdout: string): string[] {
 	const goProcessExes: string[] = [];
-	const goVersionRegexp = /: go\d+\.\d+(\.\d+)?$/;
+	const goVersionRegexp = /: gno\d+\.\d+(\.\d+)?$/;
 
 	const lines = stdout.toString().split('\n');
 	lines.forEach((line) => {

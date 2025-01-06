@@ -19,11 +19,11 @@ import { GoExtensionContext } from './context';
 import { CommandFactory } from './commands';
 import { LanguageClient, State } from 'vscode-languageclient/node';
 
-export const outputChannel = vscode.window.createOutputChannel('Go', {
+export const outputChannel = vscode.window.createOutputChannel('Gno', {
 	log: true
 });
 
-const STATUS_BAR_ITEM_NAME = 'Go Diagnostics';
+const STATUS_BAR_ITEM_NAME = 'Gno Diagnostics';
 export const diagnosticsStatusBarItem = vscode.window.createStatusBarItem(
 	STATUS_BAR_ITEM_NAME,
 	vscode.StatusBarAlignment.Left

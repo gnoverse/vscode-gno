@@ -109,13 +109,5 @@ export function check(
 		);
 	}
 
-	if (goConfig['coverOnSave']) {
-		runTest().then((success) => {
-			if (!success) {
-				return [];
-			}
-		});
-	}
-
 	return Promise.all(runningToolsPromises);
 }

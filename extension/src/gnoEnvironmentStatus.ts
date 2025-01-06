@@ -61,14 +61,14 @@ function canChooseGoEnvironment() {
 	if (getGnoConfig().get('gnoroot')) {
 		return {
 			ok: false,
-			reason: 'Switching Gno version when "go.goroot" is set is unsupported.'
+			reason: 'Switching Gno version when "gno.gnoroot" is set is unsupported.'
 		};
 	}
 
 	if (process.env['GNOROOT']) {
 		return {
 			ok: false,
-			reason: 'Switching Gno version when process.env["GOROOT"] is set is unsupported.'
+			reason: 'Switching Gno version when process.env["GNOROOT"] is set is unsupported.'
 		};
 	}
 
@@ -109,7 +109,7 @@ export const chooseGoEnvironment: CommandFactory = () => async () => {
 	const clearOption: vscode.QuickPickItem = { label: CLEAR_SELECTION };
 	const filePickerOption: vscode.QuickPickItem = {
 		label: CHOOSE_FROM_FILE_BROWSER,
-		description: 'Select the go binary to use'
+		description: 'Select the gno binary to use'
 	};
 	// TODO(hyangah): Add separators after clearOption if github.com/microsoft/vscode#74967 is resolved.
 	const options = [filePickerOption, clearOption, ...defaultQuickPick, ...goSDKOptions, ...uninstalledOptions].reduce(
@@ -152,12 +152,12 @@ export async function setSelectedGo(goOption: vscode.QuickPickItem, promptReload
 		if (!!go && (go.binaryPath === o.binpath || 'Gno ' + go.format() === o.label)) {
 			return false;
 		}
-		await updateWorkspaceState('selectedGo', o);
+		await updateWorkspaceState('selectedGno', o);
 	} else if (goOption.label === CLEAR_SELECTION) {
 		if (!getSelectedGo()) {
 			return false; // do nothing.
 		}
-		await updateWorkspaceState('selectedGo', undefined);
+		await updateWorkspaceState('selectedGno', undefined);
 	} else if (goOption.label === CHOOSE_FROM_FILE_BROWSER) {
 		const currentGOROOT = getCurrentGoRoot();
 		const defaultUri = currentGOROOT ? vscode.Uri.file(path.join(currentGOROOT, 'bin')) : undefined;
@@ -184,7 +184,7 @@ export async function setSelectedGo(goOption: vscode.QuickPickItem, promptReload
 		let newGo: GoVersion | undefined;
 		try {
 			newGo = await getGoVersion(newGoBin);
-			await updateWorkspaceState('selectedGo', new GoEnvironmentOption(newGo.binaryPath, formatGoVersion(newGo)));
+			await updateWorkspaceState('selectedGno', new GoEnvironmentOption(newGo.binaryPath, formatGoVersion(newGo)));
 		} catch (e) {
 			if (!newGo || !newGo.isValid()) {
 				vscode.window.showErrorMessage(`failed to get "${newGoBin} version", invalid Gno binary:\n${e}`);
@@ -412,7 +412,7 @@ export async function updateIntegratedTerminal(terminal: vscode.Terminal): Promi
  * retreive the current selected Go from the workspace state
  */
 export function getSelectedGo(): GoEnvironmentOption {
-	return getFromWorkspaceState('selectedGo');
+	return getFromWorkspaceState('selectedGno');
 }
 
 /**
