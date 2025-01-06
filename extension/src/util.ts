@@ -787,3 +787,21 @@ export function cleanupTempDir() {
 	}
 	tmpDir = undefined;
 }
+
+export const timeMinute = 1000 * 60;
+const timeHour = timeMinute * 60;
+export const timeDay = timeHour * 24;
+
+// daysBetween returns the number of days between a and b.
+export function daysBetween(a: Date, b: Date): number {
+	return msBetween(a, b) / timeDay;
+}
+
+// minutesBetween returns the number of minutes between a and b.
+export function minutesBetween(a: Date, b: Date): number {
+	return msBetween(a, b) / timeMinute;
+}
+
+export function msBetween(a: Date, b: Date): number {
+	return Math.abs(a.getTime() - b.getTime());
+}
