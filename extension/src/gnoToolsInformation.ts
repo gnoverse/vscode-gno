@@ -16,8 +16,8 @@ export const allToolsInformation: { [key: string]: Tool } = {
 	},
 	'gnopls': {
 		name: 'gnopls',
-		importPath: 'github.com/gnoverse/gnopls@latest',
-		modulePath: 'github.com/gnoverse/gnopls@latest',
+		importPath: 'github.com/gnoverse/gnopls',
+		modulePath: 'github.com/gnoverse/gnopls',
 		replacedByGopls: false, // lol
 		isImportant: true,
 		description: 'Language Server from gnolang',

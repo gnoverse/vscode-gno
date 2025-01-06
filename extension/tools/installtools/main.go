@@ -35,11 +35,8 @@ var tools = []struct {
 	versions []finalVersion
 }{
 	// TODO: auto-generate based on allTools.ts.in.
-	{"github.com/gnoverse/gnopls@latest", "", true, nil},
-	{"github.com/cweill/gotests/gotests", "", false, nil},
-	{"github.com/haya14busa/goplay/cmd/goplay", "", false, nil},
-	{"honnef.co/go/tools/cmd/staticcheck", "", false, []finalVersion{{21, "v0.4.7"}}},
-	//{"github.com/go-delve/delve/cmd/dlv", "", false, nil},
+	{"github.com/gnoverse/gnopls", "", true, nil},
+	{"mvdan.cc/gofumpt", "", true, nil},
 }
 
 // pickVersion returns the version to install based on the supported
@@ -79,7 +76,7 @@ func exitf(format string, args ...interface{}) {
 
 // goVersion returns an integer N if go's version is 1.N.
 func goVersion() (int, error) {
-	cmd := exec.Command("gno", "list", "-e", "-f", `{{context.ReleaseTags}}`, "--", "unsafe")
+	cmd := exec.Command("go", "list", "-e", "-f", `{{context.ReleaseTags}}`, "--", "unsafe")
 	cmd.Env = append(os.Environ(), "GO111MODULE=off")
 	out, err := cmd.Output()
 	if err != nil {
@@ -103,16 +100,16 @@ func goVersion() (int, error) {
 
 // goBin returns the directory where the go command will install binaries.
 func goBin() (string, error) {
-	if gobin := os.Getenv("GNOBIN"); gobin != "" {
+	if gobin := os.Getenv("GOBIN"); gobin != "" {
 		return gobin, nil
 	}
-	out, err := exec.Command("gno", "env", "GNOPATH").Output()
+	out, err := exec.Command("go", "env", "GOPATH").Output()
 	if err != nil {
 		return "", err
 	}
 	gopaths := filepath.SplitList(strings.TrimSpace(string(out)))
 	if len(gopaths) == 0 {
-		return "", fmt.Errorf("invalid GNOPATH: %s", out)
+		return "", fmt.Errorf("invalid GOPATH: %s", out)
 	}
 	return filepath.Join(gopaths[0], "bin"), nil
 }
@@ -131,10 +128,10 @@ func installTools(binDir string, goMinorVersion int) error {
 	for _, tool := range tools {
 		ver := pickVersion(goMinorVersion, tool.versions, pickLatest(tool.path, tool.preferPreview))
 		path := tool.path + "@" + ver
-		cmd := exec.Command("gno", installCmd, path)
+		cmd := exec.Command("go", installCmd, path)
 		cmd.Env = env
 		cmd.Dir = dir
-		fmt.Println("gno", installCmd, path)
+		fmt.Println("go", installCmd, path)
 		if out, err := cmd.CombinedOutput(); err != nil {
 			return fmt.Errorf("installing %v: %s\n%v", path, out, err)
 		}
@@ -163,7 +160,7 @@ func pickLatest(toolPath string, preferPreview bool) string {
 	if !preferPreview {
 		return "latest" // should we pick the pinned version in allTools.ts.in?
 	}
-	out, err := exec.Command("gno", "list", "-m", "--versions", toolPath).Output()
+	out, err := exec.Command("go", "list", "-m", "--versions", toolPath).Output()
 	if err != nil {
 		exitf("failed to find a suitable version for %q: %v", toolPath, err)
 	}
