@@ -23,7 +23,6 @@ import {
 } from '../language/gnoLanguageServer';
 import { LegacyLanguageService } from '../language/registerDefaultProviders';
 import { Mutex } from '../utils/mutex';
-import { TelemetryService } from '../gnoTelemetry';
 
 const languageServerStartMutex = new Mutex();
 
@@ -88,11 +87,6 @@ export const startLanguageServer: CommandFactory = (ctx, goCtx) => {
 			goCtx.languageClient = await buildLanguageClient(goCtx, buildLanguageClientOption(goCtx, cfg));
 			await goCtx.languageClient.start();
 			goCtx.serverInfo = toServerInfo(goCtx.languageClient.initializeResult);
-			goCtx.telemetryService = new TelemetryService(
-				goCtx.languageClient,
-				ctx.globalState,
-				goCtx.serverInfo?.Commands
-			);
 			outputChannel.info(
 				`Running language server ${goCtx.serverInfo?.Name}(${goCtx.serverInfo?.Version}/${goCtx.serverInfo?.GoVersion})`
 			);

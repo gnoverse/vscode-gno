@@ -39,7 +39,6 @@ import {
 import util = require('util');
 import vscode = require('vscode');
 import { RestartReason } from './language/gnoLanguageServer';
-import { telemetryReporter } from './gnoTelemetry';
 import { allToolsInformation } from './gnoToolsInformation';
 
 const STATUS_BAR_ITEM_NAME = 'Gno Tools';
@@ -917,7 +916,6 @@ export async function maybeInstallVSCGO(
 	if (extensionMode === vscode.ExtensionMode.Production && executableFileExists(progPath)) {
 		return progPath; // reuse existing executable.
 	}
-	telemetryReporter.add('vscgno_install', 1);
 	const mkdir = util.promisify(fs.mkdir);
 	await mkdir(path.dirname(progPath), { recursive: true });
 	const execFile = util.promisify(cp.execFile);
@@ -940,7 +938,6 @@ export async function maybeInstallVSCGO(
 		await execFile(getBinPath('gno'), args, { cwd, env });
 		return progPath;
 	} catch (e) {
-		telemetryReporter.add('vscgno_install_fail', 1);
 		return Promise.reject(`failed to install vscgno - ${e}`);
 	}
 }

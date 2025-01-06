@@ -10,18 +10,7 @@
 
 import { extensionInfo, getGnoConfig } from './config';
 import { browsePackages } from './gnoBrowsePackage';
-import { buildCode } from './gnoBuild';
 import { notifyIfGeneratedFile, removeTestStatus } from './gnoCheck';
-import {
-	applyCodeCoverage,
-	initCoverageDecorators,
-	removeCodeCoverageOnFileSave,
-	toggleCoverageCurrentPackage,
-	trackCodeCoverageRemovalOnFileChange,
-	updateCodeCoverageDecorators
-} from './gnoCover';
-//import { GoDebugConfigurationProvider } from './gnoDebugConfiguration';
-//import * as GoDebugFactory from './gnoDebugFactory';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
 	chooseGoEnvironment,
@@ -29,7 +18,6 @@ import {
 	setEnvironmentVariableCollection
 } from './gnoEnvironmentStatus';
 import * as goGenerateTests from './gnoGenerateTests';
-import { goGetPackage } from './gnoGetPackage';
 import { addImport, addImportToWorkspace } from './gnoImport';
 import { installCurrentPackage } from './gnoInstall';
 import {
@@ -46,8 +34,6 @@ import { GO111MODULE, goModInit } from './gnoModules';
 import { playgroundCommand } from './gnoPlayground';
 import { GoRunTestCodeLensProvider } from './gnoRunTestCodelens';
 import { disposeGoStatusBar, expandGoStatusBar, outputChannel, updateGoStatusBar } from './gnoStatus';
-
-import { vetCode } from './gnoVet';
 import {
 	getFromGlobalState,
 	resetGlobalState,
@@ -62,7 +48,6 @@ import { clearCacheForTools } from './utils/pathUtils';
 import { WelcomePanel } from './welcome';
 import vscode = require('vscode');
 import { getFormatTool } from './language/legacy/gnoFormat';
-import { resetSurveyConfigs, showSurveyConfig } from './gnoSurvey';
 import { ExtensionAPI } from './export';
 import extensionAPI from './extensionAPI';
 import { GoTestExplorer, isVscodeTestingAPIAvailable } from './gnoTest/explore';
@@ -70,9 +55,7 @@ import { killRunningPprof } from './gnoTest/profile';
 import { GoExplorerProvider } from './gnoExplorer';
 import { GoExtensionContext } from './context';
 import * as commands from './commands';
-import { toggleVulncheckCommandFactory } from './gnoVulncheck';
 import { GoTaskProvider } from './gnoTaskProvider';
-import { setTelemetryEnvVars, telemetryReporter } from './gnoTelemetry';
 import { addPackage } from './gnoAddPkg';
 
 const goCtx: GoExtensionContext = {};
@@ -100,8 +83,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	setWorkspaceState(ctx.workspaceState);
 	setEnvironmentVariableCollection(ctx.environmentVariableCollection);
 
-	setTelemetryEnvVars(ctx.globalState, process.env);
-
 	const cfg = getGnoConfig();
 	WelcomePanel.activate(ctx, goCtx);
 
@@ -125,9 +106,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 			extensionInfo.version || '',
 			ctx.extensionPath,
 			extensionInfo.isPreview
-		)
-			.then((path) => telemetryReporter.setTool(path))
-			.catch((reason) => console.error(reason));
+		);
 	}
 
 	const registerCommand = commands.createRegisterCommand(ctx, goCtx);
@@ -140,14 +119,10 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	suggestUpdates();
 	offerToInstallLatestGoVersion(ctx);
 
-	initCoverageDecorators(ctx);
-
 	registerCommand('gno.builds.run', commands.runBuilds);
 	registerCommand('gno.environment.status', expandGoStatusBar);
 
 	GoRunTestCodeLensProvider.activate(ctx, goCtx);
-	//GoDebugConfigurationProvider.activate(ctx, goCtx);
-	//GoDebugFactory.activate(ctx, goCtx);
 
 	goCtx.buildDiagnosticCollection = vscode.languages.createDiagnosticCollection('gno');
 	ctx.subscriptions.push(goCtx.buildDiagnosticCollection);
@@ -172,7 +147,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.benchmark.file', commands.testCurrentFile());
 	registerCommand('gno.test.workspace', commands.testWorkspace);
 	registerCommand('gno.test.previous', commands.testPrevious);
-	registerCommand('gno.test.coverage', toggleCoverageCurrentPackage);
 	registerCommand('gno.test.showOutput', () => showTestOutput);
 	registerCommand('gno.test.cancel', () => cancelRunningTests);
 	registerCommand('gno.import.add', addImport);
@@ -193,15 +167,10 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.toggle.test.file', goGenerateTests.toggleTestFile);
 	registerCommand('gno.debug.startSession', commands.startDebugSession);
 	registerCommand('gno.show.commands', commands.showCommands);
-	registerCommand('gno.get.package', goGetPackage);
 	registerCommand('gno.playground', playgroundCommand);
 	registerCommand('gno.lint.package', lintCode('package'));
 	registerCommand('gno.lint.workspace', lintCode('workspace'));
 	registerCommand('gno.lint.file', lintCode('file'));
-	registerCommand('gno.vet.package', vetCode(false));
-	registerCommand('gno.vet.workspace', vetCode(true));
-	registerCommand('gno.build.package', buildCode(false));
-	registerCommand('gno.build.workspace', buildCode(true));
 	registerCommand('gno.install.package', installCurrentPackage);
 	registerCommand('gno.run.modinit', goModInit);
 	registerCommand('gno.extractServerChannel', showServerOutputChannel);
@@ -211,10 +180,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 
 	// Go Environment switching commands
 	registerCommand('gno.environment.choose', chooseGoEnvironment);
-
-	// Survey related commands
-	registerCommand('gno.survey.showConfig', showSurveyConfig);
-	registerCommand('gno.survey.resetConfig', resetSurveyConfigs);
 
 	addOnDidChangeConfigListeners(ctx);
 	addOnChangeTextDocumentListeners(ctx);
@@ -226,10 +191,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	});
 
 	GoTaskProvider.setup(ctx, vscode.workspace);
-
-	registerCommand('gno.vulncheck.toggle', toggleVulncheckCommandFactory);
-
-	telemetryReporter.add(activationLatency(Date.now() - start), 1);
 
 	return extensionAPI;
 }
@@ -257,7 +218,6 @@ export function deactivate() {
 		killRunningPprof(),
 		Promise.resolve(cleanupTempDir()),
 		Promise.resolve(disposeGoStatusBar()),
-		telemetryReporter.dispose()
 	]);
 }
 
@@ -303,9 +263,6 @@ function addOnDidChangeConfigListeners(ctx: vscode.ExtensionContext) {
 			if (e.affectsConfiguration('gno.docsTool')) {
 				checkToolExists(updatedGoConfig['docsTool']);
 			}
-			if (e.affectsConfiguration('gno.coverageDecorator')) {
-				updateCodeCoverageDecorators(updatedGoConfig['coverageDecorator']);
-			}
 			if (e.affectsConfiguration('gno.toolsEnvVars')) {
 				const env = toolExecutionEnvironment();
 				if (GO111MODULE !== env['GO111MODULE']) {
@@ -341,7 +298,6 @@ function addOnDidChangeConfigListeners(ctx: vscode.ExtensionContext) {
 }
 
 function addOnSaveTextDocumentListeners(ctx: vscode.ExtensionContext) {
-	vscode.workspace.onDidSaveTextDocument(removeCodeCoverageOnFileSave, null, ctx.subscriptions);
 	vscode.workspace.onDidSaveTextDocument(
 		(document) => {
 			if (document.languageId !== 'gno') {
@@ -375,13 +331,12 @@ function addOnSaveTextDocumentListeners(ctx: vscode.ExtensionContext) {
 }
 
 function addOnChangeTextDocumentListeners(ctx: vscode.ExtensionContext) {
-	vscode.workspace.onDidChangeTextDocument(trackCodeCoverageRemovalOnFileChange, null, ctx.subscriptions);
 	vscode.workspace.onDidChangeTextDocument(removeTestStatus, null, ctx.subscriptions);
 	vscode.workspace.onDidChangeTextDocument(notifyIfGeneratedFile, ctx, ctx.subscriptions);
 }
 
 function addOnChangeActiveTextEditorListeners(ctx: vscode.ExtensionContext) {
-	[updateGoStatusBar, applyCodeCoverage].forEach((listener) => {
+	[updateGoStatusBar].forEach((listener) => {
 		// Call the listeners on initilization for current active text editor
 		if (vscode.window.activeTextEditor) {
 			listener(vscode.window.activeTextEditor);
