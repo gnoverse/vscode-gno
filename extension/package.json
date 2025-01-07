@@ -475,22 +475,6 @@
           "description": "Flags to pass to Lint tool (e.g. [\"-min_confidence=.8\"])",
           "scope": "resource"
         },
-        "gno.vetOnSave": {
-          "type": "string",
-          "enum": [
-            "package",
-            "workspace",
-            "off"
-          ],
-          "enumDescriptions": [
-            "vet the current package on file saving",
-            "vet all the packages in the current workspace root folder on file saving",
-            "do not run vet automatically"
-          ],
-          "default": "package",
-          "description": "Vets code on file save using 'go tool vet'. Not applicable when using the language server's diagnostics.",
-          "scope": "resource"
-        },
         "gno.formatTool": {
           "type": "string",
           "default": "default",
