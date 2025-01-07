@@ -8,11 +8,11 @@ All commands provided by this extension have the prefix `Gno:`.
 
 To view this list:
 
-Navigate to the Extensions view (Ctrl+Shift+X).
-Find the Gno extension and click on it to open the Extension Editor.
-Click on the `Feature Contributions` tab.
-Scroll through the list under `Commands`.
-Finally, you can also see a full list by using a meta command: `Gno: Show All Commands....`
+1. Navigate to the Extensions view (Ctrl+Shift+X).
+2. Find the Gno extension and click on it to open the Extension Editor.
+3. Click on the `Feature Contributions` tab.
+4. Scroll through the list under `Commands`.
+5. Finally, you can also see a full list by using a meta command: `Gno: Show All Commands....`
 
 ## Detailed list
 
