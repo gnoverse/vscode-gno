@@ -120,11 +120,6 @@ export function getConfiguredTools(goConfig: { [key: string]: any }, goplsConfig
 		maybeAddTool('gnopls');
 	}
 
-	// Start with default tools that should always be installed.
-	for (const name of ['gotests', 'gomodifytags', 'impl', 'goplay']) {
-		maybeAddTool(name);
-	}
-
 	// Only add format tools if the language server is disabled or the
 	// format tool is known to us.
 	if (!useLanguageServer || usingCustomFormatTool(goConfig)) {

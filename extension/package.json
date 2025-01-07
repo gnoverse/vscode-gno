@@ -283,16 +283,6 @@
         "description": "Start the Go language server's maintainer interface (a web server)."
       },
       {
-        "command": "gno.add.tags",
-        "title": "Gno: Add Tags To Struct Fields",
-        "description": "Add tags configured in go.addTags setting to selected struct using gomodifytags"
-      },
-      {
-        "command": "gno.remove.tags",
-        "title": "Gno: Remove Tags From Struct Fields",
-        "description": "Remove tags configured in go.removeTags setting from selected struct using gomodifytags"
-      },
-      {
         "command": "gno.show.commands",
         "title": "Gno: Show All Commands...",
         "description": "Shows all commands from the Go extension in the quick pick"
@@ -452,21 +442,6 @@
           },
           "default": [],
           "description": "Flags to `go build`/`go test` used during build-on-save or running tests. (e.g. [\"-ldflags='-s'\"]) This is propagated to the language server if `gopls.build.buildFlags` is not specified.",
-          "scope": "resource"
-        },
-        "gno.buildTags": {
-          "type": "string",
-          "default": "",
-          "description": "The Go build tags to use for all commands, that support a `-tags '...'` argument. When running tests, go.testTags will be used instead if it was set. This is propagated to the language server if `gopls.build.buildFlags` is not specified.",
-          "scope": "resource"
-        },
-        "gno.testTags": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": null,
-          "description": "The Go build tags to use for when running tests. If null, then buildTags will be used.",
           "scope": "resource"
         },
         "gno.disableConcurrentTests": {
@@ -741,81 +716,6 @@
           "description": "Feature level setting to enable/disable code lens for references and run/debug tests",
           "scope": "resource"
         },
-        "gno.addTags": {
-          "type": "object",
-          "properties": {
-            "promptForTags": {
-              "type": "boolean",
-              "default": false,
-              "description": "If true, Go: Add Tags command will prompt the user to provide tags, options, transform values instead of using the configured values"
-            },
-            "tags": {
-              "type": "string",
-              "default": "json",
-              "description": "Comma separated tags to be used by Go: Add Tags command"
-            },
-            "options": {
-              "type": "string",
-              "default": "json=omitempty",
-              "description": "Comma separated tag=options pairs to be used by Go: Add Tags command"
-            },
-            "transform": {
-              "type": "string",
-              "enum": [
-                "snakecase",
-                "camelcase",
-                "lispcase",
-                "pascalcase",
-                "keep"
-              ],
-              "default": "snakecase",
-              "description": "Transformation rule used by Go: Add Tags command to add tags"
-            },
-            "template": {
-              "type": "string",
-              "default": "",
-              "description": "Custom format used by Go: Add Tags command for the tag value to be applied"
-            }
-          },
-          "additionalProperties": false,
-          "default": {
-            "tags": "json",
-            "options": "json=omitempty",
-            "promptForTags": false,
-            "transform": "snakecase",
-            "template": ""
-          },
-          "description": "Tags and options configured here will be used by the Add Tags command to add tags to struct fields. If promptForTags is true, then user will be prompted for tags and options. By default, json tags are added.",
-          "scope": "resource"
-        },
-        "gno.removeTags": {
-          "type": "object",
-          "properties": {
-            "promptForTags": {
-              "type": "boolean",
-              "default": false,
-              "description": "If true, Go: Remove Tags command will prompt the user to provide tags and options instead of using the configured values"
-            },
-            "tags": {
-              "type": "string",
-              "default": "json",
-              "description": "Comma separated tags to be used by Go: Remove Tags command"
-            },
-            "options": {
-              "type": "string",
-              "default": "json=omitempty",
-              "description": "Comma separated tag=options pairs to be used by Go: Remove Tags command"
-            }
-          },
-          "additionalProperties": false,
-          "default": {
-            "tags": "",
-            "options": "",
-            "promptForTags": false
-          },
-          "description": "Tags and options configured here will be used by the Remove Tags command to remove tags to struct fields. If promptForTags is true, then user will be prompted for tags and options. By default, all tags and options will be removed.",
-          "scope": "resource"
-        },
         "gno.editorContextMenuCommands": {
           "type": "object",
           "properties": {
@@ -823,16 +723,6 @@
               "type": "boolean",
               "default": true,
               "description": "If true, adds command to toggle between a Go file and its test file to the editor context menu"
-            },
-            "addTags": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to add configured tags from struct fields to the editor context menu"
-            },
-            "removeTags": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to remove configured tags from struct fields to the editor context menu"
             },
             "fillStruct": {
               "type": "boolean",
@@ -888,8 +778,6 @@
           "additionalProperties": false,
           "default": {
             "toggleTestFile": true,
-            "addTags": true,
-            "removeTags": false,
             "fillStruct": false,
             "testAtCursor": true,
             "testFile": false,
@@ -1615,16 +1503,6 @@
         {
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.addPackage && resourceLangId == gno",
           "command": "gno.maketx.addpkg",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.addTags && resourceLangId == gno",
-          "command": "gno.add.tags",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.removeTags && resourceLangId == gno",
-          "command": "gno.remove.tags",
           "group": "Gno group 1"
         },
         {

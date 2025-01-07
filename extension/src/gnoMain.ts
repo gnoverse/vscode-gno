@@ -133,8 +133,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.gnopath', commands.getCurrentGoPath);
 	registerCommand('gno.gnoroot', commands.getCurrentGoRoot);
 	registerCommand('gno.locate.tools', commands.getConfiguredGoTools);
-	registerCommand('gno.add.tags', commands.addTags);
-	registerCommand('gno.remove.tags', commands.removeTags);
 	registerCommand('gno.impl.cursor', commands.implCursor);
 	registerCommand('gno.test.cursor', commands.testAtCursor('test'));
 	registerCommand('gno.test.cursorOrPrevious', commands.testAtCursorOrPrevious('test'));

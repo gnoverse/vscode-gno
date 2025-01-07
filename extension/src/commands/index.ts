@@ -13,7 +13,6 @@ export { getConfiguredGoTools } from './getConfiguredGnoTools';
 export { getCurrentGoPath } from './getCurrentGnoPath';
 export { getCurrentGoRoot } from './getCurrentGnoRoot';
 export { implCursor } from '../gnoImpl';
-export { addTags, removeTags } from '../gnoModifytags';
 export * from '../gnoTest';
 export { installTools } from './installTools';
 export { runBuilds } from './runBuilds';
