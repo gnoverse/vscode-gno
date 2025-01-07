@@ -238,11 +238,6 @@
         "description": "Re-runs the last executed test."
       },
       {
-        "command": "gno.impl.cursor",
-        "title": "Gno: Generate Interface Stubs",
-        "description": "Generates method stub for implementing the provided interface and inserts at the cursor."
-      },
-      {
         "command": "gno.extractServerChannel",
         "title": "Gno: Extract Language Server Logs To Editor",
         "description": "Extract logs in the `gopls (server)` output channel to the editor."
@@ -1177,11 +1172,6 @@
                 "structtag": {
                   "type": "boolean",
                   "markdownDescription": "check that struct field tags conform to reflect.StructTag.Get\n\nAlso report certain struct tags (json, xml) used with unexported fields.",
-                  "default": true
-                },
-                "stubmethods": {
-                  "type": "boolean",
-                  "markdownDescription": "detect missing methods and fix with stub implementations\n\nThis analyzer detects type-checking errors due to missing methods\nin assignments from concrete types to interface types, and offers\na suggested fix that will create a set of stub methods so that\nthe concrete type satisfies the interface.\n\nFor example, this function will not compile because the value\nNegativeErr{} does not implement the \"error\" interface:\n\n\tfunc sqrt(x float64) (float64, error) {\n\t\tif x < 0 {\n\t\t\treturn 0, NegativeErr{} // error: missing method\n\t\t}\n\t\t...\n\t}\n\n\ttype NegativeErr struct{}\n\nThis analyzer will suggest a fix to declare this method:\n\n\t// Error implements error.Error.\n\tfunc (NegativeErr) Error() string {\n\t\tpanic(\"unimplemented\")\n\t}\n\n(At least, it appears to behave that way, but technically it\ndoesn't use the SuggestedFix mechanism and the stub is created by\nlogic in gopls's golang.stub function.)",
                   "default": true
                 },
                 "testinggoroutine": {
