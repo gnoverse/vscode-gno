@@ -145,36 +145,6 @@
         "light": "media/gno-icon-light.png"
       },
         "configuration": "./languages/gno.mod.language-configuration.json"
-      },
-      
-      {
-        "id": "gno.work",
-        "filenames": [
-          "gno.work"
-        ],
-        "aliases": [
-          "Gno Work File"
-        ],
-        "configuration": "./languages/gno.mod.language-configuration.json"
-      },
-      {
-        "id": "gno.sum",
-        "filenames": [
-          "gno.sum"
-        ],
-        "aliases": [
-          "Gno Checksum File"
-        ]
-      },
-      {
-        "id": "gotmpl",
-        "extensions": [
-          ".tmpl",
-          ".gotmpl"
-        ],
-        "aliases": [
-          "Go Template File"
-        ]
       }
     ],
     "grammars": [
@@ -184,19 +154,9 @@
         "path": "./syntaxes/gno.mod.tmGrammar.json"
       },
       {
-        "language": "gno.work",
-        "scopeName": "gno.mod",
-        "path": "./syntaxes/gno.mod.tmGrammar.json"
-      },
-      {
         "language": "gno",
         "scopeName": "source.gno",
         "path": "./syntaxes/gno.tmLanguage.json"
-      },
-      {
-        "language": "gno.sum",
-        "scopeName": "gno.sum",
-        "path": "./syntaxes/gno.sum.tmGrammar.json"
       }
     ],
     "snippets": [
@@ -246,11 +206,6 @@
         "description": "Runs a sub test at the cursor."
       },
       {
-        "command": "gno.benchmark.cursor",
-        "title": "Gno: Benchmark Function At Cursor",
-        "description": "Runs a benchmark at the cursor."
-      },
-      {
         "command": "gno.test.file",
         "title": "Gno: Test File",
         "description": "Runs all unit tests in the current file."
@@ -273,40 +228,6 @@
         "icon": "$(refresh)"
       },
       {
-        "command": "gno.test.showProfiles",
-        "title": "Gno Test: Show Last Profile",
-        "description": "Show last captured profile",
-        "category": "Test"
-      },
-      {
-        "command": "gno.test.captureProfile",
-        "title": "Gno Test: Profile",
-        "description": "Run a test and capture a profile",
-        "category": "Test"
-      },
-      {
-        "command": "gno.test.deleteProfile",
-        "title": "Gno Test: Delete Profile",
-        "shortTitle": "Delete",
-        "description": "Delete selected profile",
-        "category": "Test"
-      },
-      {
-        "command": "gno.test.showProfileFile",
-        "title": "Gno: Show pprof file",
-        "description": "Internal use. Open a pprof profile file."
-      },
-      {
-        "command": "gno.benchmark.package",
-        "title": "Gno: Benchmark Package",
-        "description": "Runs all benchmarks in the package of the current file."
-      },
-      {
-        "command": "gno.benchmark.file",
-        "title": "Gno: Benchmark File",
-        "description": "Runs all benchmarks in the current file."
-      },
-      {
         "command": "gno.test.workspace",
         "title": "Gno: Test All Packages In Workspace",
         "description": "Runs all unit tests from all packages in the current workspace."
@@ -315,26 +236,6 @@
         "command": "gno.test.previous",
         "title": "Gno: Test Previous",
         "description": "Re-runs the last executed test."
-      },
-      {
-        "command": "gno.test.coverage",
-        "title": "Gno: Toggle Test Coverage In Current Package",
-        "description": "Displays test coverage in the current package."
-      },
-      {
-        "command": "gno.test.generate.package",
-        "title": "Gno: Generate Unit Tests For Package",
-        "description": "Generates unit tests for the current package"
-      },
-      {
-        "command": "gno.test.generate.file",
-        "title": "Gno: Generate Unit Tests For File",
-        "description": "Generates unit tests for the current file"
-      },
-      {
-        "command": "gno.test.generate.function",
-        "title": "Gno: Generate Unit Tests For Function",
-        "description": "Generates unit tests for the selected function in the current file"
       },
       {
         "command": "gno.impl.cursor",
@@ -377,11 +278,6 @@
         "description": "Toggles between file in current active editor and the corresponding test file."
       },
       {
-        "command": "gno.vulncheck.toggle",
-        "title": "Gno: Toggle Vulncheck",
-        "description": "Toggle the display of vulnerability analysis in dependencies."
-      },
-      {
         "command": "gno.languageserver.maintain",
         "title": "Gno: Start language server's maintainer interface",
         "description": "Start the Go language server's maintainer interface (a web server)."
@@ -402,21 +298,6 @@
         "description": "Shows all commands from the Go extension in the quick pick"
       },
       {
-        "command": "gno.browse.packages",
-        "title": "Gno: Browse Packages",
-        "description": "Browse packages and Go files inside the packages."
-      },
-      {
-        "command": "gno.get.package",
-        "title": "Gno: Get Package",
-        "description": "Run `go get -v` on the package on the current line."
-      },
-      {
-        "command": "gno.playground",
-        "title": "Gno: Run on Go Playground",
-        "description": "Upload the current selection or file to the Go Playground"
-      },
-      {
         "command": "gno.lint.package",
         "title": "Gno: Lint Current Package",
         "description": "Run linter in the package of the current file."
@@ -425,16 +306,6 @@
         "command": "gno.lint.workspace",
         "title": "Gno: Lint Workspace",
         "description": "Run linter in the current workspace."
-      },
-      {
-        "command": "gno.vet.package",
-        "title": "Gno: Vet Current Package",
-        "description": "Run go vet in the package of the current file."
-      },
-      {
-        "command": "gno.vet.workspace",
-        "title": "Gno: Vet Workspace",
-        "description": "Run go vet in the current workspace."
       },
       {
         "command": "gno.build.package",
@@ -462,11 +333,6 @@
         "description": "Cancels running tests."
       },
       {
-        "command": "gno.apply.coverprofile",
-        "title": "Gno: Apply Cover Profile",
-        "description": "Applies existing cover profile."
-      },
-      {
         "command": "gno.languageserver.restart",
         "title": "Gno: Restart Language Server",
         "description": "Restart the running instance of the language server"
@@ -475,16 +341,6 @@
         "command": "gno.environment.choose",
         "title": "Gno: Choose Go Environment",
         "description": "Choose a different Go version or binary for this project. (WIP)"
-      },
-      {
-        "command": "gno.survey.showConfig",
-        "title": "Gno: Show Survey Configuration",
-        "description": "Show the current Go survey configuration"
-      },
-      {
-        "command": "gno.survey.resetConfig",
-        "title": "Gno: Reset Survey Configuration",
-        "description": "Reset the current Go survey configuration history"
       },
       {
         "command": "gno.workspace.resetState",
@@ -680,15 +536,6 @@
           "description": "Vets code on file save using 'go tool vet'. Not applicable when using the language server's diagnostics.",
           "scope": "resource"
         },
-        "gno.vetFlags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Flags to pass to `go tool vet` (e.g. [\"-all\", \"-shadow\"]). Not applicable when using the language server's diagnostics.",
-          "scope": "resource"
-        },
         "gno.formatTool": {
           "type": "string",
           "default": "default",
@@ -759,132 +606,6 @@
           "description": "Run 'go test' on save for current package. It is not advised to set this to `true` when you have Auto Save enabled.",
           "scope": "resource"
         },
-        "gno.coverOnSave": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, runs 'go test -coverprofile' on save and shows test coverage.",
-          "scope": "resource"
-        },
-        "gno.coverOnTestPackage": {
-          "type": "boolean",
-          "default": true,
-          "description": "If true, shows test coverage when Go: Test Package command is run."
-        },
-        "gno.coverOnSingleTest": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, shows test coverage when Go: Test Function at cursor command is run."
-        },
-        "gno.coverOnSingleTestFile": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, shows test coverage when Go: Test Single File command is run."
-        },
-        "gno.coverMode": {
-          "type": "string",
-          "enum": [
-            "default",
-            "set",
-            "count",
-            "atomic"
-          ],
-          "default": "default",
-          "description": "When generating code coverage, the value for -covermode. 'default' is the default value chosen by the 'go test' command.",
-          "scope": "resource"
-        },
-        "gno.coverShowCounts": {
-          "type": "boolean",
-          "default": false,
-          "description": "When generating code coverage, should counts be shown as --374--",
-          "scope": "resource"
-        },
-        "gno.coverageOptions": {
-          "type": "string",
-          "enum": [
-            "showCoveredCodeOnly",
-            "showUncoveredCodeOnly",
-            "showBothCoveredAndUncoveredCode"
-          ],
-          "default": "showBothCoveredAndUncoveredCode",
-          "description": "Use these options to control whether only covered or only uncovered code or both should be highlighted after running test coverage",
-          "scope": "resource"
-        },
-        "gno.coverageDecorator": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "string",
-              "enum": [
-                "highlight",
-                "gutter"
-              ]
-            },
-            "coveredHighlightColor": {
-              "type": "string",
-              "description": "Color in the rgba format to use to highlight covered code."
-            },
-            "uncoveredHighlightColor": {
-              "type": "string",
-              "description": "Color in the rgba format to use to highlight uncovered code."
-            },
-            "coveredBorderColor": {
-              "type": "string",
-              "description": "Color to use for the border of covered code."
-            },
-            "uncoveredBorderColor": {
-              "type": "string",
-              "description": "Color to use for the border of uncovered code."
-            },
-            "coveredGutterStyle": {
-              "type": "string",
-              "enum": [
-                "blockblue",
-                "blockred",
-                "blockgreen",
-                "blockyellow",
-                "slashred",
-                "slashgreen",
-                "slashblue",
-                "slashyellow",
-                "verticalred",
-                "verticalgreen",
-                "verticalblue",
-                "verticalyellow"
-              ],
-              "description": "Gutter style to indicate covered code."
-            },
-            "uncoveredGutterStyle": {
-              "type": "string",
-              "enum": [
-                "blockblue",
-                "blockred",
-                "blockgreen",
-                "blockyellow",
-                "slashred",
-                "slashgreen",
-                "slashblue",
-                "slashyellow",
-                "verticalred",
-                "verticalgreen",
-                "verticalblue",
-                "verticalyellow"
-              ],
-              "description": "Gutter style to indicate covered code."
-            }
-          },
-          "additionalProperties": false,
-          "default": {
-            "type": "highlight",
-            "coveredHighlightColor": "rgba(64,128,128,0.5)",
-            "uncoveredHighlightColor": "rgba(128,64,64,0.25)",
-            "coveredBorderColor": "rgba(64,128,128,0.5)",
-            "uncoveredBorderColor": "rgba(128,64,64,0.25)",
-            "coveredGutterStyle": "blockblue",
-            "uncoveredGutterStyle": "slashyellow"
-          },
-          "description": "This option lets you choose the way to display code coverage. Choose either to highlight the complete line or to show a decorator in the gutter. You can customize the colors and borders for the former and the style for the latter.",
-          "scope": "resource"
-        },
         "gno.testTimeout": {
           "type": "string",
           "default": "30s",
@@ -929,12 +650,6 @@
           ],
           "default": "flat",
           "description": "Present packages in the test explorer flat or nested.",
-          "scope": "resource"
-        },
-        "gno.testExplorer.alwaysRunBenchmarks": {
-          "type": "boolean",
-          "default": false,
-          "description": "Run benchmarks when running all tests in a file or folder.",
           "scope": "resource"
         },
         "gno.testExplorer.concatenateMessages": {
@@ -1009,12 +724,6 @@
             "completely disables version check (not recommended)"
           ],
           "markdownDescription": "Specify whether to prompt about new versions of Go and the Go tools (currently, only `gopls`) the extension depends on"
-        },
-        "gno.toolsManagement.autoUpdate": {
-          "type": "boolean",
-          "default": false,
-          "description": "Automatically update the tools used by the extension, without prompting the user.",
-          "scope": "resource"
         },
         "gno.enableCodeLens": {
           "type": "object",
@@ -1106,38 +815,6 @@
           },
           "description": "Tags and options configured here will be used by the Remove Tags command to remove tags to struct fields. If promptForTags is true, then user will be prompted for tags and options. By default, all tags and options will be removed.",
           "scope": "resource"
-        },
-        "gno.playground": {
-          "type": "object",
-          "properties": {
-            "openbrowser": {
-              "type": "boolean",
-              "default": true,
-              "description": "Whether to open the created Go Playground in the default browser"
-            },
-            "share": {
-              "type": "boolean",
-              "default": true,
-              "description": "Whether to make the created Go Playground shareable"
-            },
-            "run": {
-              "type": "boolean",
-              "default": true,
-              "description": "Whether to run the created Go Playground after creation"
-            }
-          },
-          "description": "The flags configured here will be passed through to command `goplay`",
-          "additionalProperties": false,
-          "default": {
-            "openbrowser": true,
-            "share": true,
-            "run": true
-          }
-        },
-        "gno.survey.prompt": {
-          "type": "boolean",
-          "default": true,
-          "description": "Prompt for surveys, including the gopls survey and the Go developer survey."
         },
         "gno.editorContextMenuCommands": {
           "type": "object",
@@ -1749,12 +1426,6 @@
               "default": "Edit",
               "scope": "resource"
             },
-            "ui.diagnostic.staticcheck": {
-              "type": "boolean",
-              "markdownDescription": "(Experimental) staticcheck enables additional analyses from staticcheck.io.\nThese analyses are documented on\n[Staticcheck's website](https://staticcheck.io/docs/checks/).\n",
-              "default": false,
-              "scope": "resource"
-            },
             "ui.documentation.hoverKind": {
               "type": "string",
               "markdownDescription": "hoverKind controls the information that appears in the hover text.\nSingleLine and Structured are intended for use only by authors of editor plugins.\n",
@@ -1877,20 +1548,6 @@
             }
           }
         },
-        "gno.diagnostic.vulncheck": {
-          "type": "string",
-          "markdownDescription": "(Experimental) vulncheck enables vulnerability scanning.\n",
-          "enum": [
-            "Imports",
-            "Off"
-          ],
-          "markdownEnumDescriptions": [
-            "`\"Imports\"`: In Imports mode, `gopls` will report vulnerabilities that affect packages\ndirectly and indirectly used by the analyzed main module.\n",
-            "`\"Off\"`: Disable vulnerability analysis.\n"
-          ],
-          "default": "Off",
-          "scope": "resource"
-        },
         "gno.inlayHints.assignVariableTypes": {
           "type": "boolean",
           "markdownDescription": "Enable/disable inlay hints for variable types in assign statements:\n```go\n\ti/* int*/, j/* int*/ := 0, len(r)-1\n```",
@@ -1935,22 +1592,6 @@
           "when": "false"
         },
         {
-          "command": "gno.test.showProfiles",
-          "when": "false"
-        },
-        {
-          "command": "gno.test.captureProfile",
-          "when": "false"
-        },
-        {
-          "command": "gno.test.deleteProfile",
-          "when": "false"
-        },
-        {
-          "command": "gno.test.showProfileFile",
-          "when": "false"
-        },
-        {
           "command": "gno.explorer.refresh",
           "when": "false"
         },
@@ -1992,11 +1633,6 @@
           "group": "Gno group 1"
         },
         {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.benchmarkAtCursor && resourceLangId == gno",
-          "command": "gno.benchmark.cursor",
-          "group": "Go group 1"
-        },
-        {
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.testFile && resourceLangId == gno",
           "command": "gno.test.file",
           "group": "Gno group 1"
@@ -2007,33 +1643,8 @@
           "group": "Gno group 1"
         },
         {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForFunction && resourceLangId == gno",
-          "command": "gno.test.generate.function",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForFile && resourceLangId == gno",
-          "command": "gno.test.generate.file",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.generateTestForPackage && resourceLangId == gno",
-          "command": "gno.test.generate.package",
-          "group": "Gno group 1"
-        },
-        {
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.addImport && resourceLangId == gno",
           "command": "gno.import.add",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testCoverage && resourceLangId == gno",
-          "command": "gno.test.coverage",
-          "group": "Gno group 1"
-        },
-        {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.playground && resourceLangId == gno",
-          "command": "gno.playground",
           "group": "Gno group 1"
         },
         {
@@ -2047,16 +1658,6 @@
           "command": "gno.test.refresh",
           "when": "testId in gno.tests",
           "group": "inline"
-        },
-        {
-          "command": "gno.test.showProfiles",
-          "when": "testId in gno.profiledTests",
-          "group": "profile"
-        },
-        {
-          "command": "gno.test.captureProfile",
-          "when": "testId in gno.tests && testId =~ /\\?(test|benchmark)/",
-          "group": "profile"
         }
       ],
       "view/title": [
@@ -2067,10 +1668,6 @@
         }
       ],
       "view/item/context": [
-        {
-          "command": "gno.test.deleteProfile",
-          "when": "viewItem == gno:test:file"
-        },
         {
           "command": "gno.explorer.open",
           "when": "viewItem == gno:explorer:envfile",
@@ -2094,15 +1691,6 @@
           "name": "gno",
           "icon": "media/gno-logo-dark.png",
           "when": "gno.showExplorer"
-        }
-      ],
-      "test": [
-        {
-          "id": "gno.test.profile",
-          "name": "Profiles",
-          "contextualTitle": "Gno",
-          "icon": "$(graph)",
-          "when": "gno.hasProfiles"
         }
       ]
     },

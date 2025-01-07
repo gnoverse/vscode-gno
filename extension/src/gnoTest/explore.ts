@@ -47,7 +47,6 @@ export class GoTestExplorer {
 		});
 
 		context.subscriptions.push(ctrl);
-		context.subscriptions.push(vscode.window.registerTreeDataProvider('gno.test.profile', inst.profiler.view));
 
 		context.subscriptions.push(
 			vscode.commands.registerCommand('gno.test.refresh', async (item) => {
