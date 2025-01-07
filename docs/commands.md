@@ -1,4 +1,20 @@
+# Commands
 
+In addition to integrated editing features, this extension offers a number of commands, which can be executed manually through the [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (Ctrl+Shift+P on Linux/Windows or Cmd+Shift+P on Mac OS).
+
+Some of these commands are also available in the VS Code context menu (right-click). To control which of these commands show up in the editor context menu, update the [`"gno.editorContextMenuCommands"`](settings.md#gno.editorContextMenuCommands) setting.
+
+All commands provided by this extension have the prefix `Gno:`.
+
+To view this list:
+
+Navigate to the Extensions view (Ctrl+Shift+X).
+Find the Gno extension and click on it to open the Extension Editor.
+Click on the `Feature Contributions` tab.
+Scroll through the list under `Commands`.
+Finally, you can also see a full list by using a meta command: `Gno: Show All Commands....`
+
+## Detailed list
 
 <!-- Everything below this line is generated. DO NOT EDIT. -->
 
