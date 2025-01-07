@@ -298,21 +298,6 @@
         "description": "Run linter in the current workspace."
       },
       {
-        "command": "gno.build.package",
-        "title": "Gno: Build Current Package",
-        "description": "Build the package of the current file."
-      },
-      {
-        "command": "gno.build.workspace",
-        "title": "Gno: Build Workspace",
-        "description": "Build the current workspace."
-      },
-      {
-        "command": "gno.install.package",
-        "title": "Gno: Install Current Package",
-        "description": "Install the current package."
-      },
-      {
         "command": "gno.run.modinit",
         "title": "Gno: Initialize go.mod",
         "description": "Run `go mod init` in the workspace folder."
