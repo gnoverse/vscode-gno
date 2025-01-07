@@ -162,7 +162,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.extractServerChannel', showServerOutputChannel);
 	registerCommand('gno.workspace.resetState', resetWorkspaceState);
 	registerCommand('gno.global.resetState', resetGlobalState);
-	registerCommand('gno.toggle.gc_details', commands.toggleGCDetails);
 
 	// Go Environment switching commands
 	registerCommand('gno.environment.choose', chooseGoEnvironment);
