@@ -1,4 +1,19 @@
+# Settings
 
+This extension is highly configurable, and as such, offers a number of settings. These can be configured by modifying your [User or Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings).
+
+To navigate to your settings, open the Command Palette (Ctrl+Shift+P or Cmd+Shift+P) and search for "settings". The simplest way to modify your settings is through "Preferences: Open Settings (UI)".
+
+For tuning the features provided by `gnopls`, see the [section](settings.md#settings-for-gnopls) for `gnopls` settings.
+
+To view the list of settings:
+
+1. Navigate to the Extensions view (Ctrl+Shift+X).
+2. Find the Gno extension and click on it to open the Extension Editor.
+3. Click on the `Feature Contributions` tab.
+4. Scroll through the list under `Settings`.
+
+## Detailed list
 
 <!-- Everything below this line is generated. DO NOT EDIT. -->
 
