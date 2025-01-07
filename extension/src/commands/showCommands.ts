@@ -13,19 +13,19 @@ export const showCommands: CommandFactory = () => {
 		const extCommands = getExtensionCommands();
 		extCommands.push({
 			command: 'editor.action.goToDeclaration',
-			title: 'Gno to Definition'
+			title: 'Go to Definition'
 		});
 		extCommands.push({
 			command: 'editor.action.goToImplementation',
-			title: 'Gno to Implementation'
+			title: 'Go to Implementation'
 		});
 		extCommands.push({
 			command: 'workbench.action.gotoSymbol',
-			title: 'Gno to Symbol in File...'
+			title: 'Go to Symbol in File...'
 		});
 		extCommands.push({
 			command: 'workbench.action.showAllSymbols',
-			title: 'Gno to Symbol in Workspace...'
+			title: 'Go to Symbol in Workspace...'
 		});
 		vscode.window.showQuickPick(extCommands.map((x) => x.title)).then((cmd) => {
 			const selectedCmd = extCommands.find((x) => x.title === cmd);

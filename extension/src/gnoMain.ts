@@ -17,7 +17,6 @@ import {
 	setEnvironmentVariableCollection
 } from './gnoEnvironmentStatus';
 import { addImport, addImportToWorkspace } from './gnoImport';
-import { installCurrentPackage } from './gnoInstall';
 import {
 	promptForMissingTool,
 	updateGoVarsFromConfig,
@@ -135,7 +134,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.locate.tools', commands.getConfiguredGoTools);
 	registerCommand('gno.test.cursor', commands.testAtCursor('test'));
 	registerCommand('gno.test.cursorOrPrevious', commands.testAtCursorOrPrevious('test'));
-	registerCommand('gno.test.package', commands.testCurrentPackage());
 	registerCommand('gno.test.file', commands.testCurrentFile());
 	registerCommand('gno.test.workspace', commands.testWorkspace);
 	registerCommand('gno.test.previous', commands.testPrevious);
@@ -154,10 +152,8 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 
 	registerCommand('gno.debug.startSession', commands.startDebugSession);
 	registerCommand('gno.show.commands', commands.showCommands);
-	registerCommand('gno.lint.package', lintCode('package'));
 	registerCommand('gno.lint.workspace', lintCode('workspace'));
 	registerCommand('gno.lint.file', lintCode('file'));
-	registerCommand('gno.install.package', installCurrentPackage);
 	registerCommand('gno.run.modinit', goModInit);
 	registerCommand('gno.extractServerChannel', showServerOutputChannel);
 	registerCommand('gno.workspace.resetState', resetWorkspaceState);

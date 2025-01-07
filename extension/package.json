@@ -201,19 +201,9 @@
         "description": "Runs a unit test at the cursor if one is found, otherwise re-runs the last executed test."
       },
       {
-        "command": "gno.subtest.cursor",
-        "title": "Gno: Subtest At Cursor",
-        "description": "Runs a sub test at the cursor."
-      },
-      {
         "command": "gno.test.file",
         "title": "Gno: Test File",
         "description": "Runs all unit tests in the current file."
-      },
-      {
-        "command": "gno.test.package",
-        "title": "Gno: Test Package",
-        "description": "Runs all unit tests in the package of the current file."
       },
       {
         "command": "gno.test.refresh",
@@ -224,18 +214,13 @@
       },
       {
         "command": "gno.test.workspace",
-        "title": "Gno: Test All Packages In Workspace",
-        "description": "Runs all unit tests from all packages in the current workspace."
+        "title": "Gno: Test All Files In Workspace",
+        "description": "Runs all unit tests from all files in the current workspace."
       },
       {
         "command": "gno.test.previous",
         "title": "Gno: Test Previous",
         "description": "Re-runs the last executed test."
-      },
-      {
-        "command": "gno.extractServerChannel",
-        "title": "Gno: Extract Language Server Logs To Editor",
-        "description": "Extract logs in the `gopls (server)` output channel to the editor."
       },
       {
         "command": "gno.welcome",
@@ -248,29 +233,14 @@
         "description": "Add an import declaration"
       },
       {
-        "command": "gno.add.package.workspace",
-        "title": "Gno: Add Package to Workspace",
-        "description": "Add a package from the imports list to the workspace."
-      },
-      {
         "command": "gno.tools.install",
         "title": "Gno: Install/Update Tools",
         "description": "install/update the required go packages"
       },
       {
-        "command": "gno.languageserver.maintain",
-        "title": "Gno: Start language server's maintainer interface",
-        "description": "Start the Go language server's maintainer interface (a web server)."
-      },
-      {
         "command": "gno.show.commands",
         "title": "Gno: Show All Commands...",
         "description": "Shows all commands from the Go extension in the quick pick"
-      },
-      {
-        "command": "gno.lint.package",
-        "title": "Gno: Lint Current Package",
-        "description": "Run linter in the package of the current file."
       },
       {
         "command": "gno.lint.workspace",
@@ -294,18 +264,8 @@
       },
       {
         "command": "gno.environment.choose",
-        "title": "Gno: Choose Go Environment",
+        "title": "Gno: Choose Gno Environment",
         "description": "Choose a different Go version or binary for this project. (WIP)"
-      },
-      {
-        "command": "gno.workspace.resetState",
-        "title": "Gno: Reset Workspace State",
-        "description": "Reset keys in workspace state to undefined."
-      },
-      {
-        "command": "gno.global.resetState",
-        "title": "Gno: Reset Global State",
-        "description": "Reset keys in global state to undefined."
       },
       {
         "command": "gno.maketx.addpkg",
@@ -331,13 +291,6 @@
         "title": "Gno: Edit Workspace Env",
         "description": "Edit the Go Env for the active workspace.",
         "icon": "$(settings-edit)",
-        "enablement": "workspaceFolderCount > 0"
-      },
-      {
-        "command": "gno.workspace.resetEnv",
-        "title": "Gno: Reset Workspace Env",
-        "description": "Reset the Go Env for the active workspace.",
-        "icon": "$(settings-remove)",
         "enablement": "workspaceFolderCount > 0"
       }
     ],
@@ -582,12 +535,6 @@
           "description": "Concatenate all test log messages for a given location into a single message.",
           "scope": "resource"
         },
-        "gno.testExplorer.showDynamicSubtestsInEditor": {
-          "type": "boolean",
-          "default": false,
-          "description": "Set the source location of dynamically discovered subtests to the location of the containing function. As a result, dynamically discovered subtests will be added to the gutter test widget of the containing function.",
-          "scope": "resource"
-        },
         "gno.testExplorer.showOutput": {
           "type": "boolean",
           "default": true,
@@ -683,40 +630,10 @@
               "default": true,
               "description": "If true, adds command to run all tests in the current file to the editor context menu"
             },
-            "testPackage": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to run all tests in the current package to the editor context menu"
-            },
-            "generateTestForFunction": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to generate unit tests for function under the cursor to the editor context menu"
-            },
-            "generateTestForFile": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to generate unit tests for current file to the editor context menu"
-            },
-            "generateTestForPackage": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to generate unit tests for current package to the editor context menu"
-            },
             "addImport": {
               "type": "boolean",
               "default": true,
               "description": "If true, adds command to import a package to the editor context menu"
-            },
-            "playground": {
-              "type": "boolean",
-              "default": true,
-              "description": "If true, adds command to upload the current file or selection to the Go Playground"
-            },
-            "benchmarkAtCursor": {
-              "type": "boolean",
-              "default": false,
-              "description": "If true, adds command to benchmark the test under the cursor to the editor context menu"
             }
           },
           "additionalProperties": false,
@@ -724,14 +641,7 @@
             "fillStruct": false,
             "testAtCursor": true,
             "testFile": false,
-            "testPackage": false,
-            "generateTestForFunction": true,
-            "generateTestForFile": false,
-            "generateTestForPackage": false,
-            "addImport": true,
-            "testCoverage": true,
-            "playground": true,
-            "benchmarkAtCursor": false
+            "addImport": true
           },
           "description": "Experimental Feature: Enable/Disable entries from the context menu in the editor.",
           "scope": "resource"
@@ -1423,11 +1333,6 @@
           "group": "Gno group 1"
         },
         {
-          "when": "editorTextFocus && config.gno.editorContextMenuCommands.testPackage && resourceLangId == gno",
-          "command": "gno.test.package",
-          "group": "Gno group 1"
-        },
-        {
           "when": "editorTextFocus && config.gno.editorContextMenuCommands.addImport && resourceLangId == gno",
           "command": "gno.import.add",
           "group": "Gno group 1"
@@ -1462,10 +1367,6 @@
           "command": "gno.workspace.editEnv",
           "when": "viewItem =~ /(gno:explorer:envtree|gno:explorer:envitem)/ && workspaceFolderCount > 0",
           "group": "inline"
-        },
-        {
-          "command": "gno.workspace.resetEnv",
-          "when": "viewItem =~ /gno:explorer:env/ && workspaceFolderCount > 0"
         }
       ]
     },
