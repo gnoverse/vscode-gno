@@ -225,7 +225,7 @@
       {
         "command": "gno.welcome",
         "title": "Gno: Welcome",
-        "description": "Open the welcome page for the Go extension."
+        "description": "Open the welcome page for the Gno extension."
       },
       {
         "command": "gno.import.add",
@@ -240,7 +240,7 @@
       {
         "command": "gno.show.commands",
         "title": "Gno: Show All Commands...",
-        "description": "Shows all commands from the Go extension in the quick pick"
+        "description": "Shows all commands from the Gno extension in the quick pick"
       },
       {
         "command": "gno.lint.workspace",
@@ -250,7 +250,7 @@
       {
         "command": "gno.run.modinit",
         "title": "Gno: Initialize go.mod",
-        "description": "Run `go mod init` in the workspace folder."
+        "description": "Run `gno mod init` in the workspace folder."
       },
       {
         "command": "gno.test.cancel",
@@ -263,35 +263,9 @@
         "description": "Restart the running instance of the language server"
       },
       {
-        "command": "gno.environment.choose",
-        "title": "Gno: Choose Gno Environment",
-        "description": "Choose a different Go version or binary for this project. (WIP)"
-      },
-      {
         "command": "gno.maketx.addpkg",
         "title": "Gno Add Package To Chain",
         "description": "Add a package to the Gno blockchain"
-      },
-      {
-        "command": "gno.explorer.refresh",
-        "title": "Gno Explorer: Refresh",
-        "description": "Refresh the Go explorer. Only available as a menu item in the explorer.",
-        "category": "Explorer",
-        "icon": "$(refresh)"
-      },
-      {
-        "command": "gno.explorer.open",
-        "title": "Gno Explorer: Open File",
-        "description": "Open a file from the Go explorer. Only available as a menu item in the explorer.",
-        "category": "Explorer",
-        "icon": "$(go-to-file)"
-      },
-      {
-        "command": "gno.workspace.editEnv",
-        "title": "Gno: Edit Workspace Env",
-        "description": "Edit the Go Env for the active workspace.",
-        "icon": "$(settings-edit)",
-        "enablement": "workspaceFolderCount > 0"
       }
     ],
     "breakpoints": [
@@ -341,37 +315,10 @@
           "default": true,
           "description": "If true, adds command to add package to the Gno blockchain to the editor context menu"
       },
-        "gno.buildOnSave": {
-          "type": "string",
-          "enum": [
-            "package",
-            "workspace",
-            "off"
-          ],
-          "default": "package",
-          "description": "Compiles code on file save using 'go build' or 'go test -c'. Not applicable when using the language server.",
-          "scope": "resource",
-          "markdownDeprecationMessage": "Enable the Gno language server (`#gno.useLanguageServer#`) to diagnose compile errors."
-        },
-        "gno.buildFlags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Flags to `go build`/`go test` used during build-on-save or running tests. (e.g. [\"-ldflags='-s'\"]) This is propagated to the language server if `gopls.build.buildFlags` is not specified.",
-          "scope": "resource"
-        },
         "gno.disableConcurrentTests": {
           "type": "boolean",
           "default": false,
           "description": "If true, tests will not run concurrently. When a new test run is started, the previous will be cancelled.",
-          "scope": "resource"
-        },
-        "gno.installDependenciesWhenBuilding": {
-          "type": "boolean",
-          "default": false,
-          "description": "If true, then `-i` flag will be passed to `go build` everytime the code is compiled. Since Go 1.10, setting this may be unnecessary unless you are in GOPATH mode and do not use the language server.",
           "scope": "resource"
         },
         "gno.lintOnSave": {
@@ -420,29 +367,15 @@
           "scope": "resource",
           "enum": [
             "default",
-            "gofmt",
-            "goimports",
-            "goformat",
             "gofumpt",
             "custom"
           ],
           "markdownEnumDescriptions": [
-            "If the language server is enabled, format via the language server, which already supports gofmt, goimports, goreturns, and gofumpt. Otherwise, goimports.",
-            "Formats the file according to the standard Go style. (not applicable when the language server is enabled)",
-            "Organizes imports and formats the file with gofmt. (not applicable when the language server is enabled)",
-            "Configurable gofmt, see https://github.com/mbenkmann/goformat.",
-            "Stricter version of gofmt, see https://github.com/mvdan/gofumpt. . Use `#gopls.format.gofumpt#` instead)",
-            "Formats using the custom tool specified as `customFormatter` in the `#go.alternateTools#` setting. The tool should take the input as STDIN and output the formatted code as STDOUT."
+            "If the language server is enabled, format via the language server, which already gofumpt.",
+            "Formats the file according to the standard Gno style. (not applicable when the language server is enabled)",
+            "Organizes imports and formats the file with gofumpt. (not applicable when the language server is enabled)",
+            "See https://github.com/mvdan/gofumpt."
           ]
-        },
-        "gno.formatFlags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Flags to pass to format tool (e.g. [\"-s\"]). Not applicable when using the language server.",
-          "scope": "resource"
         },
         "gno.inferGopath": {
           "type": "boolean",
@@ -489,18 +422,6 @@
           "description": "Specifies the timeout for go test in ParseDuration format.",
           "scope": "resource"
         },
-        "gno.testEnvVars": {
-          "type": "object",
-          "default": {},
-          "description": "Environment variables that will be passed to the process that runs the Go tests",
-          "scope": "resource"
-        },
-        "gno.testEnvFile": {
-          "type": "string",
-          "default": null,
-          "description": "Absolute path to a file containing environment variables definitions. File contents should be of the form key=value.",
-          "scope": "resource"
-        },
         "gno.testFlags": {
           "type": [
             "array",
@@ -510,14 +431,14 @@
             "type": "string"
           },
           "default": null,
-          "description": "Flags to pass to `go test`. If null, then buildFlags will be used. This is not propagated to the language server.",
+          "description": "Flags to pass to `gno test`. If null, then buildFlags will be used. This is not propagated to the language server.",
           "scope": "resource"
         },
         "gno.testExplorer.enable": {
           "type": "boolean",
           "default": true,
           "scope": "window",
-          "description": "Enable the Go test explorer"
+          "description": "Enable the Gno test explorer"
         },
         "gno.testExplorer.packageDisplayMode": {
           "type": "string",
@@ -541,19 +462,10 @@
           "description": "Open the test output terminal when a test run is started.",
           "scope": "window"
         },
-        "gno.generateTestsFlags": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [],
-          "description": "Additional command line flags to pass to `gotests` for generating tests.",
-          "scope": "resource"
-        },
         "gno.useLanguageServer": {
           "type": "boolean",
           "default": true,
-          "description": "Enable intellisense, code navigation, refactoring, formatting & diagnostics for Go. The features are powered by the Go language server \"gopls\"."
+          "description": "Enable intellisense, code navigation, refactoring, formatting & diagnostics for Gno. The features are powered by the Go language server \"gopls\"."
         },
         "gno.languageServerFlags": {
           "type": "array",
@@ -568,33 +480,26 @@
             "verbose"
           ],
           "default": "off",
-          "description": "Trace the communication between VS Code and the Go language server."
-        },
-        "gno.logging.level": {
-          "type": "string",
-          "deprecationMessage": "This setting is deprecated. Use 'Developer: Set Log Level...' command to control logging level instead.",
-          "scope": "machine-overridable"
+          "description": "Trace the communication between VS Code and the Gno language server."
         },
         "gno.toolsManagement.go": {
           "type": "string",
           "default": "",
-          "description": "The path to the `go` binary used to install the Go tools. If it's empty, the same `go` binary chosen for the project will be used for tool installation.",
+          "description": "The path to the `go` binary used to install the Gno tools. If it's empty, the same `go` binary chosen for the project will be used for tool installation.",
           "scope": "machine-overridable"
         },
         "gno.toolsManagement.checkForUpdates": {
           "type": "string",
-          "default": "proxy",
+          "default": "local",
           "enum": [
-            "proxy",
             "local",
             "off"
           ],
           "enumDescriptions": [
-            "keeps notified of new releases by checking the Go module proxy (GOPROXY)",
             "checks only the minimum tools versions required by the extension",
             "completely disables version check (not recommended)"
           ],
-          "markdownDescription": "Specify whether to prompt about new versions of Go and the Go tools (currently, only `gopls`) the extension depends on"
+          "markdownDescription": "Specify whether to prompt about new versions of Gno and the Gno tools (currently, only `gnopls`) the extension depends on"
         },
         "gno.enableCodeLens": {
           "type": "object",
@@ -670,35 +575,17 @@
           },
           "additionalProperties": true
         },
-        "gno.tasks.provideDefault": {
-          "default": true,
-          "description": "enable the default go build/test task provider.",
-          "scope": "window",
-          "type": "boolean"
-        },
         "gno.terminal.activateEnvironment": {
           "default": true,
-          "description": "Apply the Go & PATH environment variables used by the extension to all integrated terminals.",
+          "description": "Apply the Gno & PATH environment variables used by the extension to all integrated terminals.",
           "scope": "resource",
           "type": "boolean"
         },
         "gnopls": {
           "type": "object",
-          "markdownDescription": "Configure the default Go language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/golang/tools/blob/master/gopls/doc/settings.md) for all available settings.",
+          "markdownDescription": "Configure the default Go language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/gnoverse/gnopls) for all available settings.",
           "scope": "resource",
           "properties": {
-            "build.allowImplicitNetworkAccess": {
-              "type": "boolean",
-              "markdownDescription": "(Experimental) allowImplicitNetworkAccess disables GOPROXY=off, allowing implicit module\ndownloads rather than requiring user action. This option will eventually\nbe removed.\n",
-              "default": false,
-              "scope": "resource"
-            },
-            "build.buildFlags": {
-              "type": "array",
-              "markdownDescription": "buildFlags is the set of flags passed on to the build system when invoked.\nIt is applied to queries like `go list`, which is used when discovering files.\nThe most common use is to set `-tags`.\n\nIf unspecified, values of `go.buildFlags, go.buildTags` will be propagated.\n",
-              "default": [],
-              "scope": "resource"
-            },
             "build.directoryFilters": {
               "type": "array",
               "markdownDescription": "directoryFilters can be used to exclude unwanted directories from the\nworkspace. By default, all directories are included. Filters are an\noperator, `+` to include and `-` to exclude, followed by a path prefix\nrelative to the workspace folder. They are evaluated in order, and\nthe last filter that applies to a path controls whether it is included.\nThe path prefix can be empty, so an initial `-` excludes everything.\n\nDirectoryFilters also supports the `**` operator to match 0 or more directories.\n\nExamples:\n\nExclude node_modules at current depth: `-node_modules`\n\nExclude node_modules at any depth: `-**/node_modules`\n\nInclude only project_a: `-` (exclude everything), `+project_a`\n\nInclude only project_a, but not node_modules inside it: `-`, `+project_a`, `-project_a/node_modules`\n",
@@ -1263,41 +1150,6 @@
               "scope": "resource"
             }
           }
-        },
-        "gno.inlayHints.assignVariableTypes": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for variable types in assign statements:\n```go\n\ti/* int*/, j/* int*/ := 0, len(r)-1\n```",
-          "default": false
-        },
-        "gno.inlayHints.compositeLiteralFields": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for composite literal field names:\n```go\n\t{/*in: */\"Hello, world\", /*want: */\"dlrow ,olleH\"}\n```",
-          "default": false
-        },
-        "gno.inlayHints.compositeLiteralTypes": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for composite literal types:\n```go\n\tfor _, c := range []struct {\n\t\tin, want string\n\t}{\n\t\t/*struct{ in string; want string }*/{\"Hello, world\", \"dlrow ,olleH\"},\n\t}\n```",
-          "default": false
-        },
-        "gno.inlayHints.constantValues": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for constant values:\n```go\n\tconst (\n\t\tKindNone   Kind = iota/* = 0*/\n\t\tKindPrint/*  = 1*/\n\t\tKindPrintf/* = 2*/\n\t\tKindErrorf/* = 3*/\n\t)\n```",
-          "default": false
-        },
-        "gno.inlayHints.functionTypeParameters": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for implicit type parameters on generic functions:\n```go\n\tmyFoo/*[int, string]*/(1, \"hello\")\n```",
-          "default": false
-        },
-        "gno.inlayHints.parameterNames": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for parameter names:\n```go\n\tparseInt(/* str: */ \"123\", /* radix: */ 8)\n```",
-          "default": false
-        },
-        "gno.inlayHints.rangeVariableTypes": {
-          "type": "boolean",
-          "markdownDescription": "Enable/disable inlay hints for variable types in range statements:\n```go\n\tfor k/* int*/, v/* string*/ := range []string{} {\n\t\tfmt.Println(k, v)\n\t}\n```",
-          "default": false
         }
       }
     },
@@ -1305,14 +1157,6 @@
       "commandPalette": [
         {
           "command": "gno.test.refresh",
-          "when": "false"
-        },
-        {
-          "command": "gno.explorer.refresh",
-          "when": "false"
-        },
-        {
-          "command": "gno.explorer.open",
           "when": "false"
         }
       ],
@@ -1347,25 +1191,6 @@
         {
           "command": "gno.test.refresh",
           "when": "testId in gno.tests",
-          "group": "inline"
-        }
-      ],
-      "view/title": [
-        {
-          "command": "gno.explorer.refresh",
-          "when": "view == gno.explorer",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "gno.explorer.open",
-          "when": "viewItem == gno:explorer:envfile",
-          "group": "inline"
-        },
-        {
-          "command": "gno.workspace.editEnv",
-          "when": "viewItem =~ /(gno:explorer:envtree|gno:explorer:envitem)/ && workspaceFolderCount > 0",
           "group": "inline"
         }
       ]
