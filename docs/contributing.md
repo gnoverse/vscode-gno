@@ -33,6 +33,8 @@ For extending the language features or fixing bugs, please follow `gnopls`'s
 ### Setup
 
 1) Install [node](https://nodejs.org/en/). Note: make sure that you are using `npm v7` or higher. The file format for `package-lock.json` (changed significantly)[https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json#file-format] in `npm v7`.
+And install [Go](https://go.dev/) 1.21 or newer and [Gno](https://docs.gno.land/getting-started/local-setup/installation) if you haven't already.
+
 2) Clone the repository, run `npm ci`, and open VS Code:
 
     ```bash
