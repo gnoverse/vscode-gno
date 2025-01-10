@@ -21,7 +21,7 @@ import {
 	promptForMissingTool,
 	updateGoVarsFromConfig,
 	suggestUpdates,
-	maybeInstallVSCGO,
+	//maybeInstallVSCGO,
 	maybeInstallImportantTools
 } from './gnoInstallTools';
 import { RestartReason, showServerOutputChannel, watchLanguageServerConfiguration } from './language/gnoLanguageServer';
@@ -95,7 +95,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	await updateGoVarsFromConfig(goCtx);
 
 	// for testing or development mode, always rebuild vscgo.
-	if (process.platform !== 'win32') {
+	/*if (process.platform !== 'win32') {
 		// skip windows until Windows Defender issue reported in golang/vscode-go#3182 can be addressed
 		maybeInstallVSCGO(
 			ctx.extensionMode,
@@ -104,7 +104,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 			ctx.extensionPath,
 			extensionInfo.isPreview
 		);
-	}
+	}*/
 
 	const registerCommand = commands.createRegisterCommand(ctx, goCtx);
 	registerCommand('gno.languageserver.restart', commands.startLanguageServer);

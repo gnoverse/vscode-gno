@@ -902,7 +902,7 @@ export async function listOutdatedTools(configuredGoVersion: GoVersion | undefin
 // maybeInstallVSCGO is a special program released and installed with the Go extension.
 // Unlike other tools, it is installed under the extension path (which is cleared
 // when a new version is installed).
-export async function maybeInstallVSCGO(
+/*export async function maybeInstallVSCGO(
 	extensionMode: vscode.ExtensionMode,
 	extensionId: string,
 	extensionVersion: string,
@@ -940,4 +940,4 @@ export async function maybeInstallVSCGO(
 	} catch (e) {
 		return Promise.reject(`failed to install vscgno - ${e}`);
 	}
-}
+}*/
