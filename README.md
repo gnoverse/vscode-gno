@@ -106,7 +106,7 @@ by turning on [Gnopls' `ui.semanticTokens` setting](https://github.com/gnoverse/
 
 ### Supported Gno and tools
 
-The Gno extension relies on [tools](https://github.com/golang/vscode-go/wiki/tools)
+The Gno extension relies on [tools](https://github.com/gnoverse/vscode-gno/wiki/tools)
 like `gnopls` for its core functionalities and they have their own release
 policy and schedule. We test only against the latest versions of these tools.
 
