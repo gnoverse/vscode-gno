@@ -223,6 +223,11 @@
         "description": "Re-runs the last executed test."
       },
       {
+        "command": "gno.toggle.test.file",
+        "title": "Gno: Toggle Test File",
+        "description": "Toggles between file in current active editor and the corresponding test file."
+      },
+      {
         "command": "gno.welcome",
         "title": "Gno: Welcome",
         "description": "Open the welcome page for the Gno extension."

@@ -27,6 +27,7 @@ import {
 import { RestartReason, showServerOutputChannel, watchLanguageServerConfiguration } from './language/gnoLanguageServer';
 import { lintCode } from './gnoLint';
 import { GO_MODE } from './gnoMode';
+import * as goGenerateTests from './gnoGenerateTests';
 import { GO111MODULE, goModInit } from './gnoModules';
 import { GoRunTestCodeLensProvider } from './gnoRunTestCodelens';
 import { disposeGoStatusBar, expandGoStatusBar, outputChannel, updateGoStatusBar } from './gnoStatus';
@@ -139,6 +140,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.test.previous', commands.testPrevious);
 	registerCommand('gno.test.showOutput', () => showTestOutput);
 	registerCommand('gno.test.cancel', () => cancelRunningTests);
+	registerCommand('gno.toggle.test.file', goGenerateTests.toggleTestFile);
 	registerCommand('gno.import.add', addImport);
 	registerCommand('gno.add.package.workspace', addImportToWorkspace);
 	registerCommand('gno.tools.install', commands.installTools);
