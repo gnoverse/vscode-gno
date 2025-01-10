@@ -70,7 +70,7 @@ export class WelcomePanel {
 					localResourceRoots: [joinPath(extensionUri)]
 				}
 			);
-			panel.iconPath = joinPath(extensionUri, 'media', 'go-logo-blue.png');
+			panel.iconPath = joinPath(extensionUri, 'media', 'gno-logo-dark.png');
 
 			WelcomePanel.currentPanel = new WelcomePanel(panel, extensionUri);
 		};
@@ -142,7 +142,7 @@ export class WelcomePanel {
 		// Local path to css styles and images
 		const scriptPathOnDisk = joinPath(this.dataroot, 'welcome.js');
 		const stylePath = joinPath(this.dataroot, 'welcome.css');
-		const gopherPath = joinPath(this.dataroot, 'go-logo-blue.png');
+		const gopherPath = joinPath(this.dataroot, 'gno-logo-dark.png');
 		const goExtension = vscode.extensions.getExtension(extensionId)!;
 		const goExtensionVersion = goExtension.packageJSON.version;
 
@@ -165,45 +165,41 @@ export class WelcomePanel {
 				<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<link href="${stylesURI}" rel="stylesheet">
-				<title>Go for VS Code</title>
+				<title>Gno for VS Code</title>
 			</head>
 			<body>
 			<main class="Content">
 			<div class="Header">
-				<img src="${gopherURI}" alt="Go Logo" class="Header-logo"/>
+				<img src="${gopherURI}" alt="Gno Logo" class="Header-logo"/>
 				<div class="Header-details">
-					<h1 class="Header-title">Go for VS Code v${goExtensionVersion}</h1>
-					<p>The official Go extension for Visual Studio Code, providing rich language support for Go projects.</p>
+					<h1 class="Header-title">Gno for VS Code v${goExtensionVersion}</h1>
+					<p>The official Gno extension for Visual Studio Code, providing rich language support for Gno projects.</p>
 					<ul class="Header-links">
 						<!--
 							Here and elsewhere, we must use a fake anchor for command buttons, to get styling
 							consistent with links. We can't fake this using CSS, as it conflicts with theming.
 						-->
 						<li><a href="#" class="Command" data-command="openDocument" data-document="CHANGELOG.md">Release notes</a></li>
-						<li><a href="https://github.com/golang/vscode-go">GitHub</a></li>
-						<li><a href="https://stackoverflow.com/questions/tagged/go+visual-studio-code">Questions</a></li>
-<li><a href="https://invite.slack.golangbridge.org/">Slack</a></li>
+						<li><a href="https://github.com/gnoverse/vscode-gno">GitHub</a></li>
+						<li><a href="https://discord.gg/bAHUB5RQ">Discord</a></li>
 					</ul>
 				</div>
 			</div>
 
 			<div class="Announcement">
-				<p>📣 Recent gopls release (v0.14) includes <a href="https://go.dev/issue/58894">opt-in transparent telemetry</a>.
-				</p>
-				<p><b>Telemetry uploading is off by default</b> even when Visual Studio Code's telemetry setting is enabled.
-				Go Telemetry needs to be enabled with the following command:
-				<br>
-				<code>go run golang.org/x/telemetry/cmd/gotelemetry@latest on</code>
+				<p>
+					<b>Thank you for installing the Gno extension!</b>
 				</p>
 				<p>
-				After telemetry is enabled, metrics and crash stack traces will be uploaded to <a href="https://telemetry.go.dev">telemetry.go.dev</a> weekly.
-				You can see the preview of the collected data using:
+					This extension is designed to provide a smooth and efficient development experience with the Gno language.<br/> 
+					Whether you're just discovering Gno or you're an advanced user, we hope this tool will be helpful to you.
+				</p>
 				<br>
-				<code>go run golang.org/x/telemetry/cmd/gotelemetry@latest view</code>
+				<p>
+					<b>Acknowledgments</b>
 				</p>
 				<p>
-				If we get enough adoption, this data can significantly advance the pace of the go plugin development and help us meet a higher standard of reliability.
-                Go telemetry is designed to be transparent and privacy-preserving. Learn more at <a href="https://go.dev/doc/telemetry">https://go.dev/doc/telemetry</a>.
+					This extension is inspired by the excellent work of the vscode-go extension developers. A big thank you to them for their contribution to open source!
 				</p>
 			</div>
 
@@ -211,17 +207,17 @@ export class WelcomePanel {
 				<div class="Card">
 					<div class="Card-inner">
 						<p class="Card-title">Getting started</p>
-						<p class="Card-content">Learn about the Go extension in our
-							<a href="https://github.com/golang/vscode-go/blob/master/README.md">README</a>.
+						<p class="Card-content">Learn about the Gno extension in our
+							<a href="https://github.com/gnoverse/vscode-gno/blob/main/README.md">README</a>.
 						</p>
 					</div>
 				</div>
 
 				<div class="Card">
 					<div class="Card-inner">
-						<p class="Card-title">Learning Go</p>
-						<p class="Card-content">If you're new to the Go programming language,
-							<a href="https://go.dev/learn">go.dev/learn</a> is a great place to get started.</a>
+						<p class="Card-title">Learning Gno</p>
+						<p class="Card-content">If you're new to the Gno programming language,
+							<a href="https://docs.gno.land/getting-started/">docs.gno.land/getting-started</a> is a great place to get started.</a>
 						</p>
 					</div>
 				</div>
@@ -230,8 +226,11 @@ export class WelcomePanel {
 					<div class="Card-inner">
 						<p class="Card-title">Troubleshooting</p>
 						<p class="Card-content">Experiencing problems? Start with our
-							<a href="https://github.com/golang/vscode-go/wiki/troubleshooting">troubleshooting guide</a>.  </p> </div>
+							<a href="https://github.com/gnoverse/vscode-gno/wiki/troubleshooting">troubleshooting guide</a>. 
+						</p>
+					</div>
 				</div>
+
 			</div>
 			</main>
 
@@ -265,10 +264,10 @@ function joinPath(uri: vscode.Uri, ...pathFragment: string[]): vscode.Uri {
 function showGoWelcomePage() {
 	// Update this list of versions when there is a new version where we want to
 	// show the welcome page on update.
-	const showVersions: string[] = ['0.40.0'];
+	const showVersions: string[] = ['0.1.0'];
 	// TODO(hyangah): use the content hash instead of hard-coded string.
 	// https://github.com/golang/vscode-go/issue/1179
-	let goExtensionVersion = '0.40.0';
+	let goExtensionVersion = '0.1.0';
 	let goExtensionVersionKey = 'gno.extensionVersion';
 	if (extensionInfo.isPreview) {
 		goExtensionVersion = '0.0.0';
