@@ -39,9 +39,15 @@ export class GoVersion {
 	private devVersion?: string;
 
 	constructor(public binaryPath: string, public version: string) {
+		const matchesGno = /^gno version: (\w+)\s*$/.exec(version);
 		const matchesRelease = /^go version go(\d\.\d+\S*)\s+/.exec(version);
 		const matchesDevel = /^go version devel go(\d\.\d+\S*)\s+/.exec(version);
-		if (matchesRelease) {
+
+		if (matchesGno) {
+			this.isDevel = true;
+			this.devVersion = matchesGno[1];
+			this.svString = matchesGno[1];
+		} else if (matchesRelease) {
 			// note: semver.parse does not work with Go version string like go1.14.
 			const sv = semver.coerce(matchesRelease[1]);
 			if (sv) {
@@ -55,10 +61,13 @@ export class GoVersion {
 	}
 
 	public isValid(): boolean {
-		return !!this.sv || !!this.isDevel;
+		return !!this.sv || !!this.isDevel || !!this.svString;
 	}
 
 	public format(includePrerelease?: boolean): string {
+		if (this.svString && this.isDevel) {
+			return this.svString;
+		}
 		if (this.sv) {
 			if (includePrerelease && this.svString) {
 				return this.svString;
@@ -174,7 +183,7 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
 	// When the extension starts, at least 4 concurrent calls race
 	// and end up calling `go version`.
 
-	const goRuntimePath = goBinPath ?? getBinPath('go');
+	const goRuntimePath = goBinPath ?? getBinPath('gno');
 
 	const error = (msg: string) => {
 		outputChannel.appendLine(msg);
