@@ -287,41 +287,52 @@ export async function installTool(tool: ToolAtVersion): Promise<string | undefin
 }
 
 async function installToolWithGo(
-	tool: ToolAtVersion,
-	goVersion: GoVersion, // go version to be used for installation.
-	envForTools: NodeJS.Dict<string>
+    tool: ToolAtVersion,
+    goVersion: GoVersion,
+    envForTools: NodeJS.Dict<string>
 ): Promise<string | undefined> {
-	// Some tools may have to be closed before we reinstall them.
-	if (tool.close) {
-		const reason = await tool.close(envForTools);
-		if (reason) {
-			return reason;
-		}
-	}
+    if (tool.close) {
+        const reason = await tool.close(envForTools);
+        if (reason) {
+            return reason;
+        }
+    }
 
-	const env = Object.assign({}, envForTools);
+    const env = Object.assign({}, envForTools);
+    let version: semver.SemVer | string | undefined | null = tool.version;
+    if (!version && tool.usePrereleaseInPreviewMode && extensionInfo.isPreview) {
+        version = await latestToolVersion(tool, true);
+    }
+    const importPath = getImportPathWithVersion(tool, version, goVersion);
 
-	let version: semver.SemVer | string | undefined | null = tool.version;
-	if (!version && tool.usePrereleaseInPreviewMode && extensionInfo.isPreview) {
-		version = await latestToolVersion(tool, true);
-	}
-	const importPath = getImportPathWithVersion(tool, version, goVersion);
+    try {
+        // Ici nous utilisons go pour l'installation des outils
+        const goBinary = getBinPath('go');
+        if (!goBinary) {
+            throw new Error('Cannot find go binary for tools installation');
+        }
+        const opts = {
+            env,
+            cwd: getWorkspaceFolderPath()
+        };
 
-	try {
-		await installToolWithGoInstall(goVersion, env, importPath);
-		const toolInstallPath = getBinPath(tool.name);
-		outputChannel.appendLine(`Installing ${importPath} (${toolInstallPath}) SUCCEEDED`);
-	} catch (e) {
-		outputChannel.appendLine(`Installing ${importPath} FAILED`);
-		outputChannel.appendLine(`${JSON.stringify(e, null, 1)}`);
-		return `failed to install ${tool.name}(${importPath}): ${e}`;
-	}
+        const execFile = util.promisify(cp.execFile);
+        outputChannel.trace(`${goBinary} install -v ${importPath} (cwd: ${opts.cwd})`);
+        await execFile(goBinary, ['install', '-v', importPath], opts);
+
+        const toolInstallPath = getBinPath(tool.name);
+        outputChannel.appendLine(`Installing ${importPath} (${toolInstallPath}) SUCCEEDED`);
+    } catch (e) {
+        outputChannel.appendLine(`Installing ${importPath} FAILED`);
+        outputChannel.appendLine(`${JSON.stringify(e, null, 1)}`);
+        return `failed to install ${tool.name}(${importPath}): ${e}`;
+    }
 }
 
 async function installToolWithGoInstall(goVersion: GoVersion, env: NodeJS.Dict<string>, importPath: string) {
 	// Unlike installToolWithGoGet, `go install` in module mode
 	// can run in the current directory safely. So, use the user-specified go tool path.
-	const goBinary = goVersion?.binaryPath || getBinPath('gno');
+	const goBinary = goVersion?.binaryPath || getBinPath('go');
 	const opts = {
 		env,
 		cwd: getWorkspaceFolderPath()
