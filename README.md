@@ -1,5 +1,8 @@
 # Gno for Visual Studio Code
 
+*⚠️ Currently we build from source to install, this will be published on marketplace soon*
+
+
 ## Acknowledgments
 
 A big thank you to the developers of the [vscode-go](https://github.com/golang/vscode-go) extension for Go. 
@@ -7,13 +10,37 @@ Their work was a huge help in creating this extension for the Gno language,
 as I adapted their ideas and structure to fit this new context. 
 Thank you for your contribution to open source and for the inspiration!
 
+## Quick Start
+
+1. Install [Go](https://go.dev) 1.21 or newer and [Gno](https://github.com/gnolang/gno) if you haven't already.
+
+2. Clone Repo, install dependencies and make `.vsix` file
+
+```
+git clone https://github.com/gnoverse/vscode-gno.git
+cd vscode-gno/extension
+npm ci
+npm run package
+```
+
+3. Add the `.vsix` file that was created to your extensions
+<p align="center">
+<img src="docs/images/installvsix.gif" width=75%>
+<br/>
+</p>
+
+4. Open any gno file or gno.mod file to automatically activate the extension.
+
+You are ready to Gno :-) &nbsp;&nbsp; 🎉🎉🎉
+
+
 <!-- add this line after publishing the extension -->
 
 <!--[The VS Code Gno extension](https://marketplace.visualstudio.com/items?itemName=gnolang.gno)
 provides rich language support for the
 [Gno programming language](https://docs.gno.land).-->
 
-## Requirements
+<!--## Requirements
 
 * Visual Studio Code 1.75 or newer (or editors compatible with VS Code 1.75+ APIs)
 * Go 1.21 or newer and Gno.
@@ -61,13 +88,13 @@ You are ready to Gno :-) &nbsp;&nbsp; 🎉🎉🎉
 * Explore Gno language resources on [docs.gno.land](https://docs.gno.land).
 
 If you are new to Gno, [this article](https://docs.gno.land/getting-started/) provides
-the overview on Gno code organization and basic `gno` commands.
+the overview on Gno code organization and basic `gno` commands.-->
 
 <!-- add this line after publishing the extension and making the video -->
 <!--Watch ["Getting started with VS Code Go"] for an explanation of how to build your first Gno
 application using VS Code Gno.-->
 
-## Feature highlights
+<!--## Feature highlights
 
 * [IntelliSense] - Results appear for symbols as you type.
 * [Code navigation] - Jump to or peek at a symbol's declaration.
@@ -92,7 +119,7 @@ extension.
 
 <p align=center>
 <img src="docs/images/toggletestfile.gif" width=75%>
-<br/><em>(Toggle Test File)</em></p>
+<br/><em>(Toggle Test File)</em></p>-->
 
 <!-- As gnopls settings are no longer read directly from gnopls, this section is not necessary. To be added later -->
 
@@ -103,7 +130,7 @@ by turning on [Gnopls' `ui.semanticTokens` setting](https://github.com/gnoverse/
     "gnopls": { "ui.semanticTokens": true }
     ```
 -->
-
+<!--
 ### Supported Gno and tools
 
 The Gno extension relies on [tools](https://github.com/gnoverse/vscode-gno/wiki/tools)
@@ -125,15 +152,15 @@ the project.
 
 [`gnopls`]: https://github/gnoverse/gnopls
 [`go`]: https://golang.org/cmd/go
-[`gno`]: https://docs.gno.land/gno-tooling/cli/gno-tooling-gno
-[Managing extensions in VS Code]: https://code.visualstudio.com/docs/editor/extension-gallery
+[`gno`]: https://docs.gno.land/gno-tooling/cli/gno-tooling-gno-->
+<!--[Managing extensions in VS Code]: https://code.visualstudio.com/docs/editor/extension-gallery-->
 <!--[VS Code Go extension]: https://marketplace.visualstudio.com/items?itemName=gnolang.gno-->
-[Gno installation guide]: https://docs.gno.land/getting-started/local-setup/installation
+<!--[Gno installation guide]: https://docs.gno.land/getting-started/local-setup/installation-->
 <!-- Add this line after publishing video  -->
 <!-- ["Getting started with VS Code Go"]: -->
-[IntelliSense]: https://github.com/gnoverse/vscode-gno/wiki/features#intellisense
+<!--[IntelliSense]: https://github.com/gnoverse/vscode-gno/wiki/features#intellisense
 [Code navigation]: https://github.com/gnoverse/vscode-gno/wiki/features#code-navigation
 [Code editing]: https://github.com/gnoverse/vscode-gno/wiki/features#code-editing
 [testing]: https://github.com/gnoverse/vscode-gno/wiki/features#run-and-test-in-the-editor
 [full feature breakdown]: https://github.com/gnoverse/vscode-gno/wiki/features
-[`Gno: Install/Update Tools` command]: https://github.com/gnoverse/vscode-gno/wiki/commands#gno-installupdate-tools
+[`Gno: Install/Update Tools` command]: https://github.com/gnoverse/vscode-gno/wiki/commands#gno-installupdate-tools-->
