@@ -14,7 +14,7 @@ import { formatGoVersion, GoEnvironmentOption, terminalCreationListener } from '
 import { GoDocumentSelector, isGoFile } from './gnoMode';
 import { runGoEnv } from './gnoModules';
 import { allToolsInformation } from './gnoToolsInformation';
-import { getGnoVersion } from './util';
+import { getGoVersion } from './util';
 import { GoExtensionContext } from './context';
 import { CommandFactory } from './commands';
 import { LanguageClient, State } from 'vscode-languageclient/node';
@@ -151,7 +151,7 @@ export async function initGoStatusBar(goCtx: GoExtensionContext) {
 		goEnvStatusbarItem.name = STATUS_BAR_ITEM_NAME;
 	}
 	// set Go version and command
-	const version = await getGnoVersion();
+	const version = await getGoVersion();
 	const goOption = new GoEnvironmentOption(version.binaryPath, formatGoVersion(version));
 
 	goEnvStatusbarItem.text = goOption.label;
