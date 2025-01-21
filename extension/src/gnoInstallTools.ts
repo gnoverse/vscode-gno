@@ -117,7 +117,7 @@ async function _getGoForInstall(goVersion: GoVersion): Promise<GoVersion | undef
 		const go = await getGoVersion(configured, 'local');
 		if (go) return go;
 	} catch (e) {
-		outputChannel.error(`failed to run "gno version" with "${configured}". Provide a valid path to the Gno binary`);
+		outputChannel.error(`failed to run "go version" with "${configured}". Provide a valid path to the Go binary`);
 	}
 	return;
 }
