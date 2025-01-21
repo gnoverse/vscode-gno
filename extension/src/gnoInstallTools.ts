@@ -306,7 +306,6 @@ async function installToolWithGo(
     const importPath = getImportPathWithVersion(tool, version, goVersion);
 
     try {
-        // Ici nous utilisons go pour l'installation des outils
         const goBinary = getBinPath('go');
         if (!goBinary) {
             throw new Error('Cannot find go binary for tools installation');

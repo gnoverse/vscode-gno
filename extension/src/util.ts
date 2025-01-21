@@ -183,6 +183,61 @@ export async function getGoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Pr
 	// When the extension starts, at least 4 concurrent calls race
 	// and end up calling `go version`.
 
+	const goRuntimePath = goBinPath ?? getBinPath('go');
+
+	const error = (msg: string) => {
+		outputChannel.appendLine(msg);
+		console.warn(msg);
+		return new Error(msg);
+	};
+
+	if (!goRuntimePath) {
+		throw error(`unable to locate "go" binary in GOROOT (${getCurrentGoRoot()}) or PATH (${getEnvPath()})`);
+	}
+	if (GOTOOLCHAIN === undefined && cachedGoBinPath === goRuntimePath && cachedGoVersion) {
+		if (cachedGoVersion.isValid()) {
+			return Promise.resolve(cachedGoVersion);
+		}
+		// Don't throw an the error. Continue and recompute go version.
+		error(`cached Go version (${JSON.stringify(cachedGoVersion)}) is invalid, recomputing`);
+	}
+	const docUri = vscode.window.activeTextEditor?.document.uri;
+	const cwd = getWorkspaceFolderPath(docUri && docUri.fsPath.endsWith('.gno') ? docUri : undefined);
+
+	let goVersion: GoVersion | undefined;
+	try {
+		const env = toolExecutionEnvironment();
+		if (GOTOOLCHAIN !== undefined) {
+			env['GOTOOLCHAIN'] = GOTOOLCHAIN;
+		}
+		const execFile = util.promisify(cp.execFile);
+		const { stdout, stderr } = await execFile(goRuntimePath, ['version'], {
+			env,
+			cwd
+		});
+		if (stderr) {
+			error(`failed to run "${goRuntimePath} version": stdout: ${stdout}, stderr: ${stderr}`);
+		}
+		goVersion = new GoVersion(goRuntimePath, stdout);
+	} catch (err) {
+		throw error(`failed to run "${goRuntimePath} version": ${err} cwd: ${cwd}`);
+	}
+	if (!goBinPath && GOTOOLCHAIN === undefined) {
+		// if getGoVersion was called with a given goBinPath or an explicit GOTOOLCHAIN env var, don't cache the result.
+		cachedGoBinPath = goRuntimePath;
+		cachedGoVersion = goVersion;
+		if (!cachedGoVersion.isValid()) {
+			error(`unable to determine version from the output of "${goRuntimePath} version": "${goVersion.svString}"`);
+		}
+	}
+	return goVersion;
+}
+
+export async function getGnoVersion(goBinPath?: string, GOTOOLCHAIN?: string): Promise<GoVersion> {
+	// TODO(hyangah): limit the number of concurrent getGoVersion call.
+	// When the extension starts, at least 4 concurrent calls race
+	// and end up calling `go version`.
+
 	const goRuntimePath = goBinPath ?? getBinPath('gno');
 
 	const error = (msg: string) => {
