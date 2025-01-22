@@ -165,7 +165,7 @@
       }
     ],
     "configurationDefaults": {
-      "[go]": {
+      "[gno]": {
         "editor.insertSpaces": false,
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
@@ -367,12 +367,11 @@
         "gno.formatTool": {
           "type": "string",
           "default": "default",
-          "markdownDescription": "When the language server is enabled and one of `default`/`gofmt`/`goimports`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.",
+          "markdownDescription": "When the language server is enabled and one of `default`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.",
           "scope": "resource",
           "enum": [
             "default",
-            "gofumpt",
-            "custom"
+            "gofumpt"
           ],
           "markdownEnumDescriptions": [
             "If the language server is enabled, format via the language server, which already gofumpt.",
@@ -632,7 +631,7 @@
             "formatting.gofumpt": {
               "type": "boolean",
               "markdownDescription": "gofumpt indicates if we should run gofumpt formatting.\n",
-              "default": false,
+              "default": true,
               "scope": "resource"
             },
             "formatting.local": {
