@@ -31,6 +31,25 @@ npm run package
 
 4. Open any gno file or gno.mod file to automatically activate the extension.
 
+## Automatic installation of gnopls
+
+For the extension to work properly, it needs the [gnopls](https://github.com/gnoverse/gnopls) LSP server. 
+If [gnopls](https://github.com/gnoverse/gnopls) is not installed, installation is automatic.
+
+If you get this error message
+<p align="left">
+<img src="docs/images/errorgopath.png" width=75%>
+<br/>
+</p>
+
+
+This means that the extension cannot find the `go` binary needed to install `gnopls`. 
+You'll need to add the PATH to your `go` binary in the extension settings.
+<p align="left">
+<img src="docs/images/settingsgopath.png" width=75%>
+<br/>
+</p>
+
 You are ready to Gno :-) &nbsp;&nbsp; 🎉🎉🎉
 
 
