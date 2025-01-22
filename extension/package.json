@@ -94,7 +94,6 @@
     "node": ">=16.14.2"
   },
   "activationEvents": [
-    "onLanguage:gno",
     "onLanguage:gno.sum",
     "onLanguage:gnotmpl",
     "onDebugInitialConfigurations",
@@ -127,6 +126,7 @@
         "aliases": [
           "Gno"
         ],
+        "configuration": "./languages/gno.mod.language-configuration.json",
         "icon": {
           "dark": "media/gno-icon-dark.png",
           "light": "media/gno-icon-light.png"
@@ -141,10 +141,9 @@
           "Gno Module File"
         ],
         "icon": {
-        "dark": "media/gno-icon-dark.png",
-        "light": "media/gno-icon-light.png"
-      },
-        "configuration": "./languages/gno.mod.language-configuration.json"
+          "dark": "media/gno-icon-dark.png",
+          "light": "media/gno-icon-light.png"
+        }
       }
     ],
     "grammars": [
