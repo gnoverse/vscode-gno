@@ -253,7 +253,7 @@
       },
       {
         "command": "gno.run.modinit",
-        "title": "Gno: Initialize go.mod",
+        "title": "Gno: Initialize gno.mod",
         "description": "Run `gno mod init` in the workspace folder."
       },
       {
