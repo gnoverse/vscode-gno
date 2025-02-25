@@ -12,6 +12,15 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		description: 'Formatter',
 		defaultVersion: 'v0.7.0'
 	},
+	'tlin': {
+		name: 'tlin',
+		importPath: 'github.com/gnolang/tlin/cmd/tlin',
+		modulePath: 'github.com/gnolang/tlin/cmd/tlin',
+		replacedByGopls: false,
+		isImportant: true,
+		description: 'Linter',
+		defaultVersion: 'v1.1.0'
+	},
 	'gnopls': {
 		name: 'gnopls',
 		importPath: 'github.com/gnoverse/gnopls',
