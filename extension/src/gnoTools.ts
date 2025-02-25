@@ -129,7 +129,7 @@ export function getConfiguredTools(goConfig: { [key: string]: any }, goplsConfig
 	// Add the linter that was chosen by the user, but don't add staticcheck
 	// if it is enabled via gopls.
 	const goplsStaticheckEnabled = useLanguageServer && goplsStaticcheckEnabled(goConfig, goplsConfig);
-	if (goConfig['lintTool'] !== 'staticcheck' || !goplsStaticheckEnabled) {
+	if (goConfig['lintTool'] !== 'tlin' || !goplsStaticheckEnabled) {
 		maybeAddTool(goConfig['lintTool']);
 	}
 	return tools;
@@ -141,7 +141,7 @@ export function goplsStaticcheckEnabled(
 ): boolean {
 	if (
 		goplsConfig['ui.diagnostic.staticcheck'] === false ||
-		(goplsConfig['ui.diagnostic.staticcheck'] === undefined && goplsConfig['staticcheck'] !== true)
+		(goplsConfig['ui.diagnostic.staticcheck'] === undefined && goplsConfig['tlin'] !== true)
 	) {
 		return false;
 	}

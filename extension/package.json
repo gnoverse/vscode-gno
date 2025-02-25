@@ -474,14 +474,11 @@
         },
         "gno.lintTool": {
           "type": "string",
-          "default": "staticcheck",
+          "default": "tlin",
           "description": "Specifies Lint tool name.",
           "scope": "resource",
           "enum": [
-            "staticcheck",
-            "golint",
-            "golangci-lint",
-            "revive"
+            "tlin"
           ]
         },
         "gno.lintFlags": {

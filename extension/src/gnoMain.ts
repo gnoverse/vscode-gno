@@ -351,8 +351,11 @@ function checkToolExists(tool: string) {
 }
 
 function lintDiagnosticCollectionName(lintToolName: string) {
-	if (!lintToolName || lintToolName === 'gnolint') {
-		return 'gno-lint';
-	}
-	return `gno-${lintToolName}`;
+    if (!lintToolName || lintToolName === 'gnolint') {
+        return 'gno-lint';
+    }
+    if (lintToolName === 'tlin') {
+        return 'tlin';
+    }
+    return `gno-${lintToolName}`;
 }

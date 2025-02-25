@@ -561,6 +561,7 @@ export interface ICheckResult {
 	col: number | undefined;
 	msg: string;
 	severity: string;
+	lineText?: string;
 }
 
 /**
