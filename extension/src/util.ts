@@ -39,7 +39,7 @@ export class GoVersion {
 	private devVersion?: string;
 
 	constructor(public binaryPath: string, public version: string) {
-		const matchesGno = /^gno version: (\w+)\s*$/.exec(version);
+		const matchesGno = /^gno version: (.+?)\s*$/.exec(version);
 		const matchesRelease = /^go version go(\d\.\d+\S*)\s+/.exec(version);
 		const matchesDevel = /^go version devel go(\d\.\d+\S*)\s+/.exec(version);
 
