@@ -145,6 +145,8 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.add.package.workspace', addImportToWorkspace);
 	registerCommand('gno.tools.install', commands.installTools);
 	registerCommand('gno.maketx.addpkg', addPackage());
+	registerCommand('gno.dev.server', commands.startGnoDevServer);
+	registerCommand('gno.dev.server.stop', commands.stopGnoDevServerCommand);
 
 	if (isVscodeTestingAPIAvailable && cfg.get<boolean>('testExplorer.enable')) {
 		GoTestExplorer.setup(ctx, goCtx);

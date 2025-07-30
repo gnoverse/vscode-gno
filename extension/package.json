@@ -270,6 +270,16 @@
         "command": "gno.maketx.addpkg",
         "title": "Gno Add Package To Chain",
         "description": "Add a package to the Gno blockchain"
+      },
+      {
+        "command": "gno.dev.server.start",
+        "title": "Gno: Start Development Server",
+        "description": "Start gnodev server and open in Simple Browser"
+      },
+      {
+        "command": "gno.dev.server.stop",
+        "title": "Gno: Stop Development Server",
+        "description": "Stop gnodev server"
       }
     ],
     "breakpoints": [
@@ -289,36 +299,36 @@
         "gno.makeTx": {
           "type": "object",
           "properties": {
-              "broadcast": {
-                  "type": "boolean",
-                  "default": true,
-                  "description": "If true, broadcasts transaction to chain"
-              },
-              "gasFee": {
-                  "type": "string",
-                  "default": "1000000ugnot",
-                  "description": "Gas fee for transaction"
-              },
-              "gasWanted": {
-                  "type": "string",
-                  "default": "2000000",
-                  "description": "Gas wanted for transaction"
-              }
+            "broadcast": {
+              "type": "boolean",
+              "default": true,
+              "description": "If true, broadcasts transaction to chain"
+            },
+            "gasFee": {
+              "type": "string",
+              "default": "1000000ugnot",
+              "description": "Gas fee for transaction"
+            },
+            "gasWanted": {
+              "type": "string",
+              "default": "2000000",
+              "description": "Gas wanted for transaction"
+            }
           },
           "additionalProperties": false,
           "default": {
-              "broadcast": true,
-              "gasFee": "1000000ugnot",
-              "gasWanted": "4000000"
+            "broadcast": true,
+            "gasFee": "1000000ugnot",
+            "gasWanted": "4000000"
           },
           "description": "Configuration for Gno blockchain transactions",
           "scope": "resource"
-      },
-      "gno.editorContextMenuCommands.addPackage": {
+        },
+        "gno.editorContextMenuCommands.addPackage": {
           "type": "boolean",
           "default": true,
           "description": "If true, adds command to add package to the Gno blockchain to the editor context menu"
-      },
+        },
         "gno.disableConcurrentTests": {
           "type": "boolean",
           "default": false,
@@ -464,6 +474,15 @@
           "default": true,
           "description": "Open the test output terminal when a test run is started.",
           "scope": "window"
+        },
+        "gno.gnodevFlags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to pass to gnodev command (e.g. [\"-v\", \"-paths <custom-path>\"])",
+          "scope": "resource"
         },
         "gno.useLanguageServer": {
           "type": "boolean",
@@ -1258,3 +1277,4 @@
     ]
   }
 }
+
