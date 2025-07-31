@@ -6,7 +6,7 @@ import { getBinPath } from '../util';
 
 interface GnoDevProcess {
 	process: ChildProcess;
-	dispose: () => void;
+	webviewPanel?: vscode.WebviewPanel;
 }
 
 let currentGnoDevProcess: GnoDevProcess | undefined;
@@ -53,9 +53,49 @@ export const startGnoDevServer: CommandFactory = () => {
 
 				// Check if server is ready (look for the READY message)
 				if (output.includes('gnoweb started') && openBrowser) {
-					// Open Simple Browser after a short delay to ensure server is fully ready
+					// Create WebviewPanel after a short delay to ensure server is fully ready
 					setTimeout(() => {
-						vscode.commands.executeCommand('simpleBrowser.show', 'http://127.0.0.1:8888');
+						const panel = vscode.window.createWebviewPanel(
+							'gnodev',
+							'Gno Dev Server',
+							vscode.ViewColumn.One,
+							{
+								enableScripts: true,
+								retainContextWhenHidden: true
+							}
+						);
+
+						panel.webview.html = `
+							<!DOCTYPE html>
+							<html>
+							<head>
+								<meta charset="UTF-8">
+								<meta name="viewport" content="width=device-width, initial-scale=1.0">
+								<title>Gno Dev Server</title>
+								<style>
+									body, html {
+										margin: 0;
+										padding: 0;
+										width: 100%;
+										height: 100%;
+										overflow: hidden;
+									}
+									iframe {
+										width: 100%;
+										height: 100vh;
+										border: none;
+									}
+								</style>
+							</head>
+							<body>
+								<iframe src="http://localhost:8888" title="Gno Dev Server"></iframe>
+							</body>
+							</html>
+						`;
+
+						if (currentGnoDevProcess) {
+							currentGnoDevProcess.webviewPanel = panel;
+						}
 					}, 50);
 				}
 			});
@@ -75,21 +115,12 @@ export const startGnoDevServer: CommandFactory = () => {
 				currentGnoDevProcess = undefined;
 			});
 
-			// Create disposal function
-			const dispose = () => {
-				if (gnodevProcess && !gnodevProcess.killed) {
-					outputChannel.appendLine('Stopping Gno development server...');
-					gnodevProcess.kill();
-				}
-			};
-
 			currentGnoDevProcess = {
-				process: gnodevProcess,
-				dispose
+				process: gnodevProcess
 			};
 
 			const message = openBrowser
-				? 'Gno development server started! Opening in Simple Browser...'
+				? 'Gno development server started! Opening in WebView...'
 				: 'Gno development server started!';
 			vscode.window.showInformationMessage(message);
 		} catch (error) {
@@ -108,7 +139,13 @@ export const stopGnoDevServer: CommandFactory = () => {
 
 const _stopGnoDevServer = (quiet = false): void => {
 	if (currentGnoDevProcess) {
-		currentGnoDevProcess.dispose();
+		if (currentGnoDevProcess.process && !currentGnoDevProcess.process.killed) {
+			outputChannel.appendLine('Stopping Gno development server...');
+			currentGnoDevProcess.process.kill();
+		}
+		if (currentGnoDevProcess.webviewPanel) {
+			currentGnoDevProcess.webviewPanel.dispose();
+		}
 		currentGnoDevProcess = undefined;
 		if (!quiet) {
 			outputChannel.appendLine('Gno development server stopped.');
