@@ -145,8 +145,8 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.add.package.workspace', addImportToWorkspace);
 	registerCommand('gno.tools.install', commands.installTools);
 	registerCommand('gno.maketx.addpkg', addPackage());
-	registerCommand('gno.dev.server', commands.startGnoDevServer);
-	registerCommand('gno.dev.server.stop', commands.stopGnoDevServerCommand);
+	registerCommand('gno.dev.server.start', commands.startGnoDevServer);
+	registerCommand('gno.dev.server.stop', commands.stopGnoDevServer);
 
 	if (isVscodeTestingAPIAvailable && cfg.get<boolean>('testExplorer.enable')) {
 		GoTestExplorer.setup(ctx, goCtx);
@@ -202,7 +202,7 @@ export function deactivate() {
 		cancelRunningTests(),
 		killRunningPprof(),
 		Promise.resolve(cleanupTempDir()),
-		Promise.resolve(disposeGoStatusBar()),
+		Promise.resolve(disposeGoStatusBar())
 	]);
 }
 

@@ -17,7 +17,7 @@ export { installTools } from './installTools';
 export { runBuilds } from './runBuilds';
 export { showCommands } from './showCommands';
 export { startDebugSession } from './startDebugSession';
-export { startGnoDevServer, stopGnoDevServerCommand } from './startGnoDevServer';
+export { startGnoDevServer, stopGnoDevServer } from './startGnoDevServer';
 export { startLanguageServer } from './startLanguageServer';
 export { startGoplsMaintainerInterface } from './startLanguageServer';
 

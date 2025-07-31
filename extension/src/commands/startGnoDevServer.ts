@@ -15,7 +15,7 @@ export const startGnoDevServer: CommandFactory = () => {
 	return async () => {
 		try {
 			// Stop any existing gnodev process
-			stopGnoDevServer();
+			_stopGnoDevServer(true);
 
 			// Get the current workspace folder
 			const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
@@ -29,9 +29,10 @@ export const startGnoDevServer: CommandFactory = () => {
 			// Get the gno binary path
 			const gnodevBinPath = getBinPath('gnodev');
 
-			// Get gnodev flags from configuration
+			// Get gnodev flags and browser setting from configuration
 			const config = vscode.workspace.getConfiguration('gno');
 			const gnodevFlags: string[] = config.get('gnodevFlags', []);
+			const openBrowser: boolean = config.get('gnodevOpenBrowser', true);
 
 			outputChannel.show();
 			outputChannel.appendLine('Starting Gno development server...');
@@ -51,7 +52,7 @@ export const startGnoDevServer: CommandFactory = () => {
 				outputChannel.appendLine(output);
 
 				// Check if server is ready (look for the READY message)
-				if (output.includes('gnoweb started')) {
+				if (output.includes('gnoweb started') && openBrowser) {
 					// Open Simple Browser after a short delay to ensure server is fully ready
 					setTimeout(() => {
 						vscode.commands.executeCommand('simpleBrowser.show', 'http://127.0.0.1:8888');
@@ -87,7 +88,10 @@ export const startGnoDevServer: CommandFactory = () => {
 				dispose
 			};
 
-			vscode.window.showInformationMessage('Gno development server started! Opening in Simple Browser...');
+			const message = openBrowser
+				? 'Gno development server started! Opening in Simple Browser...'
+				: 'Gno development server started!';
+			vscode.window.showInformationMessage(message);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
 			outputChannel.appendLine(`Error starting gnodev: ${errorMessage}`);
@@ -96,23 +100,21 @@ export const startGnoDevServer: CommandFactory = () => {
 	};
 };
 
-// Export function to stop the server (can be used by other commands if needed)
-function stopGnoDevServer(): boolean {
+export const stopGnoDevServer: CommandFactory = () => {
+	return async () => {
+		_stopGnoDevServer(false);
+	};
+};
+
+const _stopGnoDevServer = (quiet = false): void => {
 	if (currentGnoDevProcess) {
 		currentGnoDevProcess.dispose();
 		currentGnoDevProcess = undefined;
-		return true;
-	}
-	return false;
-}
-
-export const stopGnoDevServerCommand: CommandFactory = () => {
-	return async () => {
-		if (stopGnoDevServer()) {
+		if (!quiet) {
 			outputChannel.appendLine('Gno development server stopped.');
 			vscode.window.showInformationMessage('Gno development server stopped.');
-		} else {
-			vscode.window.showInformationMessage('No Gno development server is currently running.');
 		}
-	};
+	} else if (!quiet) {
+		vscode.window.showInformationMessage('No Gno development server is currently running.');
+	}
 };

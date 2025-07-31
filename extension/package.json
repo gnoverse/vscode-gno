@@ -484,6 +484,12 @@
           "description": "Flags to pass to gnodev command (e.g. [\"-v\", \"-paths <custom-path>\"])",
           "scope": "resource"
         },
+        "gno.gnodevOpenBrowser": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open Simple Browser automatically when gnodev server starts",
+          "scope": "resource"
+        },
         "gno.useLanguageServer": {
           "type": "boolean",
           "default": true,
