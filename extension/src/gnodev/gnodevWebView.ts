@@ -22,7 +22,7 @@ export class GnodevWebView extends vscode.Disposable {
 		this._onDidDispose = callback;
 	}
 
-	public async create(addr: GnodevAddress): Promise<void> {
+	public async create(addr: GnodevAddress, viewColumn: vscode.ViewColumn): Promise<void> {
 		// If the webview panel for this gnodev address already exists, just reveal it.
 		if (this._panel && this._currAddr?.compareTo(addr)) {
 			this._panel.reveal();
@@ -30,8 +30,8 @@ export class GnodevWebView extends vscode.Disposable {
 		}
 		this._currAddr = addr;
 
-		// Init the webview panel on a new column beside the current one.
-		this._panel = vscode.window.createWebviewPanel('gnodev', 'Gnodev', vscode.ViewColumn.Beside, {
+		// Init the webview panel on the specified column.
+		this._panel = vscode.window.createWebviewPanel('gnodev', 'Gnodev', viewColumn, {
 			enableScripts: true,
 			retainContextWhenHidden: true
 		});
@@ -90,12 +90,18 @@ export class GnodevWebView extends vscode.Disposable {
 
 	public dispose(): void {
 		if (this._panel) {
-			outputChannel.info('Closing gnodev webview');
-			this._panel.dispose();
+			const prevPanel = this._panel;
 			this._panel = undefined;
+
+			outputChannel.info('Closing gnodev webview');
+			prevPanel.dispose();
 		}
 
-		this._onDidDispose?.();
-		this._onDidDispose = undefined;
+		if (this._onDidDispose) {
+			const prevOnDidDispose = this._onDidDispose;
+			this._onDidDispose = undefined;
+
+			prevOnDidDispose();
+		}
 	}
 }

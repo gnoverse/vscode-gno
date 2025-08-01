@@ -485,9 +485,21 @@
           "scope": "resource"
         },
         "gno.gnodevOpenBrowser": {
-          "type": "boolean",
-          "default": true,
-          "description": "Open Simple Browser automatically when gnodev server starts",
+          "type": "string",
+          "enum": [
+            "none",
+            "current",
+            "beside",
+            "external"
+          ],
+          "enumDescriptions": [
+            "Do not open gnodev interface",
+            "Open gnodev interface in the current webview",
+            "Open gnodev interface in a webview beside the current one",
+            "Open gnodev interface in external browser"
+          ],
+          "default": "beside",
+          "description": "Controls how the gnodev interface opens when the server starts",
           "scope": "resource"
         },
         "gno.useLanguageServer": {

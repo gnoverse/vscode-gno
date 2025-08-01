@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CommandFactory } from './index';
-import { GnodevProcess, GnodevAddress, restartDelay } from '../gnodev/gnodevProcess';
+import { GnodevProcess, GnodevAddress } from '../gnodev/gnodevProcess';
 import { GnodevWebView } from '../gnodev/gnodevWebView';
 
 interface GnoDevServer {
@@ -16,7 +16,6 @@ export const startGnoDevServer: CommandFactory = (ctx) => {
 			// If a gnodev server is already running, dispose of it before starting a new one.
 			if (currentGnoDevServer) {
 				disposeGnoDevServer();
-				await new Promise((resolve) => setTimeout(resolve, restartDelay));
 			}
 
 			// Init the gnodev process.
@@ -24,15 +23,24 @@ export const startGnoDevServer: CommandFactory = (ctx) => {
 
 			// When the gnodev process is ready, open the webview if configured to do so.
 			currentGnoDevServer.process.onProcessReady((addr: GnodevAddress) => {
-				// Get the openBrowser setting to determine if the webview should be opened.
+				// Get the openBrowser setting to determine how the gnodev interface should be opened.
 				const config = vscode.workspace.getConfiguration('gno');
-				const openBrowser: boolean = config.get('gnodevOpenBrowser', true);
+				const openBrowser: string = config.get('gnodevOpenBrowser', 'beside');
 
-				// If the openBrowser setting is true, create and show the webview.
-				if (openBrowser && currentGnoDevServer) {
-					currentGnoDevServer.webview = new GnodevWebView(ctx);
-					currentGnoDevServer.webview.onDidDispose(disposeGnoDevServer);
-					currentGnoDevServer.webview.create(addr);
+				// Handle the different openBrowser options.
+				if (openBrowser !== 'none' && currentGnoDevServer) {
+					if (openBrowser === 'external') {
+						// Open in external browser
+						vscode.env.openExternal(addr.toUri());
+					} else {
+						// Open in webview (current or beside)
+						currentGnoDevServer.webview = new GnodevWebView(ctx);
+						currentGnoDevServer.webview.onDidDispose(disposeGnoDevServer);
+						currentGnoDevServer.webview.create(
+							addr,
+							openBrowser === 'current' ? vscode.ViewColumn.Active : vscode.ViewColumn.Beside
+						);
+					}
 				}
 
 				vscode.window.showInformationMessage(`Gnodev server started successfully at: ${addr.toString()}`);
@@ -60,16 +68,21 @@ export const startGnoDevServer: CommandFactory = (ctx) => {
 
 export const stopGnoDevServer: CommandFactory = () => {
 	return async () => {
-		if (currentGnoDevServer) {
-			disposeGnoDevServer();
-		} else {
+		if (!currentGnoDevServer) {
 			vscode.window.showInformationMessage('No gnodev server is currently running.');
+			return;
 		}
+
+		disposeGnoDevServer();
 	};
 };
 
 export const disposeGnoDevServer = () => {
-	currentGnoDevServer?.process.dispose();
-	currentGnoDevServer?.webview?.dispose();
-	currentGnoDevServer = undefined;
+	if (currentGnoDevServer) {
+		const prevGnoDevServer = currentGnoDevServer;
+		currentGnoDevServer = undefined;
+
+		prevGnoDevServer.process.dispose();
+		prevGnoDevServer.webview?.dispose();
+	}
 };

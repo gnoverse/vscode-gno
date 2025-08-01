@@ -3,8 +3,6 @@ import { spawn, ChildProcess } from 'child_process';
 import { outputChannel } from '../gnoStatus';
 import { getBinPath } from '../util';
 
-export const restartDelay = 3000; // 3 seconds
-
 export class GnodevAddress {
 	public host: string;
 	public port: number;
@@ -29,7 +27,6 @@ export class GnodevAddress {
 
 export class GnodevProcess extends vscode.Disposable {
 	private _process: ChildProcess | undefined;
-	private _onDidDispose: (() => void) | undefined;
 	private _onProcessReady = new vscode.EventEmitter<GnodevAddress>();
 	private _onProcessExit = new vscode.EventEmitter<Error | undefined>();
 
@@ -48,16 +45,10 @@ export class GnodevProcess extends vscode.Disposable {
 		return this._process?.killed === false;
 	}
 
-	public onDidDispose(callback: () => void): void {
-		this._onDidDispose = callback;
-	}
-
 	public async start(): Promise<void> {
-		// If the process is already running, stop it first then wait 3 secs
-		// to ensure the ports are freed up before starting a new one.
+		// If the process is already running, stop it first.
 		if (this.isRunning) {
 			this.stop();
-			await new Promise((resolve) => setTimeout(resolve, restartDelay));
 		}
 
 		outputChannel.info('Starting gnodev process...');
@@ -139,8 +130,6 @@ export class GnodevProcess extends vscode.Disposable {
 
 	public dispose(): void {
 		this.stop();
-		this._onDidDispose?.();
-		this._onDidDispose = undefined;
 		this._onProcessReady.dispose();
 		this._onProcessExit.dispose();
 	}
