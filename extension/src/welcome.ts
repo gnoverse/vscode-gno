@@ -8,13 +8,13 @@
 // https://github.com/microsoft/vscode-extension-samples/tree/master/webview-sample
 
 import vscode = require('vscode');
-import path = require('path');
 import semver = require('semver');
 import { extensionId } from './const';
 import { GoExtensionContext } from './context';
 import { extensionInfo, getGnoConfig } from './config';
 import { getFromGlobalState, updateGlobalState } from './stateUtils';
 import { createRegisterCommand } from './commands';
+import { joinPath } from './util';
 
 export class WelcomePanel {
 	public static activate(ctx: vscode.ExtensionContext, goCtx: GoExtensionContext) {
@@ -247,18 +247,6 @@ function getNonce() {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
 	return text;
-}
-
-function joinPath(uri: vscode.Uri, ...pathFragment: string[]): vscode.Uri {
-	// Reimplementation of
-	// https://github.com/microsoft/vscode/blob/b251bd952b84a3bdf68dad0141c37137dac55d64/src/vs/base/common/uri.ts#L346-L357
-	// with Node.JS path. This is a temporary workaround for https://github.com/eclipse-theia/theia/issues/8752.
-	if (!uri.path) {
-		throw new Error('[UriError]: cannot call joinPaths on URI without path');
-	}
-	return uri.with({
-		path: vscode.Uri.file(path.join(uri.fsPath, ...pathFragment)).path
-	});
 }
 
 function showGoWelcomePage() {

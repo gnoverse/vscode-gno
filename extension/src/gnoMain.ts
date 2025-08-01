@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { extensionInfo, getGnoConfig } from './config';
+import { getGnoConfig } from './config';
 import { notifyIfGeneratedFile, removeTestStatus } from './gnoCheck';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
@@ -30,7 +30,8 @@ import { GO_MODE } from './gnoMode';
 import * as goGenerateTests from './gnoGenerateTests';
 import { GO111MODULE, goModInit } from './gnoModules';
 import { GoRunTestCodeLensProvider } from './gnoRunTestCodelens';
-import { disposeGoStatusBar, expandGoStatusBar, outputChannel, updateGoStatusBar } from './gnoStatus';
+import { disposeGoStatusBar, expandGoStatusBar, updateGoStatusBar } from './gnoStatus';
+import { disposeGnoDevServer } from './commands/startGnoDevServer';
 import {
 	getFromGlobalState,
 	resetGlobalState,
@@ -202,7 +203,8 @@ export function deactivate() {
 		cancelRunningTests(),
 		killRunningPprof(),
 		Promise.resolve(cleanupTempDir()),
-		Promise.resolve(disposeGoStatusBar())
+		Promise.resolve(disposeGoStatusBar()),
+		Promise.resolve(disposeGnoDevServer())
 	]);
 }
 

@@ -1,131 +1,58 @@
 import * as vscode from 'vscode';
-import { spawn, ChildProcess } from 'child_process';
 import { CommandFactory } from './index';
-import { outputChannel } from '../gnoStatus';
-import { getBinPath } from '../util';
+import { GnodevProcess, GnodevAddress, restartDelay } from '../gnodev/gnodevProcess';
+import { GnodevWebView } from '../gnodev/gnodevWebView';
 
-interface GnoDevProcess {
-	process: ChildProcess;
-	webviewPanel?: vscode.WebviewPanel;
+interface GnoDevServer {
+	process: GnodevProcess;
+	webview?: GnodevWebView;
 }
 
-let currentGnoDevProcess: GnoDevProcess | undefined;
+let currentGnoDevServer: GnoDevServer | undefined;
 
-export const startGnoDevServer: CommandFactory = () => {
+export const startGnoDevServer: CommandFactory = (ctx) => {
 	return async () => {
 		try {
-			// Stop any existing gnodev process
-			_stopGnoDevServer(true);
-
-			// Get the current workspace folder
-			const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
-			if (!workspaceFolder) {
-				vscode.window.showErrorMessage(
-					'No workspace folder found. Please open a workspace to start the development server.'
-				);
-				return;
+			// If a gnodev server is already running, dispose of it before starting a new one.
+			if (currentGnoDevServer) {
+				disposeGnoDevServer();
+				await new Promise((resolve) => setTimeout(resolve, restartDelay));
 			}
 
-			// Get the gno binary path
-			const gnodevBinPath = getBinPath('gnodev');
+			// Init the gnodev process.
+			currentGnoDevServer = { process: new GnodevProcess() };
 
-			// Get gnodev flags and browser setting from configuration
-			const config = vscode.workspace.getConfiguration('gno');
-			const gnodevFlags: string[] = config.get('gnodevFlags', []);
-			const openBrowser: boolean = config.get('gnodevOpenBrowser', true);
+			// When the gnodev process is ready, open the webview if configured to do so.
+			currentGnoDevServer.process.onProcessReady((addr: GnodevAddress) => {
+				// Get the openBrowser setting to determine if the webview should be opened.
+				const config = vscode.workspace.getConfiguration('gno');
+				const openBrowser: boolean = config.get('gnodevOpenBrowser', true);
 
-			outputChannel.show();
-			outputChannel.appendLine('Starting Gno development server...');
+				// If the openBrowser setting is true, create and show the webview.
+				if (openBrowser && currentGnoDevServer) {
+					currentGnoDevServer.webview = new GnodevWebView(ctx);
+					currentGnoDevServer.webview.onDidDispose(disposeGnoDevServer);
+					currentGnoDevServer.webview.create(addr);
+				}
 
-			// Build command arguments: ['dev', ...flags]
-			const args = ['dev', ...gnodevFlags];
-
-			// Start gnodev process
-			const gnodevProcess = spawn(gnodevBinPath, args, {
-				cwd: workspaceFolder.uri.fsPath,
-				stdio: ['pipe', 'pipe', 'pipe']
+				vscode.window.showInformationMessage(`Gnodev server started successfully at: ${addr.toString()}`);
 			});
 
-			// Handle process output
-			gnodevProcess.stdout?.on('data', (data: Buffer) => {
-				const output = data.toString();
-				outputChannel.appendLine(output);
+			// When the gnodev process exits, dispose of if.
+			currentGnoDevServer.process.onProcessExit((error: Error | undefined) => {
+				disposeGnoDevServer();
 
-				// Check if server is ready (look for the READY message)
-				if (output.includes('gnoweb started') && openBrowser) {
-					// Create WebviewPanel after a short delay to ensure server is fully ready
-					setTimeout(() => {
-						const panel = vscode.window.createWebviewPanel(
-							'gnodev',
-							'Gno Dev Server',
-							vscode.ViewColumn.One,
-							{
-								enableScripts: true,
-								retainContextWhenHidden: true
-							}
-						);
-
-						panel.webview.html = `
-							<!DOCTYPE html>
-							<html>
-							<head>
-								<meta charset="UTF-8">
-								<meta name="viewport" content="width=device-width, initial-scale=1.0">
-								<title>Gno Dev Server</title>
-								<style>
-									body, html {
-										margin: 0;
-										padding: 0;
-										width: 100%;
-										height: 100%;
-										overflow: hidden;
-									}
-									iframe {
-										width: 100%;
-										height: 100vh;
-										border: none;
-									}
-								</style>
-							</head>
-							<body>
-								<iframe src="http://localhost:8888" title="Gno Dev Server"></iframe>
-							</body>
-							</html>
-						`;
-
-						if (currentGnoDevProcess) {
-							currentGnoDevProcess.webviewPanel = panel;
-						}
-					}, 50);
+				if (error) {
+					vscode.window.showErrorMessage(`Gnodev server stopped with error: ${error.message}`);
+				} else {
+					vscode.window.showInformationMessage('Gnodev server stopped successfully.');
 				}
 			});
 
-			gnodevProcess.stderr?.on('data', (data: Buffer) => {
-				outputChannel.appendLine(`Error: ${data.toString()}`);
-			});
-
-			gnodevProcess.on('error', (error) => {
-				outputChannel.appendLine(`Failed to start gnodev: ${error.message}`);
-				vscode.window.showErrorMessage(`Failed to start gnodev: ${error.message}`);
-				currentGnoDevProcess = undefined;
-			});
-
-			gnodevProcess.on('exit', (code, signal) => {
-				outputChannel.appendLine(`Gnodev process exited with code ${code}, signal ${signal}`);
-				currentGnoDevProcess = undefined;
-			});
-
-			currentGnoDevProcess = {
-				process: gnodevProcess
-			};
-
-			const message = openBrowser
-				? 'Gno development server started! Opening in WebView...'
-				: 'Gno development server started!';
-			vscode.window.showInformationMessage(message);
+			// Start the gnodev process.
+			await currentGnoDevServer.process.start();
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-			outputChannel.appendLine(`Error starting gnodev: ${errorMessage}`);
 			vscode.window.showErrorMessage(`Failed to start gnodev: ${errorMessage}`);
 		}
 	};
@@ -133,25 +60,16 @@ export const startGnoDevServer: CommandFactory = () => {
 
 export const stopGnoDevServer: CommandFactory = () => {
 	return async () => {
-		_stopGnoDevServer(false);
+		if (currentGnoDevServer) {
+			disposeGnoDevServer();
+		} else {
+			vscode.window.showInformationMessage('No gnodev server is currently running.');
+		}
 	};
 };
 
-const _stopGnoDevServer = (quiet = false): void => {
-	if (currentGnoDevProcess) {
-		if (currentGnoDevProcess.process && !currentGnoDevProcess.process.killed) {
-			outputChannel.appendLine('Stopping Gno development server...');
-			currentGnoDevProcess.process.kill();
-		}
-		if (currentGnoDevProcess.webviewPanel) {
-			currentGnoDevProcess.webviewPanel.dispose();
-		}
-		currentGnoDevProcess = undefined;
-		if (!quiet) {
-			outputChannel.appendLine('Gno development server stopped.');
-			vscode.window.showInformationMessage('Gno development server stopped.');
-		}
-	} else if (!quiet) {
-		vscode.window.showInformationMessage('No Gno development server is currently running.');
-	}
+export const disposeGnoDevServer = () => {
+	currentGnoDevServer?.process.dispose();
+	currentGnoDevServer?.webview?.dispose();
+	currentGnoDevServer = undefined;
 };
