@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { CommandFactory } from './index';
-import { GnodevProcess, GnodevAddress } from '../gnodev/gnodevProcess';
+import { GnodevProcess } from '../gnodev/gnodevProcess';
+import { GnodevAddress } from '../gnodev/address';
 import { GnodevWebView } from '../gnodev/gnodevWebView';
 
 interface GnoDevServer {

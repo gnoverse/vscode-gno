@@ -1,29 +1,9 @@
 import * as vscode from 'vscode';
+import * as readline from 'readline';
 import { spawn, ChildProcess } from 'child_process';
-import { outputChannel } from '../gnoStatus';
 import { getBinPath } from '../util';
-
-export class GnodevAddress {
-	public host: string;
-	public port: number;
-
-	constructor(host: string, port: number) {
-		this.host = host;
-		this.port = port;
-	}
-
-	public toString(): string {
-		return `http://${this.host}:${this.port}`;
-	}
-
-	public toUri(): vscode.Uri {
-		return vscode.Uri.parse(this.toString());
-	}
-
-	public compareTo(other: GnodevAddress): boolean {
-		return this.host === other.host && this.port === other.port;
-	}
-}
+import { GnodevAddress } from './address';
+import { outputChannel, defaultGroup, parseGnodevLog } from './logs';
 
 export class GnodevProcess extends vscode.Disposable {
 	private _process: ChildProcess | undefined;
@@ -51,7 +31,7 @@ export class GnodevProcess extends vscode.Disposable {
 			this.stop();
 		}
 
-		outputChannel.info('Starting gnodev process...');
+		outputChannel.info(defaultGroup, 'starting gnodev process...');
 
 		try {
 			// Get the gnodev flags from the configuration.
@@ -67,36 +47,46 @@ export class GnodevProcess extends vscode.Disposable {
 				throw new Error('No workspace folder found, please open one.');
 			}
 
+			// Force gnodev log format to JSON for better parsing.
+			gnodevFlags.push('-log-format', 'json');
+
 			// Spawn the gnodev process with the specified flags and in the workspace folder.
 			this._process = spawn(gnodevBinPath, gnodevFlags, {
 				cwd: workspaceFolder.uri.fsPath,
 				stdio: ['pipe', 'pipe', 'pipe']
 			});
 
-			// Listen for data on process stdout.
-			this._process.stdout?.on('data', (data: Buffer) => {
-				const output = data.toString();
+			// Listen for lines on process stdout.
+			const stdout = readline.createInterface({ input: this._process.stdout! });
+			stdout.on('line', (line: string) => {
+				try {
+					// Parse the log line and log it to the output channel.
+					const log = parseGnodevLog(line);
+					outputChannel.log(log);
 
-				// Forward process stdout to the output channel.
-				outputChannel.appendLine(output);
+					// Check if the output contains th message indicating the process has started.
+					if (log.msg === 'gnoweb started') {
+						const regex = /http:\/\/([^:]+):(\d+)/;
+						const match = (log.args!['lisn'] as string).match(regex);
 
-				// Check if the output contains the expected message indicating the process has started.
-				const regex = /gnoweb started lisn=http:\/\/([^:]+):(\d+)/;
-				const match = output.match(regex);
+						if (match) {
+							// Extract the host and port from the output.
+							const host = match[1];
+							const port = parseInt(match[2], 10);
 
-				if (match) {
-					// Extract the host and port from the output.
-					const host = match[1];
-					const port = parseInt(match[2], 10);
-
-					// Emit the ready event with the address of the gnodev process.
-					this._onProcessReady.fire(new GnodevAddress(host, port));
+							// Emit the ready event with the address of the gnodev process.
+							this._onProcessReady.fire(new GnodevAddress(host, port));
+						}
+					}
+				} catch (error) {
+					outputChannel.error(defaultGroup, `Failed to parse gnodev log line: ${line}`);
 				}
 			});
 
 			// Forward process stderr to the output channel.
-			this._process.stderr?.on('data', (data: Buffer) => {
-				outputChannel.error(data.toString());
+			const stderr = readline.createInterface({ input: this._process.stderr! });
+			stderr.on('line', (line: string) => {
+				outputChannel.error(defaultGroup, `gnodev stderr: ${line}`);
 			});
 
 			// Fire an error event if the process fails to start.
@@ -106,9 +96,9 @@ export class GnodevProcess extends vscode.Disposable {
 
 			// Handle process exit event.
 			this._process.on('exit', (code, signal) => {
-				const exitStatus = `Gnodev process exited with code ${code}, signal ${signal}`;
+				const exitStatus = `gnodev process exited with code ${code}, signal ${signal}`;
 
-				outputChannel.info(exitStatus);
+				outputChannel.info(defaultGroup, exitStatus);
 
 				// Fire the exit event with an error if any.
 				this._onProcessExit.fire(code !== 0 ? new Error(exitStatus) : undefined);
@@ -121,7 +111,7 @@ export class GnodevProcess extends vscode.Disposable {
 
 	public stop(): void {
 		if (this.isRunning) {
-			outputChannel.info('Stopping gnodev process...');
+			outputChannel.info(defaultGroup, 'stopping gnodev process...');
 			this._process!.kill();
 		}
 

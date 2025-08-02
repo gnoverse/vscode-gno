@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { joinPath } from '../util';
-import { GnodevAddress } from './gnodevProcess';
-import { outputChannel } from '../gnoStatus';
+import { defaultGroup, outputChannel } from './logs';
+import { GnodevAddress } from './address';
 
 export class GnodevWebView extends vscode.Disposable {
 	private _context: vscode.ExtensionContext;
@@ -24,7 +24,7 @@ export class GnodevWebView extends vscode.Disposable {
 
 	public async create(addr: GnodevAddress, viewColumn: vscode.ViewColumn): Promise<void> {
 		// If the webview panel for this gnodev address already exists, just reveal it.
-		if (this._panel && this._currAddr?.compareTo(addr)) {
+		if (this._panel && this._currAddr?.equals(addr)) {
 			this._panel.reveal();
 			return;
 		}
@@ -49,7 +49,7 @@ export class GnodevWebView extends vscode.Disposable {
 
 		// Using `vscode.env.asExternalUri` to ensure the URL is accessible when running in Codespaces.
 		const gnodevURL = await vscode.env.asExternalUri(this._currAddr.toUri());
-		outputChannel.info(`Opening gnodev webview at: ${gnodevURL}`);
+		outputChannel.info(defaultGroup, 'opening gnodev webview', { url: gnodevURL });
 
 		// The webview HTML content is just an iframe pointing to the gnodev server URL.
 		this._panel.webview.html = `
@@ -93,7 +93,7 @@ export class GnodevWebView extends vscode.Disposable {
 			const prevPanel = this._panel;
 			this._panel = undefined;
 
-			outputChannel.info('Closing gnodev webview');
+			outputChannel.info(defaultGroup, 'closing gnodev webview');
 			prevPanel.dispose();
 		}
 
