@@ -5,6 +5,5 @@ node_modules/
 .DS_Store
 .vscode
 *.tsbuildinfo
-package-lock.json
 gnopls/gno_functions/.git
 gnopls/gno_functions/.git
