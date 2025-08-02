@@ -274,12 +274,12 @@
       {
         "command": "gno.dev.server.start",
         "title": "Gno: Start Development Server",
-        "description": "Start gnodev server and open in Simple Browser"
+        "description": "Start gnodev server and open its webview"
       },
       {
         "command": "gno.dev.server.stop",
         "title": "Gno: Stop Development Server",
-        "description": "Stop gnodev server"
+        "description": "Stop gnodev server and close its webview"
       }
     ],
     "breakpoints": [

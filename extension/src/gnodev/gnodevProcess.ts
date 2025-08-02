@@ -79,7 +79,7 @@ export class GnodevProcess extends vscode.Disposable {
 						}
 					}
 				} catch (error) {
-					outputChannel.error(defaultGroup, `Failed to parse gnodev log line: ${line}`);
+					outputChannel.error(defaultGroup, `failed to parse gnodev log line: ${line}`);
 				}
 			});
 
