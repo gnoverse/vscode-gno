@@ -48,8 +48,8 @@ export class GnodevWebView extends vscode.Disposable {
 		}
 
 		// Using `vscode.env.asExternalUri` to ensure the URL is accessible when running in Codespaces.
-		const gnodevURL = await vscode.env.asExternalUri(this._currAddr.toUri());
-		outputChannel.info(defaultGroup, 'opening gnodev webview', { url: gnodevURL });
+		const externalUri = (await vscode.env.asExternalUri(this._currAddr.toUri())).toString();
+		outputChannel.info(defaultGroup, 'opening gnodev webview', { uri: externalUri });
 
 		// The webview HTML content is just an iframe pointing to the gnodev server URL.
 		this._panel.webview.html = `
@@ -75,7 +75,7 @@ export class GnodevWebView extends vscode.Disposable {
 			</head>
 			<body>
 				<iframe
-					src="${gnodevURL}"
+					src="${externalUri}"
 					sandbox="allow-scripts allow-forms allow-same-origin allow-downloads">
 				</iframe>
 			</body>
