@@ -1,4 +1,3 @@
-import path = require('path');
 import vscode = require('vscode');
 import cp = require('child_process');
 import { CommandFactory } from './commands';
@@ -16,7 +15,7 @@ const GNOLAND_PREFIX = 'gno.land/';
  * Adds a new package to the Gno blockchain.
  */
 export function addPackage(): CommandFactory {
-	return (ctx, goCtx) => async () => {
+	return () => async () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
 			vscode.window.showInformationMessage('No editor is active, cannot determine workspace context');
@@ -52,7 +51,8 @@ async function executeAddPackage(fileUri: vscode.Uri, goConfig: vscode.Workspace
 	const inputs = await collectUserInputs(rootDir);
 
 	// Get makeTx configuration
-	const makeTxConfig = goConfig.get<{ [key: string]: any }>('makeTx');
+	// TODO: fix this to use a proper type instead of any
+	const makeTxConfig = goConfig.get<{ [key: string]: any }>('makeTx'); // eslint-disable-line @typescript-eslint/no-explicit-any
 	const configOptions = {
 		broadcast: makeTxConfig?.broadcast ?? true,
 		gasFee: makeTxConfig?.gasFee ?? '1000000ugnot',

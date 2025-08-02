@@ -1,5 +1,5 @@
 import * as path from 'path';
-const glob = require('glob');
+import glob from 'glob';
 
 export function run(): Promise<void> {
 	// Create the mocha test
@@ -12,7 +12,7 @@ export function run(): Promise<void> {
 	const testsRoot = path.resolve(__dirname, '..');
 
 	return new Promise((resolve, reject) => {
-		glob('**/**.test.js', { cwd: testsRoot }, (err: any, files: string[]) => {
+		glob('**/**.test.js', { cwd: testsRoot }, (err: Error | null, files: string[]) => {
 			if (err) {
 				return reject(err);
 			}

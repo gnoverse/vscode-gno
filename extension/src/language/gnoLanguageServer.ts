@@ -9,7 +9,6 @@
 
 import cp = require('child_process');
 import fs = require('fs');
-import moment = require('moment');
 import path = require('path');
 import semver = require('semver');
 import util = require('util');
@@ -32,6 +31,7 @@ import {
 	ResponseError,
 	RevealOutputChannelOn
 } from 'vscode-languageclient';
+import moment from 'moment';
 import { LanguageClient, ServerOptions } from 'vscode-languageclient/node';
 import { getGnoConfig, getGnoplsConfig, extensionInfo } from '../config';
 import { toolExecutionEnvironment } from '../gnoEnv';
@@ -46,9 +46,9 @@ import {
 	getGoVersion,
 	getWorkspaceFolderPath,
 	removeDuplicateDiagnostics,
-    daysBetween,
-    timeDay,
-    timeMinute
+	daysBetween,
+	timeDay,
+	timeMinute
 } from '../util';
 import { getToolFromToolPath } from '../utils/pathUtils';
 import { CompletionItemKind, FoldingContext } from 'vscode';
@@ -232,12 +232,7 @@ export function buildLanguageClientOption(
 }
 
 export class GoLanguageClient extends LanguageClient implements vscode.Disposable {
-	constructor(
-		id: string,
-		name: string,
-		serverOptions: ServerOptions,
-		clientOptions: LanguageClientOptions,
-	) {
+	constructor(id: string, name: string, serverOptions: ServerOptions, clientOptions: LanguageClientOptions) {
 		super(id, name, serverOptions, clientOptions);
 	}
 }
@@ -522,7 +517,7 @@ export async function buildLanguageClient(
 					}
 				}
 			}
-		} as LanguageClientOptions,
+		} as LanguageClientOptions
 	);
 
 	return c;

@@ -1,4 +1,13 @@
 {
   "extends": "./node_modules/gts/",
-  "root": true
+  "root": true,
+  "overrides": [
+    {
+      "files": ["test/**/*.ts"],
+      "rules": {
+        "node/no-unpublished-import": "off",
+        "node/no-unpublished-require": "off"
+      }
+    }
+  ]
 }
