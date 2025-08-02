@@ -33,7 +33,7 @@ jobs:
       working-directory: extension
     
     - name: Run TypeScript tests
-      run: npm test
+      run: xvfb-run -a npm test
       working-directory: extension
 
   test-golang:
