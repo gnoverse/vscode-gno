@@ -11,6 +11,11 @@ interface GnoDevServer {
 
 let currentGnoDevServer: GnoDevServer | undefined;
 
+// Helper function to update the context for the toggle button
+const updateGnoDevContext = (running: boolean) => {
+	vscode.commands.executeCommand('setContext', 'gno.gnodev.running', running);
+};
+
 export const startGnoDevServer: CommandFactory = (ctx) => {
 	return async () => {
 		try {
@@ -45,6 +50,7 @@ export const startGnoDevServer: CommandFactory = (ctx) => {
 				}
 
 				vscode.window.showInformationMessage(`Gnodev server started successfully at: ${addr.toString()}`);
+				updateGnoDevContext(true); // Update the context to indicate the server is running.
 			});
 
 			// When the gnodev process exits, dispose of if.
@@ -85,5 +91,6 @@ export const disposeGnoDevServer = () => {
 
 		prevGnoDevServer.process.dispose();
 		prevGnoDevServer.webview?.dispose();
+		updateGnoDevContext(false); // Update the context to indicate the server is not running.
 	}
 };
