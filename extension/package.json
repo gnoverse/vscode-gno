@@ -475,7 +475,7 @@
           "description": "Open the test output terminal when a test run is started.",
           "scope": "window"
         },
-        "gno.gnodevFlags": {
+        "gno.gnodev.flags": {
           "type": "array",
           "items": {
             "type": "string"
@@ -484,7 +484,7 @@
           "description": "Flags to pass to gnodev command (e.g. [\"-v\", \"-paths <custom-path>\"])",
           "scope": "resource"
         },
-        "gno.gnodevOpenBrowser": {
+        "gno.gnodev.openBrowser": {
           "type": "string",
           "enum": [
             "none",
@@ -1295,4 +1295,3 @@
     ]
   }
 }
-

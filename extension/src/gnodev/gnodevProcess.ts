@@ -36,7 +36,7 @@ export class GnodevProcess extends vscode.Disposable {
 		try {
 			// Get the gnodev flags from the configuration.
 			const config = vscode.workspace.getConfiguration('gno');
-			const gnodevFlags: string[] = config.get('gnodevFlags', []);
+			const gnodevFlags: string[] = config.get('gnodev.flags', []);
 
 			// Get the path to the gnodev binary.
 			const gnodevBinPath = getBinPath('gnodev');

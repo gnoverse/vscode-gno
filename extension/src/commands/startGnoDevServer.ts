@@ -26,7 +26,7 @@ export const startGnoDevServer: CommandFactory = (ctx) => {
 			currentGnoDevServer.process.onProcessReady((addr: GnodevAddress) => {
 				// Get the openBrowser setting to determine how the gnodev interface should be opened.
 				const config = vscode.workspace.getConfiguration('gno');
-				const openBrowser: string = config.get('gnodevOpenBrowser', 'beside');
+				const openBrowser: string = config.get('gnodev.openBrowser', 'beside');
 
 				// Handle the different openBrowser options.
 				if (openBrowser !== 'none' && currentGnoDevServer) {
