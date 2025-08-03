@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
+import fetch from 'node-fetch';
 import { joinPath } from '../util';
 import { defaultGroup, outputChannel } from './logs';
 import { GnodevAddress } from './address';
+import path from 'path';
 
 export class GnodevWebView extends vscode.Disposable {
 	private _context: vscode.ExtensionContext;
@@ -33,7 +35,9 @@ export class GnodevWebView extends vscode.Disposable {
 		// Init the webview panel on the specified column.
 		this._panel = vscode.window.createWebviewPanel('gnodev', 'Gnodev', viewColumn, {
 			enableScripts: true,
-			retainContextWhenHidden: true
+			enableForms: true,
+			retainContextWhenHidden: true,
+			localResourceRoots: [joinPath(this._context.extensionUri, 'media')]
 		});
 
 		// Set the webview icons.
@@ -51,36 +55,26 @@ export class GnodevWebView extends vscode.Disposable {
 		const externalUri = (await vscode.env.asExternalUri(this._currAddr.toUri())).toString();
 		outputChannel.info(defaultGroup, 'opening gnodev webview', { uri: externalUri });
 
-		// The webview HTML content is just an iframe pointing to the gnodev server URL.
-		this._panel.webview.html = `
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<style>
-					body, html {
-						margin: 0;
-						padding: 0;
-						width: 100%;
-						height: 100%;
-						overflow: hidden;
-					}
-					iframe {
-						width: 100%;
-						height: 100vh;
-						border: none;
-					}
-				</style>
-			</head>
-			<body>
-				<iframe
-					src="${externalUri}"
-					sandbox="allow-scripts allow-forms allow-same-origin allow-downloads">
-				</iframe>
-			</body>
-			</html>
-		`;
+		// Set up message handling for gnodev controls.
+		this._panel.webview.onDidReceiveMessage((e) => {
+			switch (e.type) {
+				// This control reloads gnodev packages.
+				case 'reload':
+					fetch(path.join(externalUri, 'reload'));
+					break;
+				// This control resets the gnodev realms state.
+				case 'reset':
+					fetch(path.join(externalUri, 'reset'));
+					break;
+				// This control opens gnodev in the external browser.
+				case 'openExternal':
+					vscode.env.openExternal(this._currAddr!.toUri());
+					break;
+			}
+		});
+
+		// The webview HTML content includes browser-like navigation controls and gnodev controls.
+		this._panel.webview.html = this.getHtml(externalUri);
 
 		// If the webview is closed, call the dispose callback.
 		this._panel.onDidDispose(() => {
@@ -103,5 +97,57 @@ export class GnodevWebView extends vscode.Disposable {
 
 			prevOnDidDispose();
 		}
+	}
+
+	private getHtml(url: string): string {
+		// Generate URIs for the webview static resources.
+		const mainJs = this._panel!.webview.asWebviewUri(
+			joinPath(this._context.extensionUri, 'media', 'gnodev-browser.js')
+		);
+		const mainCss = this._panel!.webview.asWebviewUri(
+			joinPath(this._context.extensionUri, 'media', 'gnodev-browser.css')
+		);
+		const codiconCss = this._panel!.webview.asWebviewUri(
+			joinPath(this._context.extensionUri, 'media', 'codicon.css')
+		);
+
+		// Return the HTML content for the webview with the necessary resources linked.
+		return `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+				<link rel="stylesheet" type="text/css" href="${mainCss}">
+				<link rel="stylesheet" type="text/css" href="${codiconCss}">
+			</head>
+			<body>
+				<iframe src="${url}" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+
+				<div class="floating-controls">
+					<button
+						title="Back"
+						class="back-button icon"><i class="codicon codicon-arrow-left"></i></button>
+
+					<button
+						title="Forward"
+						class="forward-button icon"><i class="codicon codicon-arrow-right"></i></button>
+
+					<button
+						title="Reload"
+						class="reload-button icon"><i class="codicon codicon-refresh"></i></button>
+
+					<button
+						title="Reset realms state"
+						class="reset-button icon"><i class="codicon codicon-clear-all"></i></button>
+
+					<button
+						title="Open in browser"
+						class="open-external-button icon"><i class="codicon codicon-link-external"></i></button>
+				</div>
+
+				<script src="${mainJs}"></script>
+			</body>
+			</html>`;
 	}
 }
