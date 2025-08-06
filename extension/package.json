@@ -37,7 +37,7 @@
     "clean": "rm -rf ./dist/* && rm -rf ./out/* && rm -rf ./bin/* && rm *.vsix",
     "package": "cp ../README.md ./README.md && npx vsce package --baseContentUrl https://github.com/gnoverse/vscode-gno/raw/HEAD --baseImagesUrl https://github.com/gnoverse/vscode-gno/raw/HEAD",
     "vscode:prepublish": "npm run compile",
-    "bundle": "esbuild src/gnoMain.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node",
+    "bundle": "esbuild src/gnoMain.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node --loader:.node=file",
     "bundle-dev": "npm run bundle -- --sourcemap",
     "bundle-watch": "npm run bundle -- --sourcemap --watch",
     "test-compile": "tsc -p ./",
@@ -275,6 +275,135 @@
     "breakpoints": [
       {
         "language": "gno"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "gno",
+        "label": "Gno Debugger",
+        "program": "./dist/gnoMain.js",
+        "languages": [
+          "gno"
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Gno: Launch Package",
+            "description": "Debug the package in the program attribute",
+            "body": {
+              "name": "${2:Launch Package}",
+              "type": "gno",
+              "request": "launch",
+              "mode": "auto",
+              "program": "${workspaceFolder}${1:}",
+              "stopOnEntry": true
+            }
+          },
+          {
+            "label": "Gno: Launch file",
+            "description": "Debug the file in the program attribute",
+            "body": {
+              "name": "${2:Launch file}",
+              "type": "gno",
+              "request": "launch",
+              "mode": "debug",
+              "program": "${1:${file}}",
+              "stopOnEntry": true
+            }
+          }
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "program"
+            ],
+            "properties": {
+              "program": {
+                "type": "string",
+                "description": "Path to the program folder or file to debug"
+              },
+              "mode": {
+                "enum": [
+                  "auto",
+                  "debug",
+                  "test"
+                ],
+                "description": "Mode de débogage - auto choisis entre debug/test selon le fichier actif",
+                "default": "auto"
+              },
+              "stopOnEntry": {
+                "type": "boolean",
+                "description": "Automatically stop program after launch",
+                "default": true
+              },
+              "args": {
+                "type": [
+                  "array",
+                  "string"
+                ],
+                "description": "Command line arguments passed to the program",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "cwd": {
+                "type": "string",
+                "description": "Working directory for the program",
+                "default": "${workspaceFolder}"
+              },
+              "env": {
+                "type": "object",
+                "description": "Environment variables passed to the program",
+                "default": {}
+              },
+              "buildFlags": {
+                "type": [
+                  "string",
+                  "array"
+                ],
+                "description": "Build flags to pass to the gno compiler",
+                "items": {
+                  "type": "string"
+                },
+                "default": []
+              },
+              "showLog": {
+                "type": "boolean",
+                "description": "Show debug adapter logs",
+                "default": false
+              },
+              "logOutput": {
+                "type": "string",
+                "description": "Specify what components should output debug logs",
+                "default": "debugger"
+              },
+              "trace": {
+                "type": "string",
+                "enum": [
+                  "verbose",
+                  "trace",
+                  "log",
+                  "info",
+                  "warn",
+                  "error"
+                ],
+                "default": "error",
+                "description": "Debug adapter logging level"
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "name": "Debug Gno Package",
+            "type": "gno",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}",
+            "env": {},
+            "args": []
+          }
+        ]
       }
     ],
     "configuration": {

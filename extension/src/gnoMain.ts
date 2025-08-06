@@ -54,6 +54,8 @@ import { GoExtensionContext } from './context';
 import * as commands from './commands';
 import { GoTaskProvider } from './gnoTaskProvider';
 import { addPackage } from './gnoAddPkg';
+import { GnoDebugConfigurationProvider } from './gnoDebugConfiguration';
+import { GnoDebugAdapterDescriptorFactory } from './gnoDebugFactory';
 
 const goCtx: GoExtensionContext = {};
 
@@ -78,6 +80,15 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	setGlobalState(ctx.globalState);
 	setWorkspaceState(ctx.workspaceState);
 	setEnvironmentVariableCollection(ctx.environmentVariableCollection);
+
+	//debugger
+	ctx.subscriptions.push(
+		vscode.debug.registerDebugConfigurationProvider('gno', new GnoDebugConfigurationProvider())
+	);
+
+	ctx.subscriptions.push(
+		vscode.debug.registerDebugAdapterDescriptorFactory('gno', new GnoDebugAdapterDescriptorFactory())
+	)
 
 	const cfg = getGnoConfig();
 	WelcomePanel.activate(ctx, goCtx);
@@ -133,6 +144,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	registerCommand('gno.gnoroot', commands.getCurrentGoRoot);
 	registerCommand('gno.locate.tools', commands.getConfiguredGoTools);
 	registerCommand('gno.test.cursor', commands.testAtCursor('test'));
+	registerCommand('gno.debug.cursor', commands.testAtCursor('debug'));
 	registerCommand('gno.test.cursorOrPrevious', commands.testAtCursorOrPrevious('test'));
 	registerCommand('gno.test.file', commands.testCurrentFile());
 	registerCommand('gno.test.workspace', commands.testWorkspace);
@@ -151,7 +163,7 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 
 	GoExplorerProvider.setup(ctx);
 
-	registerCommand('gno.debug.startSession', commands.startDebugSession);
+	//registerCommand('gno.debug.startSession', commands.startDebugSession);
 	registerCommand('gno.show.commands', commands.showCommands);
 	registerCommand('gno.lint.workspace', lintCode('workspace'));
 	registerCommand('gno.lint.file', lintCode('file'));
@@ -162,6 +174,10 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 
 	// Go Environment switching commands
 	registerCommand('gno.environment.choose', chooseGoEnvironment);
+
+	// With other registerCommand calls
+	// Add with other command registrations
+	// Add to existing commands registration section
 
 	addOnDidChangeConfigListeners(ctx);
 	addOnChangeTextDocumentListeners(ctx);
