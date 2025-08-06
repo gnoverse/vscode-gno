@@ -76,7 +76,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 		// environment variable is set.
 		return; // Skip the remaining activation work.
 	}
-	const start = Date.now();
 	setGlobalState(ctx.globalState);
 	setWorkspaceState(ctx.workspaceState);
 	setEnvironmentVariableCollection(ctx.environmentVariableCollection);
@@ -182,22 +181,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	GoTaskProvider.setup(ctx, vscode.workspace);
 
 	return extensionAPI;
-}
-
-function activationLatency(duration: number): string {
-	// TODO: generalize and move to goTelemetry.ts
-	let bucket = '>=5s';
-
-	if (duration < 100) {
-		bucket = '<100ms';
-	} else if (duration < 500) {
-		bucket = '<500ms';
-	} else if (duration < 1000) {
-		bucket = '<1s';
-	} else if (duration < 5000) {
-		bucket = '<5s';
-	}
-	return 'activation_latency:' + bucket;
 }
 
 export function deactivate() {
