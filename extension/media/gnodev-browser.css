@@ -1,0 +1,65 @@
+:root {
+	--container-paddding: 20px;
+	--input-padding-vertical: 2px;
+	--input-padding-horizontal: 4px;
+	--input-margin-vertical: 4px;
+	--input-margin-horizontal: 0;
+}
+
+html,
+body {
+	height: 100%;
+	min-height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	height: 100%;
+	position: relative;
+}
+
+button {
+	border: none;
+	padding: 3px;
+	text-align: center;
+	outline: 1px solid transparent;
+	color: var(--vscode-icon-foreground);
+	background: none;
+	border-radius: 5px;
+}
+
+button:hover:not(:disabled) {
+	cursor: pointer;
+	color: var(--vscode-toolbar-hoverForeground);
+	background: var(--vscode-toolbar-hoverBackground);
+}
+
+button:disabled {
+	opacity: 0.5;
+}
+
+.floating-controls {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	display: flex;
+	gap: 0.3em;
+	background: var(--vscode-editor-background);
+	padding: 8px;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--vscode-widget-border);
+	z-index: 1000;
+}
+
+.floating-controls button {
+	display: flex;
+}
+
+iframe {
+	width: 100%;
+	height: 100%;
+	border: none;
+	background: white; /* Browsers default to a white background */
+}

@@ -270,6 +270,24 @@
         "command": "gno.maketx.addpkg",
         "title": "Gno Add Package To Chain",
         "description": "Add a package to the Gno blockchain"
+      },
+      {
+        "command": "gno.gnodev.start",
+        "title": "Gno: Start Gnodev Server",
+        "description": "Start gnodev server and open its webview",
+        "icon": {
+          "light": "media/gno-icon-light.png",
+          "dark": "media/gno-icon-dark.png"
+        }
+      },
+      {
+        "command": "gno.gnodev.stop",
+        "title": "Gno: Stop Gnodev Server",
+        "description": "Stop gnodev server and close its webview",
+        "icon": {
+          "light": "media/gno-icon-light.png",
+          "dark": "media/gno-icon-dark.png"
+        }
       }
     ],
     "breakpoints": [
@@ -464,6 +482,38 @@
           "default": true,
           "description": "Open the test output terminal when a test run is started.",
           "scope": "window"
+        },
+        "gno.gnodev.flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Flags to pass to gnodev command (e.g. [\"-v\", \"-paths <custom-path>\"])",
+          "scope": "resource"
+        },
+        "gno.gnodev.openBrowser": {
+          "type": "string",
+          "enum": [
+            "none",
+            "current",
+            "beside",
+            "external"
+          ],
+          "enumDescriptions": [
+            "Do not open gnodev webview",
+            "Open gnodev webview in the current panel",
+            "Open gnodev webview in a panel beside the current one",
+            "Open gnodev webview in external browser"
+          ],
+          "default": "beside",
+          "description": "Controls how the gnodev webview opens when the server starts",
+          "scope": "resource"
+        },
+        "gno.gnodev.displayButton": {
+          "type": "boolean",
+          "default": true,
+          "description": "Display the gnodev toggle button in the Editor Actions."
         },
         "gno.useLanguageServer": {
           "type": "boolean",
@@ -1195,6 +1245,18 @@
           "command": "gno.test.refresh",
           "when": "testId in gno.tests",
           "group": "inline"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "gno.gnodev.start",
+          "when": "config.gno.gnodev.displayButton && !gno.gnodev.running",
+          "group": "navigation"
+        },
+        {
+          "command": "gno.gnodev.stop",
+          "when": "config.gno.gnodev.displayButton && gno.gnodev.running",
+          "group": "navigation"
         }
       ]
     },

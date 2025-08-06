@@ -7,3 +7,4 @@ node_modules/
 *.tsbuildinfo
 gnopls/gno_functions/.git
 gnopls/gno_functions/.git
+*.vsix
