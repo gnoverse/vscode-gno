@@ -29,17 +29,10 @@ import {
 	GoVersion,
 	rmdirRecursive
 } from './util';
-import {
-	getEnvPath,
-	getCurrentGoRoot,
-	setCurrentGoRoot,
-	correctBinname,
-	executableFileExists
-} from './utils/pathUtils';
+import { getEnvPath, getCurrentGoRoot, setCurrentGoRoot } from './utils/pathUtils';
 import util = require('util');
 import vscode = require('vscode');
 import { RestartReason } from './language/gnoLanguageServer';
-import { allToolsInformation } from './gnoToolsInformation';
 
 const STATUS_BAR_ITEM_NAME = 'Gno Tools';
 
@@ -287,45 +280,45 @@ export async function installTool(tool: ToolAtVersion): Promise<string | undefin
 }
 
 async function installToolWithGo(
-    tool: ToolAtVersion,
-    goVersion: GoVersion,
-    envForTools: NodeJS.Dict<string>
+	tool: ToolAtVersion,
+	goVersion: GoVersion,
+	envForTools: NodeJS.Dict<string>
 ): Promise<string | undefined> {
-    if (tool.close) {
-        const reason = await tool.close(envForTools);
-        if (reason) {
-            return reason;
-        }
-    }
+	if (tool.close) {
+		const reason = await tool.close(envForTools);
+		if (reason) {
+			return reason;
+		}
+	}
 
-    const env = Object.assign({}, envForTools);
-    let version: semver.SemVer | string | undefined | null = tool.version;
-    if (!version && tool.usePrereleaseInPreviewMode && extensionInfo.isPreview) {
-        version = await latestToolVersion(tool, true);
-    }
-    const importPath = getImportPathWithVersion(tool, version, goVersion);
+	const env = Object.assign({}, envForTools);
+	let version: semver.SemVer | string | undefined | null = tool.version;
+	if (!version && tool.usePrereleaseInPreviewMode && extensionInfo.isPreview) {
+		version = await latestToolVersion(tool, true);
+	}
+	const importPath = getImportPathWithVersion(tool, version, goVersion);
 
-    try {
-        const goBinary = getBinPath('go');
-        if (!goBinary) {
-            throw new Error('Cannot find go binary for tools installation');
-        }
-        const opts = {
-            env,
-            cwd: getWorkspaceFolderPath()
-        };
+	try {
+		const goBinary = getBinPath('go');
+		if (!goBinary) {
+			throw new Error('Cannot find go binary for tools installation');
+		}
+		const opts = {
+			env,
+			cwd: getWorkspaceFolderPath()
+		};
 
-        const execFile = util.promisify(cp.execFile);
-        outputChannel.trace(`${goBinary} install -v ${importPath} (cwd: ${opts.cwd})`);
-        await execFile(goBinary, ['install', '-v', importPath], opts);
+		const execFile = util.promisify(cp.execFile);
+		outputChannel.trace(`${goBinary} install -v ${importPath} (cwd: ${opts.cwd})`);
+		await execFile(goBinary, ['install', '-v', importPath], opts);
 
-        const toolInstallPath = getBinPath(tool.name);
-        outputChannel.appendLine(`Installing ${importPath} (${toolInstallPath}) SUCCEEDED`);
-    } catch (e) {
-        outputChannel.appendLine(`Installing ${importPath} FAILED`);
-        outputChannel.appendLine(`${JSON.stringify(e, null, 1)}`);
-        return `failed to install ${tool.name}(${importPath}): ${e}`;
-    }
+		const toolInstallPath = getBinPath(tool.name);
+		outputChannel.appendLine(`Installing ${importPath} (${toolInstallPath}) SUCCEEDED`);
+	} catch (e) {
+		outputChannel.appendLine(`Installing ${importPath} FAILED`);
+		outputChannel.appendLine(`${JSON.stringify(e, null, 1)}`);
+		return `failed to install ${tool.name}(${importPath}): ${e}`;
+	}
 }
 
 async function installToolWithGoInstall(goVersion: GoVersion, env: NodeJS.Dict<string>, importPath: string) {

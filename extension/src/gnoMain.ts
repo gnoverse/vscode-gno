@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { extensionInfo, getGnoConfig } from './config';
+import { getGnoConfig } from './config';
 import { notifyIfGeneratedFile, removeTestStatus } from './gnoCheck';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
@@ -30,7 +30,7 @@ import { GO_MODE } from './gnoMode';
 import * as goGenerateTests from './gnoGenerateTests';
 import { GO111MODULE, goModInit } from './gnoModules';
 import { GoRunTestCodeLensProvider } from './gnoRunTestCodelens';
-import { disposeGoStatusBar, expandGoStatusBar, outputChannel, updateGoStatusBar } from './gnoStatus';
+import { disposeGoStatusBar, expandGoStatusBar, updateGoStatusBar } from './gnoStatus';
 import {
 	getFromGlobalState,
 	resetGlobalState,
@@ -75,7 +75,6 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 		// environment variable is set.
 		return; // Skip the remaining activation work.
 	}
-	const start = Date.now();
 	setGlobalState(ctx.globalState);
 	setWorkspaceState(ctx.workspaceState);
 	setEnvironmentVariableCollection(ctx.environmentVariableCollection);
@@ -178,29 +177,13 @@ export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionA
 	return extensionAPI;
 }
 
-function activationLatency(duration: number): string {
-	// TODO: generalize and move to goTelemetry.ts
-	let bucket = '>=5s';
-
-	if (duration < 100) {
-		bucket = '<100ms';
-	} else if (duration < 500) {
-		bucket = '<500ms';
-	} else if (duration < 1000) {
-		bucket = '<1s';
-	} else if (duration < 5000) {
-		bucket = '<5s';
-	}
-	return 'activation_latency:' + bucket;
-}
-
 export function deactivate() {
 	return Promise.all([
 		goCtx.languageClient?.stop(),
 		cancelRunningTests(),
 		killRunningPprof(),
 		Promise.resolve(cleanupTempDir()),
-		Promise.resolve(disposeGoStatusBar()),
+		Promise.resolve(disposeGoStatusBar())
 	]);
 }
 

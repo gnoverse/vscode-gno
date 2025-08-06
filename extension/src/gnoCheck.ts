@@ -78,7 +78,7 @@ export function check(
 			return testPromise;
 		}
 
-		testPromise = isModSupported(fileUri).then((isMod) => {
+		testPromise = isModSupported(fileUri).then(() => {
 			return goTest(testConfig);
 		});
 		return testPromise;
