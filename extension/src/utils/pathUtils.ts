@@ -76,12 +76,12 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 
 	const binname = alternateTool && !path.isAbsolute(alternateTool) ? alternateTool : toolName;
 	const found = (why: string) => (binname === toolName ? why : 'alternateTool');
-	const pathFromGoBin = getBinPathFromEnvVar(binname, process.env['GNOBIN'], false);
+	const pathFromGoBin = getBinPathFromEnvVar(binname, process.env['GOBIN'], false);
 	if (pathFromGoBin) {
 		binPathCache[toolName] = pathFromGoBin;
 		return {
 			binPath: pathFromGoBin,
-			why: binname === toolName ? 'gnobin' : 'alternateTool'
+			why: binname === toolName ? 'gobin' : 'alternateTool'
 		};
 	}
 
@@ -93,7 +93,7 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 				binPathCache[toolName] = pathFrompreferredGoPath;
 				return {
 					binPath: pathFrompreferredGoPath,
-					why: found('gnopath')
+					why: found('gopath')
 				};
 			}
 		}
@@ -103,17 +103,17 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 	const pathFromGoRoot = getBinPathFromEnvVar(binname, preferredGoroot || getCurrentGoRoot(), true);
 	if (pathFromGoRoot) {
 		binPathCache[toolName] = pathFromGoRoot;
-		return { binPath: pathFromGoRoot, why: found('gnoroot') };
+		return { binPath: pathFromGoRoot, why: found('goroot') };
 	}
 
 	// Finally search PATH parts
 	let pathFromPath = getBinPathFromEnvVar(binname, getEnvPath(), false);
 	if (pathFromPath) {
-		if (toolName === 'gno' && pathFromPath === '/snap/bin/go') {
+		if (toolName === 'go' && pathFromPath === '/snap/bin/go') {
 			// Workaround for the snapd issue (golang/vscode-go#166)
 			// https://bugs.launchpad.net/ubuntu/+source/snapd/+bug/1849753
-			console.log('using /snap/go/current/bin/gno instead of /snap/bin/gno (see golang/vscode-go#166)');
-			pathFromPath = '/snap/go/current/bin/gno';
+			console.log('using /snap/go/current/bin/go instead of /snap/bin/go (see golang/vscode-go#166)');
+			pathFromPath = '/snap/go/current/bin/go';
 		}
 		binPathCache[toolName] = pathFromPath;
 		return { binPath: pathFromPath, why: found('path') };
@@ -123,8 +123,8 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
 	if (toolName === 'go') {
 		const defaultPathsForGo =
 			process.platform === 'win32'
-				? ['C:\\Program Files\\Go\\bin\\gno.exe', 'C:\\Program Files (x86)\\Go\\bin\\gno.exe']
-				: ['/usr/local/go/bin/gno', '/usr/local/bin/gno'];
+				? ['C:\\Program Files\\Go\\bin\\go.exe', 'C:\\Program Files (x86)\\Go\\bin\\go.exe']
+				: ['/usr/local/go/bin/go', '/usr/local/bin/go'];
 		for (const p of defaultPathsForGo) {
 			if (executableFileExists(p)) {
 				binPathCache[toolName] = p;
@@ -143,7 +143,7 @@ export function getBinPathWithPreferredGopathGorootWithExplanation(
  */
 let currentGoRoot = '';
 export function getCurrentGoRoot(): string {
-	return currentGoRoot || process.env['GNOROOT'] || '';
+	return currentGoRoot || process.env['GOROOT'] || '';
 }
 
 export function setCurrentGoRoot(goroot: string) {
