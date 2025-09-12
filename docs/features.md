@@ -31,7 +31,7 @@ This document describes the features supported by this extension.
 
 The default syntax highlighting for gno files is implemented in Visual Studio Code using TextMate grammar, not by this extension.
 
-<div style="text-align: center;"><img src="images/Highliting.png" alt="" style="width: 100%"> </div>
+<div style="text-align: center;"><img src="images/highliting.png" alt="" style="width: 100%"> </div>
 
 ## Formatting
 
@@ -73,7 +73,7 @@ Executes all tests within a specific `gno` test
 
 Test a specific function
 
-<div style="text-align: center;"><img src="images/Test-function.gif" alt="" style="width: 100%"> </div>
+<div style="text-align: center;"><img src="images/test-function.gif" alt="" style="width: 100%"> </div>
 
 #### Test At Cursor 
 
@@ -110,13 +110,13 @@ Jump to or peek a symbol's declaration.
 
 Show all calls from or to a function.
 
-<div style="text-align: center;"><img src="images/Call-Hierarchy.gif" alt="Show call hierarchy and investigate callers of a function" style="width: 100%"> </div>
+<div style="text-align: center;"><img src="images/call-hierarchy.gif" alt="Show call hierarchy and investigate callers of a function" style="width: 100%"> </div>
 
 ## Toggle Between Code And Tests
 
 Quickly toggle between a file and its corresponding test file by using the [`Gno: Toggle Test File`](commands.md#go-toggle-test-file) command.
 
-<div style="text-align: center;"><img src="images/Toggle-Between-Code-And-Tests.gif" alt="Toggle between reverse.go and reverse_test.go" style="width: 100%"> </div>
+<div style="text-align: center;"><img src="images/toggle-between-code-and-tests.gif" alt="Toggle between reverse.go and reverse_test.go" style="width: 100%"> </div>
 
 ## Add Import
 
@@ -132,7 +132,7 @@ Rename all occurrences of a symbol in your workspace.
 
 This feature is not available if you are using  **without** [`gnopls`](https://github.com/gnoverse/gnopls), the Go language server.
 
-<div style="text-align: center;"><img src="images/Rename-Symbol.gif" alt="Rename an exported variable in gno" style="width: 100%"> </div>
+<div style="text-align: center;"><img src="images/rename-symbol.gif" alt="Rename an exported variable in gno" style="width: 100%"> </div>
 
 
 ## Refactor
