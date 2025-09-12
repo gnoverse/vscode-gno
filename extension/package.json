@@ -1203,7 +1203,7 @@
         {
           "id": "gno.explorer",
           "name": "gno",
-          "icon": "media/gno-logo-dark.png",
+          "icon": "media/gno-icon-dark.png",
           "when": "gno.showExplorer"
         }
       ]

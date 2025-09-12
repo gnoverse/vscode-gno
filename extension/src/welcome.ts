@@ -70,7 +70,7 @@ export class WelcomePanel {
 					localResourceRoots: [joinPath(extensionUri)]
 				}
 			);
-			panel.iconPath = joinPath(extensionUri, 'media', 'gno-logo-dark.png');
+			panel.iconPath = joinPath(extensionUri, 'media', 'gno-icon-dark.png');
 
 			WelcomePanel.currentPanel = new WelcomePanel(panel, extensionUri);
 		};
@@ -142,7 +142,7 @@ export class WelcomePanel {
 		// Local path to css styles and images
 		const scriptPathOnDisk = joinPath(this.dataroot, 'welcome.js');
 		const stylePath = joinPath(this.dataroot, 'welcome.css');
-		const gopherPath = joinPath(this.dataroot, 'gno-logo-dark.png');
+		const gopherPath = joinPath(this.dataroot, 'gno-icon-dark.png');
 		const goExtension = vscode.extensions.getExtension(extensionId)!;
 		const goExtensionVersion = goExtension.packageJSON.version;
 
