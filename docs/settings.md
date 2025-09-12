@@ -58,8 +58,8 @@ map[runtest:true]
 
 ### `gno.formatTool`
 
-When the language server is enabled and one of `default`/`gofmt`/`goimports`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.<br/>
-Allowed Options: `default`, `gofumpt`, `custom`
+When the language server is enabled and one of `default`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.<br/>
+Allowed Options: `default`, `gofumpt`
 
 Default: `"default"`
 

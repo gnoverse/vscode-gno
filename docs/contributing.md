@@ -23,7 +23,7 @@ If you wish to work on an existing issue, please add a comment saying so, as som
 
 Many of the language features like auto-completion, documentation, diagnostics are implemented
 by the Gno language server ([`gnopls`](https://github.com/gnoverse/gnopls)).
-This extension communicates with `gnopls` using [vscode LSP client library](https://github.com/microsoft/vscode-languageserver-node) from [`language/gnoLanguageServer.ts`](https://github.com/gnoverse/vscode-gno/tree/main/extension/src/language).
+This extension communicates with `gnopls` using [vscode LSP client library](https://github.com/microsoft/vscode-languageserver-node) from [`language/gnoLanguageServer.ts`](https://github.com/gnoverse/vscode-gno/tree/main/src/language).
 
 For extending the language features or fixing bugs, please follow `gnopls`'s
 [contribution guide](https://github.com/gnoverse/gnopls/tree/main/doc/contributing.md).
@@ -39,7 +39,7 @@ And install [Go](https://go.dev/) 1.21 or newer and [Gno](https://docs.gno.land/
 
     ```bash
     git clone https://github.com/gnoverse/vscode-gno
-    cd vscode-go/extension
+    cd vscode-gno
     npm ci
     code .
     ```
@@ -61,5 +61,5 @@ If you make subsequent edits in the codebase, you can reload (`Ctrl+R` or `⌘+R
 ```
 ⚠️ The tools/generate.go file automatically updates docs/commands.md and docs/settings.md from the package.json.
 So if you add new commands and/or settings to the package.json, remember to run tools/generate.go to update the documentation.
-Similarly, if you add tools to the allTools.ts.in file, this will update extension/gnoToolsInformation.ts.
+Similarly, if you add tools to the allTools.ts.in file, this will update src/gnoToolsInformation.ts.
 ```

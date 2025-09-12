@@ -5,7 +5,7 @@ import semver = require('semver');
 import { Tool } from './gnoTools';
 
 export const allToolsInformation: { [key: string]: Tool } = {
-	gofumpt: {
+	'gofumpt': {
 		name: 'gofumpt',
 		importPath: 'mvdan.cc/gofumpt',
 		modulePath: 'mvdan.cc/gofumpt',
@@ -14,13 +14,13 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		description: 'Formatter',
 		defaultVersion: 'v0.7.0'
 	},
-	gnopls: {
+	'gnopls': {
 		name: 'gnopls',
 		importPath: 'github.com/gnoverse/gnopls',
 		modulePath: 'github.com/gnoverse/gnopls',
 		replacedByGopls: false, // lol
 		isImportant: true,
-		description: 'Language Server from gnolang',
+		description: 'Language Server Protocol for Gnolang',
 		usePrereleaseInPreviewMode: true,
 		latestVersion: semver.parse('%s'),
 		latestVersionTimestamp: moment('%s', 'YYYY-MM-DD'),
@@ -28,3 +28,4 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		latestPrereleaseVersionTimestamp: moment('%s', 'YYYY-MM-DD')
 	}
 };
+

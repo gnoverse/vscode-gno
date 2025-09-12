@@ -54,6 +54,10 @@ Runs all unit tests from all files in the current workspace.
 
 Re-runs the last executed test.
 
+### `gno.toggle.test.file`
+
+Toggles between file in current active editor and the corresponding test file.
+
 ### `gno.welcome`
 
 Open the welcome page for the Gno extension.

@@ -1,9 +1,0 @@
-dist/
-out/
-node_modules/
-*.log
-.DS_Store
-.vscode
-*.tsbuildinfo
-gnopls/gno_functions/.git
-gnopls/gno_functions/.git

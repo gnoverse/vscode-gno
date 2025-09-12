@@ -1,13 +1,12 @@
 # Gno for Visual Studio Code
 
-*⚠️ Currently we build from source to install, this will be published on marketplace soon*
-
+_⚠️ Currently we build from source to install, this will be published on marketplace soon_
 
 ## Acknowledgments
 
-A big thank you to the developers of the [vscode-go](https://github.com/golang/vscode-go) extension for Go. 
-Their work was a huge help in creating this extension for the Gno language, 
-as I adapted their ideas and structure to fit this new context. 
+A big thank you to the developers of the [vscode-go](https://github.com/golang/vscode-go) extension for Go.
+Their work was a huge help in creating this extension for the Gno language,
+as I adapted their ideas and structure to fit this new context.
 Thank you for your contribution to open source and for the inspiration!
 
 ## Quick Start
@@ -18,40 +17,41 @@ Thank you for your contribution to open source and for the inspiration!
 
 ```
 git clone https://github.com/gnoverse/vscode-gno.git
-cd vscode-gno/extension
+cd vscode-gno
 npm ci
 npm run package
 ```
 
 3. Add the `.vsix` file that was created to your extensions
-<p align="center">
-<img src="docs/images/installvsix.gif" width=75%>
-<br/>
-</p>
+
+ <p align="center">
+ <img src="docs/images/installvsix.gif" width=75%>
+ <br/>
+ </p>
 
 4. Open any gno file or gno.mod file to automatically activate the extension.
 
 ## Automatic installation of gnopls
 
-For the extension to work properly, it needs the [gnopls](https://github.com/gnoverse/gnopls) LSP server. 
+For the extension to work properly, it needs the [gnopls](https://github.com/gnoverse/gnopls) LSP server.
 If [gnopls](https://github.com/gnoverse/gnopls) is not installed, installation is automatic.
 
 If you get this error message
+
 <p align="left">
 <img src="docs/images/errorgopath.png" width=75%>
 <br/>
 </p>
 
-
-This means that the extension cannot find the `go` binary needed to install `gnopls`. 
+This means that the extension cannot find the `go` binary needed to install `gnopls`.
 You'll need to add the PATH to your `go` binary in the extension settings.
+
 <p align="left">
 <img src="docs/images/settingsgopath.png" width=75%>
 <br/>
 </p>
 
 You are ready to Gno :-) &nbsp;&nbsp; 🎉🎉🎉
-
 
 <!-- add this line after publishing the extension -->
 
@@ -183,3 +183,4 @@ the project.
 [testing]: https://github.com/gnoverse/vscode-gno/wiki/features#run-and-test-in-the-editor
 [full feature breakdown]: https://github.com/gnoverse/vscode-gno/wiki/features
 [`Gno: Install/Update Tools` command]: https://github.com/gnoverse/vscode-gno/wiki/commands#gno-installupdate-tools-->
+
