@@ -100,22 +100,22 @@ func main() {
 		if len(split) == 1 {
 			log.Fatalf("expected to find %q in %s, not found", gen, filename)
 		}
-		var s []byte
+		var newContent []byte
 		if strings.HasSuffix(filename, ".ts") {
-			s = bytes.Join([][]byte{
+			newContent = bytes.Join([][]byte{
 				split[0],
 				gen,
 				[]byte("\n\n"),
 				toAdd,
 			}, []byte{})
 		} else {
-			s = bytes.Join([][]byte{
+			newContent = bytes.Join([][]byte{
 				bytes.TrimSpace(split[0]),
 				gen,
 				toAdd,
 			}, []byte("\n\n"))
+			newContent = append(newContent, '\n')
 		}
-		newContent := append(s, '\n')
 		checkAndWrite(filename, oldContent, newContent)
 	}
 
