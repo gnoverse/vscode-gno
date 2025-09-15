@@ -18,7 +18,7 @@ jobs:
             - name: Setup Go
               uses: actions/setup-go@v5
               with:
-                  go-version-file: tools/installtools/go.mod
+                  go-version-file: tools/go.mod
 
             - name: Setup Node.js
               uses: actions/setup-node@v4
@@ -29,11 +29,9 @@ jobs:
 
             - name: Install dependencies
               run: npm ci
-              working-directory: extension
 
             - name: Build extension
               run: npm run compile
-              working-directory: extension
 
             - name: Create .releaserc.json
               run: |
@@ -52,14 +50,13 @@ jobs:
                       [
                         "@semantic-release/npm",
                         {
-                          "pkgRoot": "extension",
                           "npmPublish": false
                         }
                       ],
                       [
                         "@semantic-release/exec",
                         {
-                          "prepareCmd": "cd extension && npm run package"
+                          "prepareCmd": "npm run package"
                         }
                       ],
                       [
