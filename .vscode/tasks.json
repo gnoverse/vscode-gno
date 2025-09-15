@@ -48,7 +48,6 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"path": "extension"
 		},
 		{
 			"type": "npm",
@@ -59,14 +58,12 @@
 			"presentation": {
 				"reveal": "never"
 			},
-			"path": "extension"
 		},
 		{
 			"type": "npm",
 			"script": "bundle-dev",
 			"group": "build",
 			"problemMatcher": "$esbuild",
-			"path": "extension"
 		}
 	]
 }
