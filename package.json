@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "publisher": "Gnoverse",
   "description": "Rich Gno language support for Visual Studio Code",
+  "license": "Apache-2.0",
   "author": {
     "name": "kazai777"
   },
@@ -47,7 +48,8 @@
     "lint": "gts lint src test",
     "lint-fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
     "unit-test": "npm run test-compile && node ./node_modules/mocha/bin/_mocha -u tdd --timeout 5000 --colors ./out/test/unit",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "license-check": "npx jsgl -l ."
   },
   "extensionDependencies": [],
   "dependencies": {
