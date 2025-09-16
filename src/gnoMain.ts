@@ -63,14 +63,14 @@ interface ExtensionTestAPI {
 
 export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionAPI | ExtensionTestAPI | undefined> {
 	if (process.env['VSCODE_GNO_IN_TEST'] === '1') {
-		// TODO: VSCODE_GO_IN_TEST was introduced long before we learned about
+		// TODO: VSCODE_GNO_IN_TEST was introduced long before we learned about
 		// ctx.extensionMode, and used in multiple places.
-		// Investigate if use of VSCODE_GO_IN_TEST can be removed
+		// Investigate if use of VSCODE_GNO_IN_TEST can be removed
 		// in favor of ctx.extensionMode and clean up.
 		if (ctx.extensionMode === vscode.ExtensionMode.Test) {
 			return { globalState: ctx.globalState };
 		}
-		// We shouldn't expose the memento in production mode even when VSCODE_GO_IN_TEST
+		// We shouldn't expose the memento in production mode even when VSCODE_GNO_IN_TEST
 		// environment variable is set.
 		return; // Skip the remaining activation work.
 	}

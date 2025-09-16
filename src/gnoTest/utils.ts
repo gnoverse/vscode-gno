@@ -57,7 +57,7 @@ export class GoTest {
 
 // Check whether the process is running as a test.
 export function isInTest() {
-	return process.env.VSCODE_GO_IN_TEST === '1';
+	return process.env.VSCODE_GNO_IN_TEST === '1';
 }
 
 // The subset of vscode.FileSystem that is used by the test explorer.

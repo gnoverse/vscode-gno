@@ -21,7 +21,7 @@
 			"smartStep": true,
 			"preLaunchTask": "npm: bundle-dev",
 			"env": {
-				"VSCODE_GO_IN_TEST": "" // Enable code
+				"VSCODE_GNO_IN_TEST": "" // Enable code
 			},
 			"cwd": "${workspaceFolder}"
 		},
@@ -41,7 +41,7 @@
 				"999999"
 			],
 			"env": {
-				"VSCODE_GO_IN_TEST": "1", // Disable code that shouldn't be used in test
+				"VSCODE_GNO_IN_TEST": "1", // Disable code that shouldn't be used in test
 				"MOCHA_TIMEOUT": "999999"
 			},
 			"outFiles": ["${workspaceFolder}/out/**/*.js"],
@@ -66,7 +66,7 @@
 				"999999"
 			],
 			"env": {
-				"VSCODE_GO_IN_TEST": "1" // Disable code that shouldn't be used in test
+				"VSCODE_GNO_IN_TEST": "1" // Disable code that shouldn't be used in test
 			},
 			"outFiles": ["${workspaceFolder}/out/**/*.js"],
 			"sourceMaps": true,
