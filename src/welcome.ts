@@ -225,8 +225,8 @@ export class WelcomePanel {
 				<div class="Card">
 					<div class="Card-inner">
 						<p class="Card-title">Troubleshooting</p>
-						<p class="Card-content">Experiencing problems? Start with our
-							<a href="https://github.com/gnoverse/vscode-gno/wiki/troubleshooting">troubleshooting guide</a>. 
+						<p class="Card-content">Experiencing problems? Open an issue on 
+							<a href="https://github.com/gnoverse/vscode-gno/issues/new/choose">GitHub</a>.
 						</p>
 					</div>
 				</div>
