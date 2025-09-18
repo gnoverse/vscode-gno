@@ -121,7 +121,7 @@ func main() {
 
 	b := &bytes.Buffer{}
 	for i, c := range pkgJSON.Contributes.Commands {
-		fmt.Fprintf(b, "### `%s`\n\n%s", c.Command, c.Description)
+		fmt.Fprintf(b, "### %s\n\n#### `%s`\n\n%s", c.Title, c.Command, c.Description)
 		if i != len(pkgJSON.Contributes.Commands)-1 {
 			b.WriteString("\n\n")
 		}

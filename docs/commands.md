@@ -18,78 +18,116 @@ To view this list:
 
 <!-- Everything below this line is generated. DO NOT EDIT. -->
 
-### `gno.gnopath`
+### Gno: Current GNOPATH
+
+#### `gno.gnopath`
 
 See the currently set GNOPATH.
 
-### `gno.gnoroot`
+### Gno: Current GNOROOT
+
+#### `gno.gnoroot`
 
 See the currently set GNOROOT.
 
-### `gno.locate.tools`
+### Gno: Locate Configured Gno Tools
+
+#### `gno.locate.tools`
 
 List all the Gno tools being used by this extension along with their locations.
 
-### `gno.test.cursor`
+### Gno: Test Function At Cursor
+
+#### `gno.test.cursor`
 
 Runs a unit test at the cursor.
 
-### `gno.test.cursorOrPrevious`
+### Gno: Test Function At Cursor or Test Previous
+
+#### `gno.test.cursorOrPrevious`
 
 Runs a unit test at the cursor if one is found, otherwise re-runs the last executed test.
 
-### `gno.test.file`
+### Gno: Test File
+
+#### `gno.test.file`
 
 Runs all unit tests in the current file.
 
-### `gno.test.refresh`
+### Gno Test: Refresh
+
+#### `gno.test.refresh`
 
 Refresh a test in the test explorer. Only available as a context menu option in the test explorer.
 
-### `gno.test.workspace`
+### Gno: Test All Files In Workspace
+
+#### `gno.test.workspace`
 
 Runs all unit tests from all files in the current workspace.
 
-### `gno.test.previous`
+### Gno: Test Previous
+
+#### `gno.test.previous`
 
 Re-runs the last executed test.
 
-### `gno.toggle.test.file`
+### Gno: Toggle Test File
+
+#### `gno.toggle.test.file`
 
 Toggles between file in current active editor and the corresponding test file.
 
-### `gno.welcome`
+### Gno: Welcome
+
+#### `gno.welcome`
 
 Open the welcome page for the Gno extension.
 
-### `gno.import.add`
+### Gno: Add Import
+
+#### `gno.import.add`
 
 Add an import declaration
 
-### `gno.tools.install`
+### Gno: Install/Update Tools
+
+#### `gno.tools.install`
 
 install/update the required go packages
 
-### `gno.show.commands`
+### Gno: Show All Commands...
+
+#### `gno.show.commands`
 
 Shows all commands from the Gno extension in the quick pick
 
-### `gno.lint.workspace`
+### Gno: Lint Workspace
+
+#### `gno.lint.workspace`
 
 Run linter in the current workspace.
 
-### `gno.run.modinit`
+### Gno: Initialize gno.mod
+
+#### `gno.run.modinit`
 
 Run `gno mod init` in the workspace folder.
 
-### `gno.test.cancel`
+### Gno: Cancel Running Tests
+
+#### `gno.test.cancel`
 
 Cancels running tests.
 
-### `gno.languageserver.restart`
+### Gno: Restart Language Server
+
+#### `gno.languageserver.restart`
 
 Restart the running instance of the language server
 
-### `gno.maketx.addpkg`
+### Gno Add Package To Chain
+
+#### `gno.maketx.addpkg`
 
 Add a package to the Gno blockchain
