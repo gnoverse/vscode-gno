@@ -65,7 +65,7 @@ jobs:
                           "assets": [
                             {
                               "path": "gnolang-*.vsix",
-                              "label": "VS Code Gno Extension (${nextRelease.gitTag})"
+                              "label": "VS Code Gnolang Extension (${nextRelease.gitTag})"
                             }
                           ]
                         }
