@@ -79,7 +79,7 @@ Test a specific function
 
 Executes the test case where the cursor is currently placed in the code editor.
 
-## Maketx
+## Maketx - Add Package
 
 Publish Gno package/realm to the chain. `gnokey` needs to be installed for this feature to work.
 

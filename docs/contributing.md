@@ -23,7 +23,7 @@ If you wish to work on an existing issue, please add a comment saying so, as som
 
 Many of the language features like auto-completion, documentation, diagnostics are implemented
 by the Gno language server ([`gnopls`](https://github.com/gnoverse/gnopls)).
-This extension communicates with `gnopls` using [vscode LSP client library](https://github.com/microsoft/vscode-languageserver-node) from [`language/gnoLanguageServer.ts`](https://github.com/gnoverse/vscode-gno/tree/main/src/language).
+This extension communicates with `gnopls` using [VS Code LSP client library](https://github.com/microsoft/vscode-languageserver-node) from [`language/gnoLanguageServer.ts`](https://github.com/gnoverse/vscode-gno/tree/main/src/language).
 
 For extending the language features or fixing bugs, please follow `gnopls`'s
 [contribution guide](https://github.com/gnoverse/gnopls/tree/main/doc/contributing.md).
@@ -44,13 +44,13 @@ And install [Go](https://go.dev/) 1.21 or newer and [Gno](https://docs.gno.land/
     code .
     ```
 
-#### Lint
+### Lint
 
 You can run `npm run lint` on the command-line to check for lint errors in your program. You can also use the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) plugin to see errors as you code.
 
 ### Run
 
-To run the extension with your patch, open the Run view (`Ctrl+Shift+D` or `⌘+⇧+D`), select `Launch Extension`, and click the Play button (`F5`).
+To run the extension with your patch, open the Run view (`Shift+Ctrl+D` or `Shift+Cmd+D`), select `Launch Extension`, and click the Play button (`F5`).
 
 This will open a new VS Code window with the title `[Extension Development Host]`. You can then open a folder that contains Gno code and try out your changes.
 
