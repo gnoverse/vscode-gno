@@ -1,90 +1,90 @@
 name: GitHub Release
 
 on:
-    push:
-        branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    release:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            issues: write
-            pull-requests: write
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
 
-        steps:
-            - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup Go
-              uses: actions/setup-go@v5
-              with:
-                  go-version-file: tools/go.mod
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: tools/go.mod
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '18'
-                  cache: 'npm'
-                  cache-dependency-path: package-lock.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-            - name: Build extension
-              run: npm run compile
+      - name: Build extension
+        run: npm run compile
 
-            - name: Create .releaserc.json
-              run: |
-                  cat > .releaserc.json << 'EOF'
-                  {
-                    "branches": ["main"],
-                    "plugins": [
-                      "@semantic-release/commit-analyzer",
-                      "@semantic-release/release-notes-generator",
-                      [
-                        "@semantic-release/changelog",
-                        {
-                          "changelogFile": "CHANGELOG.md"
-                        }
-                      ],
-                      [
-                        "@semantic-release/npm",
-                        {
-                          "npmPublish": false
-                        }
-                      ],
-                      [
-                        "@semantic-release/exec",
-                        {
-                          "prepareCmd": "npm run package"
-                        }
-                      ],
-                      [
-                        "@semantic-release/github",
-                        {
-                          "assets": [
-                            {
-                              "path": "gnolang-*.vsix",
-                              "label": "VS Code Gnolang Extension (${nextRelease.gitTag})"
-                            }
-                          ]
-                        }
-                      ],
-                      [
-                        "@semantic-release/git",
-                        {
-                          "assets": ["CHANGELOG.md", "package.json"],
-                          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-                        }
-                      ]
-                    ]
-                  }
-                  EOF
+      - name: Create .releaserc.json
+        run: |
+          cat > .releaserc.json << 'EOF'
+          {
+            "branches": ["main"],
+            "plugins": [
+              "@semantic-release/commit-analyzer",
+              "@semantic-release/release-notes-generator",
+              [
+                "@semantic-release/changelog",
+                {
+                  "changelogFile": "CHANGELOG.md"
+                }
+              ],
+              [
+                "@semantic-release/npm",
+                {
+                  "npmPublish": false
+                }
+              ],
+              [
+                "@semantic-release/exec",
+                {
+                  "prepareCmd": "npm run package"
+                }
+              ],
+              [
+                "@semantic-release/github",
+                {
+                  "assets": [
+                    {
+                      "path": "gnolang-*.vsix",
+                      "label": "VS Code Gnolang Extension (${nextRelease.gitTag})"
+                    }
+                  ]
+                }
+              ],
+              [
+                "@semantic-release/git",
+                {
+                  "assets": ["CHANGELOG.md", "package.json"],
+                  "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+                }
+              ]
+            ]
+          }
+          EOF
 
-            - name: Semantic Release
-              uses: cycjimmy/semantic-release-action@v4
-              with:
-                  extra_plugins: |
-                      @semantic-release/exec
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          extra_plugins: |
+            @semantic-release/exec
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

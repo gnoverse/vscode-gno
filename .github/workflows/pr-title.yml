@@ -14,7 +14,7 @@ jobs:
       pull-requests: read
 
     steps:
-    - name: Validate Semantic PR Title
-      uses: actions/setup-go@v5
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate Semantic PR Title
+        uses: actions/setup-go@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
