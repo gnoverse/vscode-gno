@@ -33,10 +33,8 @@
 	"tasks": [
 		{
 			"type": "typescript",
-			"tsconfig": "extension/tsconfig.json",
-			"problemMatcher": [
-				"$tsc"
-			],
+			"tsconfig": "tsconfig.json",
+			"problemMatcher": ["$tsc"]
 		},
 		{
 			"type": "npm",
@@ -50,7 +48,6 @@
 				"kind": "build",
 				"isDefault": true
 			},
-			"path": "extension"
 		},
 		{
 			"type": "npm",
@@ -61,14 +58,13 @@
 			"presentation": {
 				"reveal": "never"
 			},
-			"path": "extension"
 		},
 		{
 			"type": "npm",
 			"script": "bundle-dev",
 			"group": "build",
 			"problemMatcher": "$esbuild",
-			"path": "extension"
 		}
 	]
 }
+

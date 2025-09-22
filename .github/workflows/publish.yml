@@ -1,0 +1,55 @@
+name: Publish on Marketplace
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_tag:
+        description: "Git tag to publish"
+        default: "v1.0.0"
+        required: true
+
+jobs:
+  publish:
+    name: Publish VS Code Extension
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        ref: ${{ github.event.inputs.git_tag }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: tools/go.mod
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run compile
+
+      - name: Package extension
+        run: npm run package
+
+      # TODO: Publish to Open VSX Registry when we have a token
+      # - name: Publish to Open VSX Registry
+      #   uses: HaaLeo/publish-vscode-extension@v2
+      #   with:
+      #     pat: ${{ secrets.OPEN_VSX_TOKEN }}
+
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.MS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          baseContentUrl: https://github.com/gnoverse/vscode-gno/blob/main
+          baseImagesUrl: https://github.com/gnoverse/vscode-gno/blob/main

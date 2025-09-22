@@ -2,13 +2,13 @@
 
 This extension is highly configurable, and as such, offers a number of settings. These can be configured by modifying your [User or Workspace Settings](https://code.visualstudio.com/docs/getstarted/settings).
 
-To navigate to your settings, open the Command Palette (Ctrl+Shift+P or Cmd+Shift+P) and search for "settings". The simplest way to modify your settings is through "Preferences: Open Settings (UI)".
+To navigate to your settings, open the Command Palette (`Ctrl+Shift+P` on Linux/Windows and `Cmd+Shift+P` on macOS) and search for "settings". The simplest way to modify your settings is through "Preferences: Open Settings (UI)".
 
 For tuning the features provided by `gnopls`, see the [section](settings.md#settings-for-gnopls) for `gnopls` settings.
 
 To view the list of settings:
 
-1. Navigate to the Extensions view (Ctrl+Shift+X).
+1. Navigate to the Extensions view (`Ctrl+Shift+X` on Linux/Windows or `Cmd+Shift+X` on macOS).
 2. Find the Gno extension and click on it to open the Extension Editor.
 3. Click on the `Feature Contributions` tab.
 4. Scroll through the list under `Settings`.
@@ -19,7 +19,7 @@ To view the list of settings:
 
 ### `gno.alternateTools`
 
-Alternate tools or alternate paths for the same tools used by the Go extension. Provide either absolute path or the name of the binary in GOPATH/bin, GOROOT/bin or PATH. Useful when you want to use wrapper script for the Go tools.
+Alternate tools or alternate paths for the same tools used by the Go extension. Provide either absolute path or the name of the binary in `GOPATH/bin`, `GOROOT/bin` or `PATH`. Useful when you want to use wrapper script for the Go tools.
 
 Default:
 ```
@@ -58,8 +58,8 @@ map[runtest:true]
 
 ### `gno.formatTool`
 
-When the language server is enabled and one of `default`/`gofmt`/`goimports`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.<br/>
-Allowed Options: `default`, `gofumpt`, `custom`
+When the language server is enabled and one of `default`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.<br/>
+Allowed Options: `default`, `gofumpt`
 
 Default: `"default"`
 

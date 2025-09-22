@@ -1,1 +1,0 @@
-**Please see https://github.com/gnoverse/vscode-gno/blob/main/CHANGELOG.md for the latest CHANGELOG.md**

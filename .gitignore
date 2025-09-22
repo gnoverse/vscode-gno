@@ -1,7 +1,10 @@
-bin/
-out/
 dist/
+out/
 node_modules/
 .vscode-test/
+gnolang-*.vsix
+*.log
 .DS_Store
-.user-data-dir-test/
+*.tsbuildinfo
+gnopls/gno_functions/.git
+gnopls/gno_functions/.git
