@@ -53,5 +53,5 @@ jobs:
               with:
                   pat: ${{ secrets.MS_MARKETPLACE_TOKEN }}
                   registryUrl: https://marketplace.visualstudio.com
-                  baseContentUrl: https://github.com/gnoverse/vscode-gno/blob/main
-                  baseImagesUrl: https://github.com/gnoverse/vscode-gno/blob/main
+                  baseContentUrl: https://github.com/gnoverse/vscode-gno/blob/${{ github.event.inputs.git_tag }}
+                  baseImagesUrl: https://raw.githubusercontent.com/gnoverse/vscode-gno/refs/tags/${{ github.event.inputs.git_tag }}

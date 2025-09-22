@@ -19,7 +19,7 @@ This extension provides rich language support for the Gno programming language, 
 3.  Install the **VS Code Gnolang** extension.
 
     a. Stable releases are available on the
-     [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=gnolang.gno).
+     [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Gnoverse.gnolang).
 
     b. Nightly releases are available on
      [GitHub Releases](https://github.com/gnoverse/vscode-gno/releases) as `.vsix` files.
@@ -91,4 +91,4 @@ Thank you for your contribution to open source and for the inspiration!
 
 ## License
 
-[Apache License version 2.0](LICENSE)
+[Apache License version 2.0](./LICENSE)
