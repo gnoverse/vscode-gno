@@ -292,7 +292,7 @@ async function installToolWithGo(
 	}
 
 	const env = Object.assign({}, envForTools);
-	let version: semver.SemVer | string | undefined | null = tool.version;
+	const version: semver.SemVer | string | undefined | null = tool.version;
 	const importPath = getImportPathWithVersion(tool, version, goVersion);
 
 	try {

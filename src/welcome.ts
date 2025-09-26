@@ -283,5 +283,5 @@ export function hasNewsForNewVersion(newVersion: string, oldVersion: string): bo
 		return true;
 	}
 
-	return semver.gte(coercedNew, coercedOld)
+	return semver.gte(coercedNew, coercedOld);
 }
