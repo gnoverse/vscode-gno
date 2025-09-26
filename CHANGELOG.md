@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/gnoverse/vscode-gno/compare/v1.0.0...v1.0.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* base urls and command listing ([#36](https://github.com/gnoverse/vscode-gno/issues/36)) ([4fa4f7d](https://github.com/gnoverse/vscode-gno/commit/4fa4f7d9074f94ee8d9c7f2b71722977253d3e39))
+
 # 1.0.0 (2025-09-22)
 
 
