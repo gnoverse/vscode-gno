@@ -8,9 +8,9 @@ import * as vscode from 'vscode';
 import { CommandFactory } from '.';
 import { getExtensionCommands } from '../util';
 
-export const showCommands: CommandFactory = () => {
+export const showCommands: CommandFactory = (ctx) => {
 	return () => {
-		const extCommands = getExtensionCommands();
+		const extCommands = getExtensionCommands(ctx);
 		extCommands.push({
 			command: 'editor.action.goToDeclaration',
 			title: 'Go to Definition'

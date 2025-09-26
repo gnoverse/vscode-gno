@@ -6,7 +6,6 @@
 
 import vscode = require('vscode');
 import semver = require('semver');
-import { extensionId } from './const';
 
 /** getGnoConfig is declared as an exported const rather than a function, so it can be stubbbed in testing. */
 export const getGnoConfig = (uri?: vscode.Uri) => {
@@ -30,27 +29,24 @@ function getConfig(section: string, uri?: vscode.Uri | null) {
 }
 
 /** ExtensionInfo is a collection of static information about the extension. */
-export class ExtensionInfo {
+class ExtensionInfo {
 	/** Extension version */
 	readonly version?: string;
+	/** The extension ID */
+	readonly extensionId: string;
+	/** The extension package.json */
+	readonly packageJSON: any;
 	/** The application name of the editor, like 'VS Code' */
 	readonly appName: string;
-	/** True if the extension runs in preview mode (e.g. Nightly, prerelease) */
-	readonly isPreview: boolean;
-	/** True if the extension runs in well-kwnon cloud IDEs */
+	/** True if the extension runs in well-known cloud IDEs */
 	readonly isInCloudIDE: boolean;
 
-	constructor() {
-		const packageJSON = vscode.extensions.getExtension(extensionId)?.packageJSON;
-		const version = semver.parse(packageJSON?.version);
-		this.version = version?.format();
+	constructor(ctx: Pick<vscode.ExtensionContext, 'extension'>) {
+		this.extensionId = ctx.extension.id;
+		this.packageJSON = ctx.extension.packageJSON;
+		this.version = semver.parse(this.packageJSON.version)?.format();
 		this.appName = vscode.env.appName;
 
-		// gnolang.gno prerelease: minor version is an odd number, or has the "-dev" suffix.
-		this.isPreview =
-			extensionId === 'gnolang.gno' && !!version
-				? version.minor % 2 === 1 || version.toString().endsWith('-dev')
-				: false;
 		this.isInCloudIDE =
 			process.env.CLOUD_SHELL === 'true' ||
 			process.env.MONOSPACE_ENV === 'true' ||
@@ -59,4 +55,15 @@ export class ExtensionInfo {
 	}
 }
 
-export const extensionInfo = new ExtensionInfo();
+// Global singleton instance of the extension info.
+let extensionInfo: ExtensionInfo;
+
+// Singleton accessor for the extension info.
+export function getExtensionInfo() {
+	return extensionInfo;
+}
+
+// Initialize the global extension info instance.
+export function initExtensionInfo(ctx: Pick<vscode.ExtensionContext, 'extension'>) {
+	extensionInfo = new ExtensionInfo(ctx);
+}

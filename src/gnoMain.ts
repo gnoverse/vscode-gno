@@ -8,7 +8,7 @@
 
 'use strict';
 
-import { getGnoConfig } from './config';
+import { getGnoConfig, initExtensionInfo } from './config';
 import { notifyIfGeneratedFile, removeTestStatus } from './gnoCheck';
 import { setGOROOTEnvVar, toolExecutionEnvironment } from './gnoEnv';
 import {
@@ -62,6 +62,9 @@ interface ExtensionTestAPI {
 }
 
 export async function activate(ctx: vscode.ExtensionContext): Promise<ExtensionAPI | ExtensionTestAPI | undefined> {
+	// Initialize the global extension info instance
+	initExtensionInfo(ctx);
+
 	if (process.env['VSCODE_GNO_IN_TEST'] === '1') {
 		// TODO: VSCODE_GNO_IN_TEST was introduced long before we learned about
 		// ctx.extensionMode, and used in multiple places.

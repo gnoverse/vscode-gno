@@ -13,7 +13,7 @@ import moment = require('moment');
 import os = require('os');
 import path = require('path');
 import { promisify } from 'util';
-import { getGnoConfig, extensionInfo } from './config';
+import { getGnoConfig, getExtensionInfo } from './config';
 import { toolInstallationEnvironment } from './gnoEnv';
 import { addGoStatus, goEnvStatusbarItem, outputChannel, removeGoStatus } from './gnoStatus';
 import { getFromGlobalState, getFromWorkspaceState, updateGlobalState, updateWorkspaceState } from './stateUtils';
@@ -533,7 +533,7 @@ const STATUS_BAR_ITEM_NAME = 'Gno Update Notification';
 const dismissedGoVersionUpdatesKey = 'dismissedGoVersionUpdates';
 
 export async function offerToInstallLatestGoVersion(ctx: Pick<vscode.ExtensionContext, 'subscriptions'>) {
-	if (extensionInfo.isInCloudIDE) {
+	if (getExtensionInfo().isInCloudIDE) {
 		// TODO: As we use the language status bar, the notification is less visible
 		// and we can consider to remove this condition check.
 		return;

@@ -56,7 +56,7 @@ jobs:
               [
                 "@semantic-release/exec",
                 {
-                  "prepareCmd": "npm run package"
+                  "prepareCmd": "npx vsce package --pre-release --baseContentUrl https://github.com/gnoverse/vscode-gno/blob/${nextRelease.gitTag} --baseImagesUrl https://github.com/gnoverse/vscode-gno/raw/${nextRelease.gitTag}"
                 }
               ],
               [
