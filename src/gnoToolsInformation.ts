@@ -21,7 +21,6 @@ export const allToolsInformation: { [key: string]: Tool } = {
 		replacedByGopls: false, // lol
 		isImportant: true,
 		description: 'Language Server Protocol for Gnolang',
-		usePrereleaseInPreviewMode: true,
 		latestVersion: semver.parse('%s'),
 		latestVersionTimestamp: moment('%s', 'YYYY-MM-DD'),
 		latestPrereleaseVersion: semver.parse('%s'),
