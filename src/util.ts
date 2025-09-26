@@ -12,7 +12,6 @@ import semver = require('semver');
 import util = require('util');
 import vscode = require('vscode');
 import { getGnoConfig } from './config';
-import { extensionId } from './const';
 import { GoExtensionContext } from './context';
 import { toolExecutionEnvironment } from './gnoEnv';
 import { outputChannel } from './gnoStatus';
@@ -463,15 +462,12 @@ export function getModuleCache(): string | undefined {
 	}
 }
 
-export function getExtensionCommands(): any[] {
-	const pkgJSON = vscode.extensions.getExtension(extensionId)?.packageJSON;
-	if (!pkgJSON.contributes || !pkgJSON.contributes.commands) {
+export function getExtensionCommands(ctx: Pick<vscode.ExtensionContext, 'extension'>): any[] {
+	const commands = ctx.extension?.packageJSON?.contributes?.commands;
+	if (!commands) {
 		return [];
 	}
-	const extensionCommands: any[] = vscode.extensions
-		.getExtension(extensionId)
-		?.packageJSON.contributes.commands.filter((x: any) => x.command !== 'gno.show.commands');
-	return extensionCommands;
+	return commands.filter((x: any) => x.command !== 'gno.show.commands');
 }
 
 export class LineBuffer {

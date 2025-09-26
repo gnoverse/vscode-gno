@@ -13,7 +13,7 @@ import fs = require('fs');
 import path = require('path');
 import semver = require('semver');
 import { ConfigurationTarget } from 'vscode';
-import { extensionInfo, getGnoConfig, getGnoplsConfig } from './config';
+import { getGnoConfig, getGnoplsConfig } from './config';
 import { toolExecutionEnvironment, toolInstallationEnvironment } from './gnoEnv';
 import { addGoRuntimeBaseToPATH, clearGoRuntimeBaseFromPATH } from './gnoEnvironmentStatus';
 import { GoExtensionContext } from './context';
@@ -293,9 +293,6 @@ async function installToolWithGo(
 
 	const env = Object.assign({}, envForTools);
 	let version: semver.SemVer | string | undefined | null = tool.version;
-	if (!version && tool.usePrereleaseInPreviewMode && extensionInfo.isPreview) {
-		version = await latestToolVersion(tool, true);
-	}
 	const importPath = getImportPathWithVersion(tool, version, goVersion);
 
 	try {

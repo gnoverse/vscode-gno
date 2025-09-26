@@ -10,9 +10,8 @@
 import vscode = require('vscode');
 import path = require('path');
 import semver = require('semver');
-import { extensionId } from './const';
 import { GoExtensionContext } from './context';
-import { extensionInfo, getGnoConfig } from './config';
+import { getExtensionInfo, getGnoConfig } from './config';
 import { getFromGlobalState, updateGlobalState } from './stateUtils';
 import { createRegisterCommand } from './commands';
 
@@ -37,7 +36,7 @@ export class WelcomePanel {
 		// It is difficult to write useful tests for this suppression logic
 		// without major refactoring or complicating tests to enable
 		// dependency injection or stubbing.
-		if (!extensionInfo.isInCloudIDE && getGnoConfig().get('showWelcome') !== false) {
+		if (!getExtensionInfo().isInCloudIDE && getGnoConfig().get('showWelcome') !== false) {
 			showGoWelcomePage();
 		}
 	}
@@ -142,14 +141,13 @@ export class WelcomePanel {
 		// Local path to css styles and images
 		const scriptPathOnDisk = joinPath(this.dataroot, 'welcome.js');
 		const stylePath = joinPath(this.dataroot, 'welcome.css');
-		const gopherPath = joinPath(this.dataroot, 'gno-icon-dark.png');
-		const goExtension = vscode.extensions.getExtension(extensionId)!;
-		const goExtensionVersion = goExtension.packageJSON.version;
+		const logoPath = joinPath(this.dataroot, 'gno-logo.png');
+		const extensionVersion = getExtensionInfo().version;
 
 		// Uri to load styles and images into webview
 		const scriptURI = webview.asWebviewUri(scriptPathOnDisk);
 		const stylesURI = webview.asWebviewUri(stylePath);
-		const gopherURI = webview.asWebviewUri(gopherPath);
+		const logoURI = webview.asWebviewUri(logoPath);
 
 		// Use a nonce to only allow specific scripts to be run
 		const nonce = getNonce();
@@ -170,9 +168,9 @@ export class WelcomePanel {
 			<body>
 			<main class="Content">
 			<div class="Header">
-				<img src="${gopherURI}" alt="Gno Logo" class="Header-logo"/>
+				<img src="${logoURI}" alt="Gno Logo" class="Header-logo"/>
 				<div class="Header-details">
-					<h1 class="Header-title">Gno for VS Code v${goExtensionVersion}</h1>
+					<h1 class="Header-title">Gno for VS Code v${extensionVersion}</h1>
 					<p>The official Gno extension for Visual Studio Code, providing rich language support for Gno projects.</p>
 					<ul class="Header-links">
 						<!--
@@ -262,29 +260,20 @@ function joinPath(uri: vscode.Uri, ...pathFragment: string[]): vscode.Uri {
 }
 
 function showGoWelcomePage() {
-	// Update this list of versions when there is a new version where we want to
-	// show the welcome page on update.
-	const showVersions: string[] = ['0.1.0'];
-	// TODO(hyangah): use the content hash instead of hard-coded string.
-	// https://github.com/golang/vscode-go/issue/1179
-	let goExtensionVersion = '0.1.0';
-	let goExtensionVersionKey = 'gno.extensionVersion';
-	if (extensionInfo.isPreview) {
-		goExtensionVersion = '0.0.0';
-		goExtensionVersionKey = 'gno.nightlyExtensionVersion';
-	}
+	const gnoExtensionVersion = getExtensionInfo().version || '';
+	const gnoExtensionVersionKey = 'gno.extensionVersion';
 
-	const savedGoExtensionVersion = getFromGlobalState(goExtensionVersionKey, '');
+	const savedGnoExtensionVersion = getFromGlobalState(gnoExtensionVersionKey, '');
 
-	if (hasNewsForNewVersion(showVersions, goExtensionVersion, savedGoExtensionVersion)) {
+	if (hasNewsForNewVersion(gnoExtensionVersion, savedGnoExtensionVersion)) {
 		vscode.commands.executeCommand('gno.welcome');
 	}
-	if (goExtensionVersion !== savedGoExtensionVersion) {
-		updateGlobalState(goExtensionVersionKey, goExtensionVersion);
+	if (gnoExtensionVersion !== savedGnoExtensionVersion) {
+		updateGlobalState(gnoExtensionVersionKey, gnoExtensionVersion);
 	}
 }
 
-export function hasNewsForNewVersion(showVersions: string[], newVersion: string, oldVersion: string): boolean {
+export function hasNewsForNewVersion(newVersion: string, oldVersion: string): boolean {
 	if (newVersion === oldVersion) {
 		return false;
 	}
@@ -293,6 +282,6 @@ export function hasNewsForNewVersion(showVersions: string[], newVersion: string,
 	if (!coercedNew || !coercedOld) {
 		return true;
 	}
-	// Both semver.coerce(0.22.0) and semver.coerce(0.22.0-rc.1) will be 0.22.0.
-	return semver.gte(coercedNew, coercedOld) && showVersions.includes(coercedNew.toString());
+
+	return semver.gte(coercedNew, coercedOld)
 }

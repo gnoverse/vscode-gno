@@ -33,7 +33,7 @@ import {
 } from 'vscode-languageclient';
 import moment from 'moment';
 import { LanguageClient, ServerOptions } from 'vscode-languageclient/node';
-import { getGnoConfig, getGnoplsConfig, extensionInfo } from '../config';
+import { getGnoConfig, getGnoplsConfig, getExtensionInfo } from '../config';
 import { toolExecutionEnvironment } from '../gnoEnv';
 import { GoDocumentFormattingEditProvider, usingCustomFormatTool } from './legacy/gnoFormat';
 import { latestToolVersion, promptForMissingTool, promptForUpdatingTool } from '../gnoInstallTools';
@@ -58,6 +58,7 @@ import { updateLanguageServerIconGoStatusBar } from '../gnoStatus';
 import { createHash } from 'crypto';
 import { GoExtensionContext } from '../context';
 import { GoDocumentSelector } from '../gnoMode';
+import { get } from 'lodash';
 
 export interface LanguageServerConfig {
 	serverName: string;
@@ -127,7 +128,7 @@ function hashMachineID(salt?: string): number {
 // update to the latest version. We also check if we should prompt users to
 // fill out the survey.
 export function scheduleGoplsSuggestions(goCtx: GoExtensionContext) {
-	if (extensionInfo.isInCloudIDE) {
+	if (getExtensionInfo().isInCloudIDE) {
 		return;
 	}
 	// Some helper functions.
@@ -604,11 +605,6 @@ async function adjustGoplsWorkspaceConfiguration(
 	const goConfig = getGnoConfig(resource);
 	workspaceConfig = passGoConfigToGoplsConfigValues(workspaceConfig, goConfig);
 	workspaceConfig = await passLinkifyShowMessageToGopls(cfg, workspaceConfig);
-
-	// Only modify the user's configurations for the Nightly.
-	if (!extensionInfo.isPreview) {
-		return workspaceConfig;
-	}
 	if (workspaceConfig && !workspaceConfig['allExperiments']) {
 		workspaceConfig['allExperiments'] = true;
 	}
@@ -781,7 +777,7 @@ export async function shouldUpdateLanguageServer(
 		return null;
 	}
 	// Only support updating gopls for now.
-	if (tool.name !== 'gnopls' || (!mustCheck && (cfg.checkForUpdates === 'off' || extensionInfo.isInCloudIDE))) {
+	if (tool.name !== 'gnopls' || (!mustCheck && (cfg.checkForUpdates === 'off' || getExtensionInfo().isInCloudIDE))) {
 		return null;
 	}
 	if (!cfg.enabled) {
@@ -806,7 +802,7 @@ export async function shouldUpdateLanguageServer(
 
 	// Get the latest gopls version. If it is for nightly, using the prereleased version is ok.
 	let latestVersion =
-		cfg.checkForUpdates === 'local' ? tool.latestVersion : await latestToolVersion(tool, extensionInfo.isPreview);
+		cfg.checkForUpdates === 'local' ? tool.latestVersion : await latestToolVersion(tool, false);
 
 	// If we failed to get the gopls version, pick the one we know to be latest at the time of this extension's last update
 	if (!latestVersion) {
@@ -1098,8 +1094,8 @@ Failed to auto-collect gnopls trace: ${failureReason}.
 gnopls version: ${cfg.version?.version}/${cfg.version?.goVersion}
 gnopls flags: ${settings}
 update flags: ${cfg.checkForUpdates}
-extension version: ${extensionInfo.version}
-environment: ${extensionInfo.appName} ${process.platform}
+extension version: ${getExtensionInfo().version}
+environment: ${getExtensionInfo().appName} ${process.platform}
 initialization error: ${initializationError}
 issue timestamp: ${issueTime.toUTCString()}
 restart history:

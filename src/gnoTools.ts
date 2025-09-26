@@ -20,9 +20,6 @@ export interface Tool {
 	replacedByGopls?: boolean;
 	description: string;
 
-	// If true, consider prerelease version in preview mode
-	// (nightly & dev)
-	usePrereleaseInPreviewMode?: boolean;
 	// If set, this string will be used when installing the tool
 	// instead of the default 'latest'. It can be used when
 	// we need to pin a tool version (`deadbeaf`) or to use
