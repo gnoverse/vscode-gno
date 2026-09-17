@@ -171,7 +171,7 @@ export async function stopLanguageClient(goCtx: GoExtensionContext) {
 	// crashes during shutdown before responding to the
 	// shutdown request. Enforce client-side timeout.
 	try {
-		c.stop(2000);
+		await c.stop(2000);
 	} catch (e) {
 		c.outputChannel?.appendLine(`Failed to stop client: ${e}`);
 	}
