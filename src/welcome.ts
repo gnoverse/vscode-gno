@@ -179,7 +179,7 @@ export class WelcomePanel {
 						-->
 						<li><a href="#" class="Command" data-command="openDocument" data-document="CHANGELOG.md">Release notes</a></li>
 						<li><a href="https://github.com/gnoverse/vscode-gno">GitHub</a></li>
-						<li><a href="https://discord.gg/bAHUB5RQ">Discord</a></li>
+						<li><a href="https://discord.com/invite/gnoland">Discord</a></li>
 					</ul>
 				</div>
 			</div>
