@@ -50,6 +50,14 @@ You are ready to Gno! 🎉🎉🎉
 * **Code navigation** - Jump to or peek at a symbol's declaration.
 * **Code editing** - Support for saved snippets, formatting and code organization, and automatic organization of imports.
 * **Testing** - Run tests at the cursor, in the current file, or in the current package.
+* **gnodev** - Start a local node from the editor and preview the `Render` output of your realm as you edit.
+* **Realm interaction** - Call realm functions, run scripts, and query realms on the network you select.
+
+<p align=center>
+<img src="docs/images/render-preview.gif" width=75%>
+<br/>
+<em>(Render preview with gnodev)</em>
+</p>
 
 <p align=center>
 <img src="docs/images/completion-signature-help.gif" width=75%>
