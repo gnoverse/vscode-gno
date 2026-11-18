@@ -2,9 +2,9 @@
 
 In addition to integrated editing features, this extension offers a number of commands, which can be executed manually through the [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) (`Ctrl+Shift+P` on Linux/Windows or `Cmd+Shift+P` on macOS).
 
-Some of these commands are also available in the VS Code context menu (right-click). To control which of these commands show up in the editor context menu, update the [`"gno.editorContextMenuCommands"`](settings.md#gno.editorContextMenuCommands) setting.
+Some of these commands are also available in the VS Code context menu (right-click). To control which of these commands show up in the editor context menu, update the [`"gno.editorContextMenuCommands"`](settings.md#gnoeditorcontextmenucommands) setting.
 
-All commands provided by this extension have the prefix `Gno:`.
+Most commands provided by this extension have the prefix `Gno:`.
 
 To view this list:
 
@@ -12,7 +12,7 @@ To view this list:
 2. Find the Gno extension and click on it to open the Extension Editor.
 3. Click on the `Feature Contributions` tab.
 4. Scroll through the list under `Commands`.
-5. Finally, you can also see a full list by using a meta command: `Gno: Show All Commands....`
+5. Finally, you can also see a full list by using a meta command: `Gno: Show All Commands...`.
 
 ## Detailed list
 
@@ -132,7 +132,7 @@ Cancels running tests.
 
 Restart the running instance of the language server
 
-### Gno Add Package To Chain
+### Gno: Add Package To Chain
 
 #### `gno.maketx.addpkg`
 

@@ -24,10 +24,10 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/gnoverse/vscode-gno"
+    "url": "https://github.com/notJoon/vscode-gno"
   },
   "bugs": {
-    "url": "https://github.com/gnoverse/vscode-gno/issues"
+    "url": "https://github.com/notJoon/vscode-gno/issues"
   },
   "keywords": [
     "multi-root ready",
@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "clean": "rm -rf ./dist/* && rm -rf ./out/* && rm -rf ./bin/* && rm *.vsix",
-    "package": "vsce package --baseContentUrl https://github.com/gnoverse/vscode-gno/blob/main --baseImagesUrl https://github.com/gnoverse/vscode-gno/raw/main",
+    "package": "vsce package --baseContentUrl https://github.com/notJoon/vscode-gno/blob/main --baseImagesUrl https://github.com/notJoon/vscode-gno/raw/main",
     "vscode:prepublish": "npm run compile",
     "bundle": "esbuild src/gnoMain.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node",
     "bundle-dev": "npm run bundle -- --sourcemap",
@@ -263,7 +263,7 @@
       },
       {
         "command": "gno.maketx.addpkg",
-        "title": "Gno Add Package To Chain",
+        "title": "Gno: Add Package To Chain",
         "description": "Add a package to the Gno blockchain"
       },
       {
@@ -484,7 +484,7 @@
         "gno.network": {
           "type": "string",
           "default": "local",
-          "markdownDescription": "Name of the network in `#gno.networks#` used by chain commands such as **Gno Add Package To Chain**. The default `local` network is the node started by gnodev.",
+          "markdownDescription": "Name of the network in `#gno.networks#` used by chain commands such as **Gno: Add Package To Chain**. The default `local` network is the node started by gnodev.",
           "scope": "window"
         },
         "gno.disableConcurrentTests": {
@@ -535,23 +535,21 @@
         "gno.formatTool": {
           "type": "string",
           "default": "default",
-          "markdownDescription": "When the language server is enabled and one of `default`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.",
+          "markdownDescription": "Formatter to use. When the language server is enabled, it handles formatting for both options.",
           "scope": "resource",
           "enum": [
             "default",
             "gofumpt"
           ],
           "markdownEnumDescriptions": [
-            "If the language server is enabled, format via the language server, which already gofumpt.",
-            "Formats the file according to the standard Gno style. (not applicable when the language server is enabled)",
-            "Organizes imports and formats the file with gofumpt. (not applicable when the language server is enabled)",
-            "See https://github.com/mvdan/gofumpt."
+            "Formats the file according to the standard Gno style.",
+            "Formats the file with [gofumpt](https://github.com/mvdan/gofumpt)."
           ]
         },
         "gno.inferGopath": {
           "type": "boolean",
           "default": false,
-          "description": "Infer GOPATH from the workspace root. This is ignored when using Go Modules.",
+          "description": "Infer GOPATH from the workspace root. This is ignored when using Gno modules.",
           "scope": "resource"
         },
         "gno.gopath": {
@@ -560,7 +558,7 @@
             "null"
           ],
           "default": null,
-          "description": "Specify GOPATH here to override the one that is set as environment variable. The inferred GOPATH from workspace root overrides this, if go.inferGopath is set to true.",
+          "description": "Specify GOPATH here to override the one that is set as environment variable. The inferred GOPATH from workspace root overrides this, if `gno.inferGopath` is set to true.",
           "scope": "machine-overridable"
         },
         "gno.toolsGopath": {
@@ -569,7 +567,7 @@
             "null"
           ],
           "default": null,
-          "description": "Location to install the Go tools that the extension depends on if you don't want them in your GOPATH.",
+          "description": "Location to install the Gno tools that the extension depends on if you don't want them in your GOPATH.",
           "scope": "machine-overridable"
         },
         "gno.goroot": {
@@ -584,13 +582,13 @@
         "gno.testOnSave": {
           "type": "boolean",
           "default": false,
-          "description": "Run 'go test' on save for current package. It is not advised to set this to `true` when you have Auto Save enabled.",
+          "description": "Run `gno test` on save for the current package. It is not advised to set this to `true` when you have Auto Save enabled.",
           "scope": "resource"
         },
         "gno.testTimeout": {
           "type": "string",
           "default": "30s",
-          "description": "Specifies the timeout for go test in ParseDuration format.",
+          "description": "Specifies the timeout for `gno test` in Go duration format, such as `30s`.",
           "scope": "resource"
         },
         "gno.testFlags": {
@@ -602,7 +600,7 @@
             "type": "string"
           },
           "default": null,
-          "description": "Flags to pass to `gno test`. If null, then buildFlags will be used. This is not propagated to the language server.",
+          "description": "Flags to pass to `gno test`. This is not propagated to the language server.",
           "scope": "resource"
         },
         "gno.testExplorer.enable": {
@@ -669,7 +667,7 @@
         "gno.useLanguageServer": {
           "type": "boolean",
           "default": true,
-          "description": "Enable intellisense, code navigation, refactoring, formatting & diagnostics for Gno. The features are powered by the Go language server \"gopls\"."
+          "description": "Enable intellisense, code navigation, refactoring, formatting & diagnostics for Gno. The features are powered by the Gno language server \"gnopls\"."
         },
         "gno.languageServerFlags": {
           "type": "array",
@@ -689,7 +687,7 @@
         "gno.toolsManagement.go": {
           "type": "string",
           "default": "",
-          "description": "The path to the `go` binary used to install the Gno tools. If it's empty, the same `go` binary chosen for the project will be used for tool installation.",
+          "description": "The path to the `go` binary used to install Gno tools such as `gnopls` with `go install`. If empty, the `go` binary chosen for the project is used.",
           "scope": "machine-overridable"
         },
         "gno.toolsManagement.checkForUpdates": {
@@ -730,7 +728,7 @@
             "render": true,
             "call": true
           },
-          "description": "Feature level setting to enable/disable code lens for references and run/debug tests",
+          "description": "Enable or disable code lens for running tests, previewing realm Render output, and calling realm functions",
           "scope": "resource"
         },
         "gno.editorContextMenuCommands": {
@@ -782,13 +780,13 @@
         "gno.alternateTools": {
           "type": "object",
           "default": {},
-          "description": "Alternate tools or alternate paths for the same tools used by the Go extension. Provide either absolute path or the name of the binary in GOPATH/bin, GOROOT/bin or PATH. Useful when you want to use wrapper script for the Go tools.",
+          "description": "Alternate tools or alternate paths for the tools used by the Gno extension. Provide either an absolute path or the name of the binary in GOPATH/bin, GOROOT/bin or PATH. Useful when you want to use a wrapper script for the Gno tools.",
           "scope": "resource",
           "properties": {
             "gno": {
               "type": "string",
               "default": "gno",
-              "description": "Alternate tool to use instead of the go binary or alternate path to use for the go binary."
+              "description": "Alternate tool to use instead of the gno binary or alternate path to use for the gno binary."
             },
             "gnopls": {
               "type": "string",
@@ -798,7 +796,7 @@
             "customFormatter": {
               "type": "string",
               "default": "",
-              "markdownDescription": "Custom formatter to use instead of the language server. This should be used with the `custom` option in `#go.formatTool#`."
+              "markdownDescription": "Custom formatter to use instead of the language server. No current `#gno.formatTool#` option uses it."
             }
           },
           "additionalProperties": true
@@ -811,7 +809,7 @@
         },
         "gnopls": {
           "type": "object",
-          "markdownDescription": "Configure the default Go language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/gnoverse/gnopls) for all available settings.",
+          "markdownDescription": "Configure the Gno language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/gnoverse/gnopls) for all available settings.",
           "scope": "resource",
           "properties": {
             "build.directoryFilters": {

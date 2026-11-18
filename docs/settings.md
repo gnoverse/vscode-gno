@@ -4,7 +4,7 @@ This extension is highly configurable, and as such, offers a number of settings.
 
 To navigate to your settings, open the Command Palette (`Ctrl+Shift+P` on Linux/Windows and `Cmd+Shift+P` on macOS) and search for "settings". The simplest way to modify your settings is through "Preferences: Open Settings (UI)".
 
-For tuning the features provided by `gnopls`, see the [section](settings.md#settings-for-gnopls) for `gnopls` settings.
+To tune the features provided by `gnopls`, see the [`gnopls`](#gnopls) setting.
 
 To view the list of settings:
 
@@ -19,7 +19,7 @@ To view the list of settings:
 
 ### `gno.alternateTools`
 
-Alternate tools or alternate paths for the same tools used by the Go extension. Provide either absolute path or the name of the binary in `GOPATH/bin`, `GOROOT/bin` or `PATH`. Useful when you want to use wrapper script for the Go tools.
+Alternate tools or alternate paths for the tools used by the Gno extension. Provide either an absolute path or the name of the binary in GOPATH/bin, GOROOT/bin or PATH. Useful when you want to use a wrapper script for the Gno tools.
 
 Default:
 ```
@@ -43,7 +43,7 @@ map[addImport:true addPackage:true fillStruct:false realm:true testAtCursor:true
 
 ### `gno.enableCodeLens`
 
-Feature level setting to enable/disable code lens for references and run/debug tests
+Enable or disable code lens for running tests, previewing realm Render output, and calling realm functions
 
 Default:
 ```
@@ -52,8 +52,12 @@ map[call:true render:true runtest:true]
 
 ### `gno.formatTool`
 
-When the language server is enabled and one of `default`/`gofumpt` is chosen, the language server will handle formatting. If `custom` tool is selected, the extension will use the `customFormatter` tool in the `#go.alternateTools#` section.<br/>
-Allowed Options: `default`, `gofumpt`
+Formatter to use. When the language server is enabled, it handles formatting for both options.<br/>
+Allowed Options:
+
+* `default`: Formats the file according to the standard Gno style.
+* `gofumpt`: Formats the file with [gofumpt](https://github.com/mvdan/gofumpt).
+
 
 Default: `"default"`
 
@@ -82,7 +86,7 @@ Default: `"beside"`
 
 ### `gno.gopath`
 
-Specify GOPATH here to override the one that is set as environment variable. The inferred GOPATH from workspace root overrides this, if go.inferGopath is set to true.
+Specify GOPATH here to override the one that is set as environment variable. The inferred GOPATH from workspace root overrides this, if `gno.inferGopath` is set to true.
 
 ### `gno.goroot`
 
@@ -90,7 +94,7 @@ Specifies the GOROOT to use when no environment variable is set.
 
 ### `gno.inferGopath`
 
-Infer GOPATH from the workspace root. This is ignored when using Go Modules.
+Infer GOPATH from the workspace root. This is ignored when using Gno modules.
 
 Default: `false`
 
@@ -133,7 +137,7 @@ map[broadcast:true gasFee:1000000ugnot gasWanted:4000000]
 
 ### `gno.network`
 
-Name of the network in `#gno.networks#` used by chain commands such as **Gno Add Package To Chain**. The default `local` network is the node started by gnodev.
+Name of the network in `#gno.networks#` used by chain commands such as **Gno: Add Package To Chain**. The default `local` network is the node started by gnodev.
 
 Default: `"local"`
 
@@ -185,23 +189,23 @@ Default: `true`
 
 ### `gno.testFlags`
 
-Flags to pass to `gno test`. If null, then buildFlags will be used. This is not propagated to the language server.
+Flags to pass to `gno test`. This is not propagated to the language server.
 
 ### `gno.testOnSave`
 
-Run 'go test' on save for current package. It is not advised to set this to `true` when you have Auto Save enabled.
+Run `gno test` on save for the current package. It is not advised to set this to `true` when you have Auto Save enabled.
 
 Default: `false`
 
 ### `gno.testTimeout`
 
-Specifies the timeout for go test in ParseDuration format.
+Specifies the timeout for `gno test` in Go duration format, such as `30s`.
 
 Default: `"30s"`
 
 ### `gno.toolsGopath`
 
-Location to install the Go tools that the extension depends on if you don't want them in your GOPATH.
+Location to install the Gno tools that the extension depends on if you don't want them in your GOPATH.
 
 ### `gno.toolsManagement.checkForUpdates`
 
@@ -216,7 +220,7 @@ Default: `"local"`
 
 ### `gno.toolsManagement.go`
 
-The path to the `go` binary used to install the Gno tools. If it's empty, the same `go` binary chosen for the project will be used for tool installation.
+The path to the `go` binary used to install Gno tools such as `gnopls` with `go install`. If empty, the `go` binary chosen for the project is used.
 
 Default: `""`
 
@@ -229,12 +233,12 @@ Default: `"off"`
 
 ### `gno.useLanguageServer`
 
-Enable intellisense, code navigation, refactoring, formatting & diagnostics for Gno. The features are powered by the Go language server "gopls".
+Enable intellisense, code navigation, refactoring, formatting & diagnostics for Gno. The features are powered by the Gno language server "gnopls".
 
 Default: `true`
 
 ### `gnopls`
 
-Configure the default Go language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/gnoverse/gnopls) for all available settings.
+Configure the Gno language server ('gnopls'). In most cases, configuring this section is unnecessary. See [the documentation](https://github.com/gnoverse/gnopls) for all available settings.
 
 
