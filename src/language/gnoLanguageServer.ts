@@ -56,6 +56,8 @@ import { CommandFactory } from '../commands';
 import { updateLanguageServerIconGoStatusBar } from '../gnoStatus';
 import { GoExtensionContext } from '../context';
 import { GoDocumentSelector } from '../gnoMode';
+import { getSelectedNetwork } from '../gnoNetwork';
+import { packageSourceLink, packageSourceLinksInMarkdown } from './packageLinks';
 
 export interface LanguageServerConfig {
 	serverName: string;
@@ -320,6 +322,34 @@ export async function buildLanguageClient(
 				}
 			},
 			middleware: {
+				provideDocumentLinks: async (document, token, next) => {
+					const links = await next(document, token);
+					const gnoweb = getSelectedNetwork()?.gnoweb;
+					const target = getGnoplsConfig(document.uri)['ui.documentation.linkTarget'];
+					for (const link of links ?? []) {
+						if (link.target) {
+							link.target = vscode.Uri.parse(packageSourceLink(link.target.toString(), gnoweb, target));
+						}
+					}
+					return links;
+				},
+				provideHover: async (document, position, token, next) => {
+					const hover = await next(document, position, token);
+					if (hover) {
+						const gnoweb = getSelectedNetwork()?.gnoweb;
+						const target = getGnoplsConfig(document.uri)['ui.documentation.linkTarget'];
+						hover.contents = hover.contents.map((content) => {
+							if (typeof content === 'string') {
+								return packageSourceLinksInMarkdown(content, gnoweb, target);
+							}
+							if (content instanceof vscode.MarkdownString) {
+								content.value = packageSourceLinksInMarkdown(content.value, gnoweb, target);
+							}
+							return content;
+						});
+					}
+					return hover;
+				},
 				handleWorkDoneProgress: async (token, params, next) => {
 					switch (params.kind) {
 						case 'begin':
@@ -646,7 +676,9 @@ export async function watchLanguageServerConfiguration(goCtx: GoExtensionContext
 		e.affectsConfiguration('gno.languageServerFlags') ||
 		e.affectsConfiguration('gno.alternateTools') ||
 		e.affectsConfiguration('gno.toolsEnvVars') ||
-		e.affectsConfiguration('gno.formatTool')
+		e.affectsConfiguration('gno.formatTool') ||
+		e.affectsConfiguration('gno.network') ||
+		e.affectsConfiguration('gno.networks')
 		// TODO: Should we check http.proxy too? That affects toolExecutionEnvironment too.
 	) {
 		vscode.commands.executeCommand('gno.languageserver.restart', RestartReason.CONFIG_CHANGE);

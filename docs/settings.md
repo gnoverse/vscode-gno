@@ -139,11 +139,11 @@ Default: `"local"`
 
 ### `gno.networks`
 
-Networks that Gno transactions and queries are sent to, by name. The default `local` network is the node started by gnodev, and can be changed by defining `local` here. Select a network with `#gno.network#` or the **Gno: Select Network** command.
+Networks that Gno transactions and queries are sent to, by name. The default `local` network is the node started by gnodev, and can be changed by defining `local` here. Select a network with `#gno.network#` or the **Gno: Select Network** command. Set each network’s `gnoweb` base URL for package source links; it falls back to https://gno.land when omitted.
 
 Default:
 ```
-map[local:map[chainId:dev remote:127.0.0.1:26657]]
+map[local:map[chainId:dev gnoweb:http://127.0.0.1:8888 remote:127.0.0.1:26657]]
 ```
 
 ### `gno.showWelcome`

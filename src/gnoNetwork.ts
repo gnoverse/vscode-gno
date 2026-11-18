@@ -10,11 +10,12 @@ export interface GnoNetwork {
 	name: string;
 	remote: string;
 	chainId: string;
+	gnoweb?: string;
 }
 
 function getNetworks(): GnoNetwork[] {
 	const networks = getGnoConfig().get<Record<string, Omit<GnoNetwork, 'name'>>>('networks') ?? {};
-	return Object.entries(networks).map(([name, n]) => ({ name, remote: n.remote, chainId: n.chainId }));
+	return Object.entries(networks).map(([name, n]) => ({ name, ...n }));
 }
 
 function selectedName(): string {

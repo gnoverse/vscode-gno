@@ -458,6 +458,11 @@
               "chainId": {
                 "type": "string",
                 "description": "Chain ID of the network, such as `dev`."
+              },
+              "gnoweb": {
+                "type": "string",
+                "pattern": "^https?://",
+                "description": "Gnoweb base URL for package source links, such as http://127.0.0.1:8888. Defaults to https://gno.land when omitted."
               }
             },
             "required": [
@@ -469,10 +474,11 @@
           "default": {
             "local": {
               "remote": "127.0.0.1:26657",
-              "chainId": "dev"
+              "chainId": "dev",
+              "gnoweb": "http://127.0.0.1:8888"
             }
           },
-          "markdownDescription": "Networks that Gno transactions and queries are sent to, by name. The default `local` network is the node started by gnodev, and can be changed by defining `local` here. Select a network with `#gno.network#` or the **Gno: Select Network** command.",
+          "markdownDescription": "Networks that Gno transactions and queries are sent to, by name. The default `local` network is the node started by gnodev, and can be changed by defining `local` here. Select a network with `#gno.network#` or the **Gno: Select Network** command. Set each network’s `gnoweb` base URL for package source links; it falls back to https://gno.land when omitted.",
           "scope": "window"
         },
         "gno.network": {
@@ -1273,7 +1279,7 @@
             },
             "ui.documentation.linkTarget": {
               "type": "string",
-              "markdownDescription": "linkTarget controls where documentation links go.\nIt might be one of:\n\n* `\"godoc.org\"`\n* `\"pkg.go.dev\"`\n\nIf company chooses to use its own `godoc.org`, its address can be used as well.\n\nModules matching the GOPRIVATE environment variable will not have\ndocumentation links in hover.\n",
+              "markdownDescription": "Base domain used by gnopls for documentation links. On-chain `gno.land/r/...` and `gno.land/p/...` links open the source page on the selected network’s `gnoweb` URL in `#gno.networks#`. Modules matching GOPRIVATE have no hover links.",
               "default": "pkg.go.dev",
               "scope": "resource"
             },
