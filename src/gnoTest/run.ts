@@ -520,7 +520,7 @@ export class GoTestRunner {
 		return resolve();
 	}
 
-	// Process benchmark events (see test_events.md)
+	// Process benchmark events (see test-events.md)
 	consumeGoBenchmarkEvent(
 		run: TestRun,
 		benchmarks: Record<string, TestItem>,
@@ -581,7 +581,7 @@ export class GoTestRunner {
 		}
 	}
 
-	// Pass any incomplete benchmarks (see test_events.md)
+	// Pass any incomplete benchmarks (see test-events.md)
 	markComplete(items: Record<string, TestItem>, complete: Set<TestItem>, fn: (item: TestItem) => void) {
 		function mark(item: TestItem) {
 			if (!complete.has(item)) {
@@ -595,7 +595,7 @@ export class GoTestRunner {
 		}
 	}
 
-	// Process test events (see test_events.md)
+	// Process test events (see test-events.md)
 	consumeGoTestEvent(
 		run: TestRun,
 		tests: Record<string, TestItem>,

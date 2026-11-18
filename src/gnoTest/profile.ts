@@ -39,7 +39,7 @@ export function killRunningPprof() {
 export class GoTestProfiler {
 	public readonly view = new ProfileTreeDataProvider(this);
 
-	// Maps test IDs to profile files. See docs/test-explorer.md for details.
+	// Maps test IDs to profile files. See test-explorer.md for details.
 	private readonly runs = new Map<string, File[]>();
 
 	constructor(
