@@ -2,31 +2,34 @@
 
 Welcome to the VS Code Gno extension!
 
+This is an independently maintained fork of [gnoverse/vscode-gno](https://github.com/gnoverse/vscode-gno).
+
 This extension provides rich language support for the Gno programming language, including features such as IntelliSense, code navigation, code editing, and testing.
 
 ## Requirements
 
-* Visual Studio Code 1.75 or newer (or editors compatible with VS Code 1.75+ APIs)
-* Go 1.21
-* [Gno](https://github.com/gnolang/gno/tree/master/gnovm) (Gnolang Virtual Machine)
+* Visual Studio Code 1.91 or newer (or editors compatible with VS Code 1.91+ APIs)
+* Go 1.25 or newer
+* [Gno tools](https://docs.gno.land/builders/install): `gno`, `gnokey`, and `gnodev`
 
 ## Quick Start
 
-1.  Install [Go](https://go.dev) 1.21 or newer (required for automatic installation of missing tools).
+1.  Install [Go](https://go.dev) 1.25 or newer (required for automatic installation of missing tools).
 
-2.  Install the [Gno VM](https://github.com/gnolang/gno/tree/master/gnovm).
+2.  Install `gno`, `gnokey`, and `gnodev` by following the [Gno installation guide](https://docs.gno.land/builders/install).
 
 3.  Install the **VS Code Gnolang** extension.
 
-    a. Stable releases are available on the
-     [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Gnoverse.gnolang).
+    a. Download the `.vsix` file from
+     [GitHub Releases](https://github.com/notJoon/vscode-gno/releases) and install it.
 
-    b. Nightly releases are available on
-     [GitHub Releases](https://github.com/gnoverse/vscode-gno/releases) as `.vsix` files.
+    b. Or build the `.vsix` file from source.
+
+    See [Install from a VSIX](./docs/nightly-install.md) for the steps.
 
 4.  Open any Gno file to automatically activate the extension. The
     **Gno status bar** appears in the
-    bottom right corner of the window and displays your Go version.
+    bottom right corner of the window and displays your Gno version.
 
 5.  The extension depends on `go`, `gno`, `gnopls` (the Gno language server), and optional
     tools (like `gnokey`) depending on your settings. If `gnopls` is missing, the extension will
@@ -46,7 +49,7 @@ You are ready to Gno! 🎉🎉🎉
 * **IntelliSense** - Results appear for symbols as you type.
 * **Code navigation** - Jump to or peek at a symbol's declaration.
 * **Code editing** - Support for saved snippets, formatting and code organization, and automatic organization of imports.
-* **Testing** - Run or debug tests at the cursor, in the current file, or in the current package.
+* **Testing** - Run tests at the cursor, in the current file, or in the current package.
 
 <p align=center>
 <img src="docs/images/completion-signature-help.gif" width=75%>
@@ -71,7 +74,7 @@ then typing in the command name.
 * View the complete [command list](./docs/commands.md) provided by the extension.
 * Customize the extension by changing [settings](./docs/settings.md).
 * Explore Gno language resources on [docs.gno.land](https://docs.gno.land).
-* Open an issue on [GitHub](https://github.com/gnoverse/vscode-gno/issues/new/choose) if you encounter any problems or have suggestions for new features.
+* Open an issue on [GitHub](https://github.com/notJoon/vscode-gno/issues/new) if you encounter any problems or have suggestions for new features.
 
 ## Contributing
 
@@ -84,10 +87,9 @@ the project.
 
 ## Credits
 
-A big thank you to the developers of the [vscode-go](https://github.com/golang/vscode-go) extension for Go.
-Their work was a huge help in creating this extension for the Gno language,
-as I adapted their ideas and structure to fit this new context.
-Thank you for your contribution to open source and for the inspiration!
+This extension is a fork of [gnoverse/vscode-gno](https://github.com/gnoverse/vscode-gno),
+which itself derives from the [vscode-go](https://github.com/golang/vscode-go) extension for Go.
+Thank you to the developers of both projects for their work and for the inspiration!
 
 ## License
 

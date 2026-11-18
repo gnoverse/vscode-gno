@@ -1,3 +1,5 @@
+Entries for 1.0.1 and earlier come from upstream [gnoverse/vscode-gno](https://github.com/gnoverse/vscode-gno).
+
 ## Unreleased
 
 
