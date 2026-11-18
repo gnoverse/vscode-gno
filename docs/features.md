@@ -13,12 +13,17 @@ This document describes the features supported by this extension.
     * [Test Function](#test-function)
     * [Test At Cursor](#test-at-cursor)
 - [Debugging](#debugging)
+- [gnodev](#gnodev)
+- [Render Preview](#render-preview)
+- [Networks](#networks)
 - [Add Package](#add-package)
+- [Call And Query Realms](#call-and-query-realms)
 - [Mod Init](#mod-init)
 - [Find References](#find-references)
 - [Find Implementations](#find-implementations)
 - [Code Navigation](#code-navigation)
     * [Go to definition](#go-to-definition)
+- [Package Source Links](#package-source-links)
 - [Call Hierarchy](#call-hierarchy)
 - [Toggle Between Code and Tests](#toggle-between-code-and-tests)
 - [Add Import](#add-import)
@@ -94,9 +99,63 @@ Limitations of the underlying debugger:
 - Expressions are limited to identifiers, selectors, indexes and literals (no calls or operators).
 - Locals are found from the source of the current function and values cannot be expanded.
 
+## gnodev
+
+Run a local [gnodev](https://docs.gno.land/resources/gnodev) node from the editor. Click the gnodev button in the editor title bar of a Gno file, or run **Gno: Start gnodev**. gnodev loads the package or workspace of the file and reloads it when you save.
+
+gnoweb opens in a panel beside the editor. Its title bar has buttons to reload the packages, reset the realms state, and open gnoweb in your browser. Closing the panel stops gnodev.
+
+Related settings:
+- `gno.gnodev.openBrowser` sets where gnoweb opens.
+- `gno.gnodev.flags` passes extra flags to gnodev.
+- `gno.gnodev.displayButton` shows or hides the title bar button.
+
+## Render Preview
+
+Click **preview render** above `func Render` to see the output of your realm in gnoweb. gnodev starts if it is not running, and the preview updates every time you save. Click **preview render path...** to pass a path to `Render`.
+
+<div style="text-align: center;"><img src="images/render-preview.gif" alt="Preview the Render output of a realm and update it on save" style="width: 100%"> </div>
+
+## Networks
+
+Transactions and queries go to the network selected with `gno.network`. The default `local` network is the node started by gnodev. Click the network name in the status bar, or run **Gno: Select Network**, to switch.
+
+Add your own networks in `gno.networks`:
+
+```json
+"gno.networks": {
+  "local": {
+    "remote": "127.0.0.1:26657",
+    "chainId": "dev",
+    "gnoweb": "http://127.0.0.1:8888"
+  },
+  "mynet": {
+    "remote": "https://rpc.example.com:443",
+    "chainId": "mynet",
+    "gnoweb": "https://example.com"
+  }
+}
+```
+
 ## Add Package
 
 Publish Gno package/realm to the chain. The transaction is sent to the network selected with `gno.network`. `gnokey` needs to be installed for this feature to work.
+
+## Call And Query Realms
+
+Click **call** above an exported crossing function, `func F(cur realm, ...)`, to call it with `gnokey maketx call`. The extension asks for the arguments, the coins to send, and the key that signs the transaction. The result appears in the Output panel.
+
+<div style="text-align: center;"><img src="images/call-realm.gif" alt="Call a realm function and see the new state in the Render preview" style="width: 100%"> </div>
+
+The same actions are in the Command Palette and the editor context menu:
+- **Gno: Call Realm Function** calls a crossing function of the current realm.
+- **Gno: Run Script On Chain** runs `func main` of the current file with `gnokey maketx run`.
+- **Gno: Evaluate Expression In Realm** evaluates an expression such as `Count()` with `vm/qeval`.
+- **Gno: Query Render** shows the `Render` output of the realm with `vm/qrender`.
+
+<div style="text-align: center;"><img src="images/eval-realm.gif" alt="Evaluate an expression in a realm" style="width: 100%"> </div>
+
+`gnokey` needs to be installed, with your key in its keybase.
 
 ## Mod Init
 
@@ -120,6 +179,9 @@ Find the concrete types that implement a given interface.
 
 Jump to or peek a symbol's declaration.
 
+## Package Source Links
+
+Import paths and hover links of packages on chain, such as `gno.land/p/nt/avl/v0`, open the package source on gnoweb instead of pkg.go.dev. The links use the `gnoweb` URL of the selected network, or https://gno.land when it is not set.
 
 ## Call Hierarchy
 
